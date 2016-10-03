@@ -15,7 +15,7 @@
 #include <linux/kthread.h>
 //#include <linux/time.h>
 
-#define DEBOUNCE_TIME 10
+#define DEBOUNCE_TIME 1
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Christopher Hannon");
