@@ -27,6 +27,8 @@ static unsigned int irqNumber;
 
 static irq_handler_t vtgpio_irq_handler(unsigned int irq, void *dev_id, 
 struct pt_regs *regs);
+//static irq_handler_t vtgpio_irq_handler_fall(unsigned int irq, void *dev_id, 
+//struct pt_regs *regs);
 
 enum modes { DISABLED, ENABLED };
 static enum modes mode = DISABLED;
@@ -34,9 +36,6 @@ static enum modes mode = DISABLED;
 static char vtName[6] = "vtXXX";
 
 //static int pids[128];
-
-
-
 
 /** @brief A callback function to display the vt mode */
 static ssize_t mode_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
@@ -58,10 +57,18 @@ static ssize_t mode_store(struct kobject *kobj, struct kobj_attribute *attr, con
 	 ---------------------------
 	 change to output mode,
 	 go high on gpio
+    */
+    gpio_direction_output(gpioSIG,1);
+
+    //printk(KERN_INFO "VT-GPIO_TEST: value of pin: %d\n", gpio_get_value(gpioSIG));
+	 /*
 	 
 	 kickoff freeze
      */
 
+    /* Stay HIGH until unfreeze is called */
+
+    
     /* TODO */
     
   }
@@ -69,29 +76,23 @@ static ssize_t mode_store(struct kobject *kobj, struct kobj_attribute *attr, con
     mode = DISABLED;
     printk(KERN_INFO "VT-GPIO_TEST: resume\n");
 
+    /* chgn cfg
+       go low
+       kickoff resume
+    */
+    gpio_direction_output(gpioSIG,0); 
+
+    //printk(KERN_INFO "VT-GPIO_TEST: value of pin: %d\n", gpio_get_value(gpioSIG));
+
+    gpio_direction_input(gpioSIG); 
+
+    //printk(KERN_INFO "VT-GPIO_TEST: value of pin: %d\n", gpio_get_value(gpioSIG));
+   
   }
       
   return count;
 }
 
-
-/** @brief A callback function to display the vt mode */
-/*
-static ssize_t pids_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
-  switch(mode){
-  case ENABLED: return sprintf(buf, "freeze\n");
-  case DISABLED: return sprintf(buf, "unfreeze\n");
-  default: return sprintf(buf, "LKM ERROR\n"); //whoops
-  }
-}
-*/
-
-/** @brief A callback function to store the vt mode using enum*/
-/*
-static ssize_t pids_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count) {
-    return count;
-}
-*/
 static struct kobj_attribute mode_attr = __ATTR(mode, 0660, mode_show, mode_store);
 
 static struct attribute *vt_attrs[] = {
@@ -140,9 +141,9 @@ static int __init vtgpio_init(void) {
   printk(KERN_INFO "VT-GPIO_TEST: Input signal is mapped to IRQ: %d\n", irqNumber);
 
   result = request_irq(irqNumber, (irq_handler_t) vtgpio_irq_handler,
-		       IRQF_TRIGGER_RISING, "vt_gpio_handler", NULL);
+		       IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING, "vt_gpio_handler", NULL);
+  printk(KERN_INFO "VT-GPIO_TEST: The interrupt rising request result is %d\n", result);
 
-  printk(KERN_INFO "VT-GPIO_TEST: The interrupt request result is %d\n", result);
   return result;
 }
 
@@ -158,6 +159,12 @@ static void __exit vtgpio_exit(void) {
 static irq_handler_t vtgpio_irq_handler(unsigned int irq, void *dev_id, struct pt_regs *regs) {
   printk(KERN_INFO "VT-GPIO_TEST: Interrupt! (Im alive!)");
   num_ints ++;
+  if(gpio_get_value(gpioSIG)){
+    printk(KERN_INFO "VT-GPIO_TEST: Rising Edge detected");
+  }
+  else{
+    printk(KERN_INFO "VT-GPIO_TEST: Falling Edge detected");
+  }
 
   /* we have to sound the trumpets */
   /* read list of pids */
@@ -170,7 +177,6 @@ static irq_handler_t vtgpio_irq_handler(unsigned int irq, void *dev_id, struct p
 
   return (irq_handler_t) IRQ_HANDLED; // return that we all good
 }
-
 
 
 
