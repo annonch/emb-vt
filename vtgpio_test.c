@@ -21,16 +21,16 @@ MODULE_DESCRIPTION("Test for sync between two emb-lins for virtual time coordina
 MODULE_VERSION("0.1");
 
 static unsigned int gpioSIG = 21; // pin for talking // gpio21 on model b+ 
+static unsigned int gpioSIG2 = 20;
 // gpio 21 on 2B static 
 unsigned int active = 1; //
 //static unsigned int last_triggered; 
 static unsigned int num_ints = 0; 
 static unsigned int irqNumber;
+static unsigned int irqNumber2;
 
-static irq_handler_t vtgpio_irq_handler(unsigned int irq, void *dev_id, 
-struct pt_regs *regs);
-//static irq_handler_t vtgpio_irq_handler_fall(unsigned int irq, void *dev_id, 
-//struct pt_regs *regs);
+static irq_handler_t vtgpio_irq_handler(unsigned int irq, void *dev_id, struct pt_regs *regs);
+static irq_handler_t vtgpio_irq_handler_fall(unsigned int irq, void *dev_id, struct pt_regs *regs);
 
 enum modes { DISABLED, ENABLED };
 static enum modes mode = DISABLED;
@@ -63,15 +63,8 @@ static ssize_t mode_store(struct kobject *kobj, struct kobj_attribute *attr, con
     gpio_direction_output(gpioSIG,1);
 
     //printk(KERN_INFO "VT-GPIO_TEST: value of pin: %d\n", gpio_get_value(gpioSIG));
-	 /*
-	 
-	 kickoff freeze
-     */
 
-    /* Stay HIGH until unfreeze is called */
-
-    
-    /* TODO */
+    //interrupt still gets called :)
     
   }
   else if (strncmp(buf,"unfreeze",count-1)==0) {
@@ -80,18 +73,12 @@ static ssize_t mode_store(struct kobject *kobj, struct kobj_attribute *attr, con
 
     /* chgn cfg
        go low
-       kickoff resume
     */
     gpio_direction_output(gpioSIG,0); 
-
     //printk(KERN_INFO "VT-GPIO_TEST: value of pin: %d\n", gpio_get_value(gpioSIG));
-
     gpio_direction_input(gpioSIG); 
-
     //printk(KERN_INFO "VT-GPIO_TEST: value of pin: %d\n", gpio_get_value(gpioSIG));
-   
   }
-      
   return count;
 }
 
@@ -110,14 +97,17 @@ static struct attribute_group attr_group = {
 static struct kobject *vt_kobj;
 //static struct task_struct * task
 
-
 static int __init vtgpio_init(void) {
   int result=0;
   int res = 0;
   
   printk(KERN_INFO "VT-GPIO_TEST: Initializing the Virtual Time GPIO_TEST LKM\n");
   if(!gpio_is_valid(gpioSIG)) {
-    printk(KERN_INFO "VT-GPIO_TEST: pin not valid\n");
+    printk(KERN_INFO "VT-GPIO_TEST: pin %d not valid\n",gpioSIG);
+    return -ENODEV;
+  }
+  if(!gpio_is_valid(gpioSIG2)) {
+    printk(KERN_INFO "VT-GPIO_TEST: pin %d not valid\n",gpioSIG2);
     return -ENODEV;
   }
   sprintf(vtName, "VT%d", gpioSIG);
@@ -136,14 +126,23 @@ static int __init vtgpio_init(void) {
   }
   
   gpio_request(gpioSIG, "sysfs");
+  gpio_request(gpioSIG2, "sysfs");
   gpio_direction_input(gpioSIG); // default to input to listen
+  gpio_direction_input(gpioSIG2); // default to input to listen
   gpio_export(gpioSIG, true);    // true = we should be able to change direction
+  gpio_export(gpioSIG2, true);    // true = we should be able to change direction
 
   irqNumber = gpio_to_irq(gpioSIG);
   printk(KERN_INFO "VT-GPIO_TEST: Input signal is mapped to IRQ: %d\n", irqNumber);
+  irqNumber2 = gpio_to_irq(gpioSIG2);
+  printk(KERN_INFO "VT-GPIO_TEST: Input signal is mapped to IRQ: %d\n", irqNumber2);
 
   result = request_irq(irqNumber, (irq_handler_t) vtgpio_irq_handler,
-		       IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING, "vt_gpio_handler", NULL);
+		       IRQF_TRIGGER_RISING, "vt_gpio_handler", NULL);
+  printk(KERN_INFO "VT-GPIO_TEST: The interrupt rising request result is %d\n", result);
+
+  result = request_irq(irqNumber2, (irq_handler_t) vtgpio_irq_handler_fall,
+		       IRQF_TRIGGER_FALLING, "vt_gpio_handler_fall", NULL);
   printk(KERN_INFO "VT-GPIO_TEST: The interrupt rising request result is %d\n", result);
 
   return result;
@@ -153,35 +152,38 @@ static void __exit vtgpio_exit(void) {
   printk(KERN_INFO "VT-GPIO_TEST: Exiting LKM\n");
   kobject_put(vt_kobj);
   gpio_unexport(gpioSIG);
+  gpio_unexport(gpioSIG2);
+  
   free_irq(irqNumber, NULL);
   gpio_free(gpioSIG);
+  free_irq(irqNumber2, NULL);
+  gpio_free(gpioSIG2);
   printk(KERN_INFO "VT-GPIO_TEST: Successfully leaving LKM\n");
 }
 
 static irq_handler_t vtgpio_irq_handler(unsigned int irq, void *dev_id, struct pt_regs *regs) {
   printk(KERN_INFO "VT-GPIO_TEST: Interrupt! (Im alive!)");
   num_ints ++;
-  if(gpio_get_value(gpioSIG)){
-    printk(KERN_INFO "VT-GPIO_TEST: Rising Edge detected");
-  }
-  else{
-    printk(KERN_INFO "VT-GPIO_TEST: Falling Edge detected");
-  }
+  printk(KERN_INFO "VT-GPIO_TEST: Rising Edge detected");
+
 
   /* we have to sound the trumpets */
   /* read list of pids */
-
-
-
   /* kickoff kthreads to freeze processes */
-
-
-
   return (irq_handler_t) IRQ_HANDLED; // return that we all good
 }
 
+static irq_handler_t vtgpio_irq_handler_fall(unsigned int irq, void *dev_id, struct pt_regs *regs) {
+  printk(KERN_INFO "VT-GPIO_TEST: Interrupt! (Im alive!)");
+  num_ints ++;
+  printk(KERN_INFO "VT-GPIO_TEST: Falling Edge detected");
+  
 
-
+  /* we have to sound the trumpets */
+  /* read list of pids */
+  /* kickoff kthreads to resume processes */
+  return (irq_handler_t) IRQ_HANDLED; // return that we all good
+}
 
 module_init(vtgpio_init);
 module_exit(vtgpio_exit);
