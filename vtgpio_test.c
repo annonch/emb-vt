@@ -1,5 +1,7 @@
 /*
     Virtual Time Kernel Module
+    For Heterogeneous Distributed 
+	Embedded Linux Environment
 
     Author: Christopher Hannon
  */
