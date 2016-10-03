@@ -6,3 +6,4 @@
 *.mod*
 modules.order
 Module.symvers
+*.cmd*
