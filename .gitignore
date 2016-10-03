@@ -1,8 +1,8 @@
 *~
 *#
-.o
-.ko
-.tmp
-.mod*
+*.o
+*.ko
+*.tmp
+*.mod*
 modules.order
 Module.symvers
