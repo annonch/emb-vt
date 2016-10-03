@@ -138,11 +138,11 @@ static int __init vtgpio_init(void) {
   printk(KERN_INFO "VT-GPIO_TEST: Input signal is mapped to IRQ: %d\n", irqNumber2);
 
   result = request_irq(irqNumber, (irq_handler_t) vtgpio_irq_handler,
-		       IRQF_TRIGGER_RISING, "vt_gpio_handler", NULL);
+		       IRQF_TRIGGER_HIGH, "vt_gpio_handler", NULL);
   printk(KERN_INFO "VT-GPIO_TEST: The interrupt rising request result is %d\n", result);
 
   result = request_irq(irqNumber2, (irq_handler_t) vtgpio_irq_handler_fall,
-		       IRQF_TRIGGER_FALLING, "vt_gpio_handler_fall", NULL);
+		       IRQF_TRIGGER_LOW, "vt_gpio_handler_fall", NULL);
   printk(KERN_INFO "VT-GPIO_TEST: The interrupt rising request result is %d\n", result);
 
   return result;
