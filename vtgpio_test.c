@@ -15,16 +15,27 @@
 #include <linux/kthread.h>
 //#include <linux/time.h>
 
-#define DEBOUNCE_TIME 0.01
+#define DEBOUNCE_TIME 0.02
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Christopher Hannon");
 MODULE_DESCRIPTION("Test for sync between two emb-lins for virtual time coordination");
 MODULE_VERSION("0.1");
 
-static unsigned int gpioSIG = 21; // pin for talking // gpio21 on model b+ 
-static unsigned int gpioSIG2 = 20;
+static unsigned int gpioSIG = 7; // pin for talking // gpio21 on model b+ 
+static unsigned int gpioSIG2 = 8;
 // gpio 21 on 2B static 
+/*
+
+ *I think 7 and 8 for banana pi 21 and 20 for raspberry pi
+ * To install use insmod gpio_test.ko and lsmod to see the module
+ * To uninstall use rmmod vtgpio_test and lsmod to confirm
+
+ * if breaks just reboot
+ * to pause write freeze/unfreeze to ....
+ * /sys/vt/... 
+*/
+
 unsigned int active = 1; //
 //static unsigned int last_triggered; 
 static unsigned int num_ints = 0; 
@@ -166,7 +177,10 @@ static void __exit vtgpio_exit(void) {
 }
 
 static irq_handler_t vtgpio_irq_handler(unsigned int irq, void *dev_id, struct pt_regs *regs) {
-  printk(KERN_INFO "VT-GPIO_TEST: Interrupt! (Im alive!)");
+  struct timespec seconds;
+  //printk(KERN_INFO "VT-GPIO_TEST: Interrupt! (Im alive!)");
+  getnstimeofday(&seconds);
+  printk(KERN_INFO "VT-GPIO_TEST: TIME-RISE: %llu nano seconds",(unsigned long long)seconds.tv_sec*1000000000 + seconds.tv_nsec);
   num_ints ++;
   printk(KERN_INFO "VT-GPIO_TEST: Rising Edge detected");
 
@@ -178,7 +192,10 @@ static irq_handler_t vtgpio_irq_handler(unsigned int irq, void *dev_id, struct p
 }
 
 static irq_handler_t vtgpio_irq_handler_fall(unsigned int irq, void *dev_id, struct pt_regs *regs) {
-  printk(KERN_INFO "VT-GPIO_TEST: Interrupt! (Im alive!)");
+  struct timespec seconds;
+  //printk(KERN_INFO "VT-GPIO_TEST: Interrupt! (Im alive!)");
+  getnstimeofday(&seconds);
+  printk(KERN_INFO "VT-GPIO_TEST: TIME-FALL: %llu nano seconds",(unsigned long long)seconds.tv_sec*1000000000 + seconds.tv_nsec);
   num_ints ++;
   printk(KERN_INFO "VT-GPIO_TEST: Falling Edge detected");
   
