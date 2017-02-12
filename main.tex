@@ -1,0 +1,164 @@
+% This is "sig-alternate.tex" V2.1 April 2013
+% This file should be compiled with V2.5 of "sig-alternate.cls" May 2012
+%
+% This example file demonstrates the use of the 'sig-alternate.cls'
+% V2.5 LaTeX2e document class file. It is for those submitting
+% articles to ACM Conference Proceedings WHO DO NOT WISH TO
+% STRICTLY ADHERE TO THE SIGS (PUBS-BOARD-ENDORSED) STYLE.
+% The 'sig-alternate.cls' file will produce a similar-looking,
+% albeit, 'tighter' paper resulting in, invariably, fewer pages.
+%
+% ----------------------------------------------------------------------------------------------------------------
+% This .tex file (and associated .cls V2.5) produces:
+%       1) The Permission Statement
+%       2) The Conference (location) Info information
+%       3) The Copyright Line with ACM data
+%       4) NO page numbers
+%
+% as against the acm_proc_article-sp.cls file which
+% DOES NOT produce 1) thru' 3) above.
+%
+% Using 'sig-alternate.cls' you have control, however, from within
+% the source .tex file, over both the CopyrightYear
+% (defaulted to 200X) and the ACM Copyright Data
+% (defaulted to X-XXXXX-XX-X/XX/XX).
+% e.g.
+% \CopyrightYear{2007} will cause 2007 to appear in the copyright line.
+% \crdata{0-12345-67-8/90/12} will cause 0-12345-67-8/90/12 to appear in the copyright line.
+%
+% ---------------------------------------------------------------------------------------------------------------
+% This .tex source is an example which *does* use
+% the .bib file (from which the .bbl file % is produced).
+% REMEMBER HOWEVER: After having produced the .bbl file,
+% and prior to final submission, you *NEED* to 'insert'
+% your .bbl file into your source .tex file so as to provide
+% ONE 'self-contained' source file.
+%
+% ================= IF YOU HAVE QUESTIONS =======================
+% Questions regarding the SIGS styles, SIGS policies and
+% procedures, Conferences etc. should be sent to
+% Adrienne Griscti (griscti@acm.org)
+%
+% Technical questions _only_ to
+% Gerald Murray (murray@hq.acm.org)
+% ===============================================================
+%
+% For tracking purposes - this is V2.0 - May 2012
+
+\documentclass{sig-alternate-05-2015}
+
+% *** CITATION PACKAGES ***
+\usepackage{cite}
+
+% *** MATH PACKAGES ***
+\usepackage{amsmath}
+\usepackage{svg}
+\usepackage{amsfonts}
+
+% *** PDF, URL AND HYPERLINK PACKAGES ***
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{epigraph}
+
+% *** ALGORITHM ***
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{booktabs}
+\usepackage{enumitem}
+
+% *** GRAPH***
+\usepackage{graphics,graphicx}
+\usepackage{pstricks,pst-node,pst-tree}
+\usepackage{caption}
+
+% *** FILLER TEXT ***
+\usepackage{lipsum}
+
+% *** STRIKEPUT ***
+\usepackage{soul}
+
+% *** To balance reference page ***
+\usepackage{flushend}
+
+% format
+
+\usepackage{dblfloatfix}
+
+
+\newcommand{\paragraphb}[1]{\vspace{0.03in}\noindent{\bf #1} }
+\newcommand{\paragraphe}[1]{\vspace{0.03in}\noindent{\em #1} }
+\newcommand{\paragraphbe}[1]{\vspace{0.03in}\noindent{\bf \em #1} }
+
+\newcommand{\kevin}[1]{{\color{red}{#1}}}
+\newcommand{\kevinc}[1]{{\color{red}\bf\em{[kevin: #1]}}}
+
+\newcommand{\name}{DSSnet\xspace}
+\newcommand{\Name}{DSSnet\xspace}
+
+
+% *** For commenting blocks of text ***
+%\newcommand{\CUT}[1]{{}}
+\begin{document}
+
+\isbn{999-9-9999-9999-9/99/99}\acmPrice{\$1.00}
+\doi{http://dx.doi.org/11.111/1111111.1111111}
+
+\clubpenalty=10000
+\widowpenalty = 10000
+\title{Heterogeneous Distributed Embedded Linux System for Hardware-in-the-Loop Testbed}
+\subtitle{[Project Proposal]}
+
+
+\numberofauthors{2}
+
+\author{
+\alignauthor
+% 1st. author
+Christopher Hannon\\
+       \affaddr{Illinois Institute of Technology}\\
+       \affaddr{10 West 31st Street}\\
+       \affaddr{Chicago, Illinois, 60616 }\\
+       \email{channon@hawk.iit.edu}
+% 2nd. author
+\alignauthor
+Neil Getty\\
+       \affaddr{Illinois Institute of Technology}\\
+       \affaddr{10 West 31st Street}\\
+       \affaddr{Chicago, Illinois, 60616 }\\
+       \email{ngetty@hawk.iit.edu}
+}
+
+
+\maketitle
+\if 0
+\begin{abstract}
+
+\end{abstract}
+\fi
+
+%\keywords{OpenFlow, SDN, Resiliency, Industrial Control Systems, Security, Availability, Disaster Recovery}
+
+\input{body}
+
+%
+% The following two commands are all you need in the
+% initial runs of your .tex file to
+% produce the bibliography for the citations in your paper.
+\bibliographystyle{abbrv}
+\bibliography{sigproc}  % sigproc.bib is the name of the Bibliography in this case
+% You must have a proper ".bib" file
+%  and remember to run:
+% latex bibtex latex latex
+% to resolve all references
+%
+% ACM needs 'a single self-contained file'!
+%
+
+%\nocite{*}
+%\balancecolumns % GM June 2007
+% That's all folks!
+
+%\elecappendix
+%\medskip
+
+\end{document}
