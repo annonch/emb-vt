@@ -180,7 +180,7 @@ static irq_handler_t vtgpio_irq_handler(unsigned int irq, void *dev_id, struct p
   struct timespec seconds;
   //printk(KERN_INFO "VT-GPIO_TEST: Interrupt! (Im alive!)");
   getnstimeofday(&seconds);
-  printk(KERN_INFO "VT-GPIO_TEST: TIME-RISE: %llu nano seconds",(unsigned long long)seconds.tv_sec*1000000000 + seconds.tv_nsec);
+  printk(KERN_INFO "VT-GPIO_TEST: TIME-RISE: %llu %llu nanoseconds",(unsigned long long)seconds.tv_sec , (unsigned long long)seconds.tv_nsec);
   num_ints ++;
   printk(KERN_INFO "VT-GPIO_TEST: Rising Edge detected");
 
@@ -195,7 +195,7 @@ static irq_handler_t vtgpio_irq_handler_fall(unsigned int irq, void *dev_id, str
   struct timespec seconds;
   //printk(KERN_INFO "VT-GPIO_TEST: Interrupt! (Im alive!)");
   getnstimeofday(&seconds);
-  printk(KERN_INFO "VT-GPIO_TEST: TIME-FALL: %llu nano seconds",(unsigned long long)seconds.tv_sec*1000000000 + seconds.tv_nsec);
+  printk(KERN_INFO "VT-GPIO_TEST: TIME-FALL: %llu %llu nanoseconds",(unsigned long long)seconds.tv_sec , (unsigned long long)seconds.tv_nsec);
   num_ints ++;
   printk(KERN_INFO "VT-GPIO_TEST: Falling Edge detected");
   
