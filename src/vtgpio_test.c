@@ -22,7 +22,7 @@ MODULE_AUTHOR("Christopher Hannon");
 MODULE_DESCRIPTION("Test for sync between two emb-lins for virtual time coordination");
 MODULE_VERSION("0.1");
 
-static unsigned int gpioSIG = 7; // pin for talking // gpio21 on model b+ 
+static unsigned int gpioSIG = 7;// try 25 to see if pin broken 7; // pin for talking // gpio21 on model b+ 
 static unsigned int gpioSIG2 = 8;
 // gpio 21 on 2B static 
 /*
@@ -44,6 +44,8 @@ static unsigned int irqNumber2;
 
 static irq_handler_t vtgpio_irq_handler(unsigned int irq, void *dev_id, struct pt_regs *regs);
 static irq_handler_t vtgpio_irq_handler_fall(unsigned int irq, void *dev_id, struct pt_regs *regs);
+void pause();
+void resume();
 
 enum modes { DISABLED, ENABLED };
 static enum modes mode = DISABLED;
@@ -51,6 +53,30 @@ static enum modes mode = DISABLED;
 static char vtName[6] = "vtXXX";
 
 //static int pids[128];
+
+void pause() {
+  struct timespec seconds;
+  //printk(KERN_INFO "VT-GPIO_TEST: Interrupt! (Im alive!)");
+  getnstimeofday(&seconds);
+  printk(KERN_INFO "VT-GPIO_TEST: TIME-RISE: %llu %llu nanoseconds",(unsigned long long)seconds.tv_sec , (unsigned long long)seconds.tv_nsec);
+  num_ints ++;
+  printk(KERN_INFO "VT-GPIO_TEST: Rising Edge detected");
+}
+
+void resume() {
+  struct timespec seconds;
+  //printk(KERN_INFO "VT-GPIO_TEST: Interrupt! (Im alive!)");
+  getnstimeofday(&seconds);
+  printk(KERN_INFO "VT-GPIO_TEST: TIME-FALL: %llu %llu nanoseconds",(unsigned long long)seconds.tv_sec , (unsigned long long)seconds.tv_nsec);
+  num_ints ++;
+  printk(KERN_INFO "VT-GPIO_TEST: Falling Edge detected");
+  
+
+  /* we have to sound the trumpets */
+  /* read list of pids */
+  /* kickoff kthreads to resume processes */
+
+}
 
 /** @brief A callback function to display the vt mode */
 static ssize_t mode_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
@@ -73,11 +99,13 @@ static ssize_t mode_store(struct kobject *kobj, struct kobj_attribute *attr, con
 	 change to output mode,
 	 go high on gpio
     */
+    
     gpio_direction_output(gpioSIG,1);
-
+    pause();
     //printk(KERN_INFO "VT-GPIO_TEST: value of pin: %d\n", gpio_get_value(gpioSIG));
 
-    //interrupt still gets called :)
+    //interrupt does not get called :(
+    // 
     
   }
   else if (strncmp(buf,"unfreeze",count-1)==0) {
@@ -177,34 +205,16 @@ static void __exit vtgpio_exit(void) {
 }
 
 static irq_handler_t vtgpio_irq_handler(unsigned int irq, void *dev_id, struct pt_regs *regs) {
-  struct timespec seconds;
-  //printk(KERN_INFO "VT-GPIO_TEST: Interrupt! (Im alive!)");
-  getnstimeofday(&seconds);
-  printk(KERN_INFO "VT-GPIO_TEST: TIME-RISE: %llu %llu nanoseconds",(unsigned long long)seconds.tv_sec , (unsigned long long)seconds.tv_nsec);
-  num_ints ++;
-  printk(KERN_INFO "VT-GPIO_TEST: Rising Edge detected");
-
-
-  /* we have to sound the trumpets */
-  /* read list of pids */
-  /* kickoff kthreads to freeze processes */
+  
+  pause();
   return (irq_handler_t) IRQ_HANDLED; // return that we all good
 }
 
 static irq_handler_t vtgpio_irq_handler_fall(unsigned int irq, void *dev_id, struct pt_regs *regs) {
-  struct timespec seconds;
-  //printk(KERN_INFO "VT-GPIO_TEST: Interrupt! (Im alive!)");
-  getnstimeofday(&seconds);
-  printk(KERN_INFO "VT-GPIO_TEST: TIME-FALL: %llu %llu nanoseconds",(unsigned long long)seconds.tv_sec , (unsigned long long)seconds.tv_nsec);
-  num_ints ++;
-  printk(KERN_INFO "VT-GPIO_TEST: Falling Edge detected");
-  
-
-  /* we have to sound the trumpets */
-  /* read list of pids */
-  /* kickoff kthreads to resume processes */
+  resume();
   return (irq_handler_t) IRQ_HANDLED; // return that we all good
 }
+
 
 module_init(vtgpio_init);
 module_exit(vtgpio_exit);
