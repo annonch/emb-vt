@@ -27,7 +27,9 @@ def plot_all():
     b = np.subtract(three_run,four_run)
 
     a = np.sort(a)
+    print a
     b = np.sort(b)
+    print b
     a_p = 1. * np.arange(len(a)) / (len(a) - 1)
     b_p = 1. * np.arange(len(b)) / (len(b) - 1)
 
