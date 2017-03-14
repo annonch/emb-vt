@@ -1,0 +1,566 @@
+% THIS IS SIGPROC-SP.TEX - VERSION 3.1
+% WORKS WITH V3.2SP OF ACM_PROC_ARTICLE-SP.CLS
+% APRIL 2009
+%
+% It is an example file showing how to use the 'acm_proc_article-sp.cls' V3.2SP
+% LaTeX2e document class file for Conference Proceedings submissions.
+% ----------------------------------------------------------------------------------------------------------------
+% This .tex file (and associated .cls V3.2SP) *DOES NOT* produce:
+%       1) The Permission Statement
+%       2) The Conference (location) Info information
+%       3) The Copyright Line with ACM data
+%       4) Page numbering
+% ---------------------------------------------------------------------------------------------------------------
+% It is an example which *does* use the .bib file (from which the .bbl file
+% is produced).
+% REMEMBER HOWEVER: After having produced the .bbl file,
+% and prior to final submission,
+% you need to 'insert'  your .bbl file into your source .tex file so as to provide
+% ONE 'self-contained' source file.
+%
+% Questions regarding SIGS should be sent to
+% Adrienne Griscti ---> griscti@acm.org
+%
+% Questions/suggestions regarding the guidelines, .tex and .cls files, etc. to
+% Gerald Murray ---> murray@hq.acm.org
+%
+% For tracking purposes - this is V3.1SP - APRIL 2009
+
+\documentclass{acm_proc_article-sp}
+
+%\permission{Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from Permissions@acm.org.}
+%\conferenceinfo{SIGSIM-PADS'15,}{June 10--12, 2015, London, United Kingdom.}
+%\copyrightetc{\copyright~2015 ACM \the\acmcopyr}
+%\crdata{ISBN 978-1-4503-3583-6/15/06\$15.00.\\
+%DOI: http://dx.doi.org/10.1145/2769458.2769480}
+
+% *** CITATION PACKAGES ***
+\usepackage{cite}
+
+% *** MATH PACKAGES ***
+\usepackage{amsmath}
+\usepackage{svg}
+
+% *** PDF, URL AND HYPERLINK PACKAGES ***
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{epigraph}
+
+% *** ALGORITHM ***
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{enumitem}
+
+% *** To balance reference page **1*
+\usepackage{flushend}
+
+\begin{document}
+
+\title{The {\ttlit Virtual Time Subsystem} for Linux Kernel}
+\subtitle{A patch is available as VirtualTimeKernel
+\titlenote{https://github.com/littlepretty/VirtualTimeKernel}}
+%
+% You need the command \numberofauthors to handle the 'placement
+% and alignment' of the authors beneath the title.
+%
+% For aesthetic reasons, we recommend 'three authors at a time'
+% i.e. three 'name/affiliation blocks' be placed beneath the title.
+%
+% NOTE: You are NOT restricted in how many 'rows' of
+% "name/affiliations" may appear. We just ask that you restrict
+% the number of 'columns' to three.
+%
+% Because of the available 'opening page real-estate'
+% we ask you to refrain from putting more than six authors
+% (two rows with three columns) beneath the article title.
+% More than six makes the first-page appear very cluttered indeed.
+%
+% Use the \alignauthor commands to handle the names
+% and affiliations for an 'aesthetic maximum' of six authors.
+% Add names, affiliations, addresses for
+% the seventh etc. author(s) as the argument for the
+% \additionalauthors command.
+% These 'additional authors' will be output/set for you
+% without further effort on your part as the last section in
+% the body of your article BEFORE References or any Appendices.
+
+\numberofauthors{2} %  in this sample file, there are a *total*
+% of EIGHT authors. SIX appear on the 'first-page' (for formatting
+% reasons) and the remaining two appear in the \additionalauthors section.
+%
+\author{
+% You can go ahead and credit any number of authors here,
+% e.g. one 'row of three' or two rows (consisting of one row of three
+% and a second row of one, two or three).
+%
+% The command \alignauthor (no curly braces needed) should
+% precede each author name, affiliation/snail-mail address and
+% e-mail address. Additionally, tag each line of
+% affiliation/address with \affaddr, and tag the
+% e-mail address with \email.
+%
+% 1st. author
+\alignauthor
+Jiaqi Yan\titlenote{Also the implementer}\\
+       \affaddr{Illinois Institute of Technology}\\
+       \affaddr{West 31st Street, Chicago}\\
+       \affaddr{Illinois, USA}\\
+       \email{jyan31@hawk.iit.edu}
+% 2nd. author
+\alignauthor 
+Dong (Kevin) Jin\\
+       \affaddr{Illinois Institute of Technology}\\
+       \affaddr{West 31st Street, Chicago}\\
+       \affaddr{Illinois, USA}\\
+       \email{dong.jin@iit.edu}
+}
+
+\date{30 July 1999}
+% Just remember to make sure that the TOTAL number of authors
+% is the number that will appear on the first page PLUS the
+% number that will appear in the \additionalauthors section.
+
+\maketitle
+
+%\begin{abstract}
+%TODO
+%\end{abstract}
+
+% A category with the (minimum) three required fields
+\category{I.6.3}{Simulation and Modeling}{Application}[Miscellaneous]
+\category{D.4.8}{Operating Systems}{Performance}[Measurement, Simulation]
+%A category including the fourth, optional field follows...
+\category{D.2.8}{Software Engineering}{Metrics}[complexity measures, performance measures]
+
+\terms{Operating System}
+
+\keywords{Virtual Time, Linux Kernel, Emulation} % NOT required for Proceedings
+
+\section{Introduction}
+What is virtual time? The short answer is: abstraction of time. When we abstract out the physical hardware, we can build an operating system that manage them intelligently; when we abstract out the behavior of operating system, we can run guest operating system inside a completely different host operating system; when we abstract the time of a process, what we can do is only limited by our imagination.
+
+\section{The Features of Virtual Time Subsystem}
+Virtual time, in essential, abstract time for processes from the operating system they reside on. With this abstraction, now we can dilate a process's clock or freeze a process's clock.
+
+\subsection{Time Dilation}
+When a process is \texttt{dilated}, it's clock advances by a factor faster or slower than wall-clock time. We borrow the definition of \textbf{Time Dilation Factor} from \cite{toinfinitybeyond}: the ratio of the time passing rate in physical world to the time passing rate perceived by process or virtual machine(VM). For example, when TDF equals 10, as 10 seconds elapsed in physical world, VM only perceives that 1 second passed. 
+
+An interesting application of time dilation is to emulate a link with 1 Gbps bandwidth while we only have a 100 Mbps link. Ideally, when a process or a VM keeps sending data through this link for 1 seconds, it actually take 10 seconds in real world and hence 1 Gb data is transferred. In other words, the dilated process think the network bandwidth is 1 Gbps.
+
+\subsection{Freeze}
+Processes in any operating systems can be stopped and resumed. Usually it is through sending signal and handling signal. Imagine we not only stop the execution of a process, but also stop \textit{its} clock. 
+Here "its" is not accurate; all processes inside a particular operating system share a global software clock. 
+For example, process in Linux queries current time by \texttt{gettimeofday} system call. 
+Now with virtual time, process finally have its own clock and we are able to stop particular processes' clocks.
+
+What a \textbf{freeze} does is both stop the execution of a process and the advance of its clock. 
+A \textbf{unfreeze} does the opposite things: resume the execution and the clock. 
+A once frozen process will not counting the freezing duration into its clock. 
+A nontrivial application of freeze and unfreeze is to cooperate simulation and emulation of a system. 
+For simulation, there is no concept of real time; time advances according to software's wish. 
+So even if a calculation in simulation may take a great deal of time, for example solving a multiple variable differential equation, this mount of time is not counted inside the simulating model. 
+Emulation, on the other hand, runs real software or on real hardware in real time. As a result it uses physical system's real clock. 
+As an illustration, consider this scenario: in a network emulator, host \texttt{sender} wants to transmit a certain amount of measured data to another host \texttt{receiver}; these measured data are actually gathered from simulator \textit{s} and it takes a fair amount of time for simulator to do the calculation, during which we need to stop the emulation as well as emulation's time. 
+Just stop both hosts by sending \texttt{SIGSTOP} is not enough because time may be a relevant variable in emulation. For example, if a process who maintaining a timer is just stopped execution, possibly it will miss a timeout during its halt and when it resumes, it is unable to trigger the action associated with the missed timer.
+
+\section{The Namespace Story}
+
+\subsection{Linux Namespace}
+The first namespace \texttt{mnt} namespace was introduced in Linux 2.4.19. 
+Since then, more type of namespaces are implemented and currently we have totally 6 namespaces:
+\begin{itemize}
+\item Mount namespaces(\texttt{CLONE\_NEWNS}), the first born, isolate the set of file system mount points seen by a group of process\cite{lwn:namespace:overview}. 
+It is a more secure and flexible alternation of \texttt{chroot jail}. Related system calls are \texttt{mount()} and \texttt{unmount()}
+\item UTS namespaces(\texttt{CLONE\_NEWUTS}) may be the most simple one to implement. It make containers to be able to have its own \texttt{nodename} and \texttt{domainname}\cite{lwn:namespace:overview}. 
+Related system calls are \texttt{uname()}, \texttt{setnodename()} and \texttt{setdomainname()} 
+\item IPC namespace(\texttt{CLONE\_NEWIPC}) isolate System V IPC objects and POSIX message queues, e.g. \texttt{sem, shm, msg}. 
+\item PID namespace(\texttt{CLONE\_NEWPID}) isolate the process ID number space. 
+Between different PID namespaces, processes can have the same PID. 
+It is used to enable containers to be migrated to different host system while still keeping the same PID for processes inside that container. 
+Processes inside a particular container, following the tradition of Linux(Unix) holds unique, sequentially assigned ID number.\cite{lwn:namespace:pid}
+\item Network namespaces(\texttt{CLONE\_NEWNET}) isolate the entire network stack in Linux kernel. With help of network namespace, container can have its own network device, addresses, ports, routes, firewall rules, etc\cite{lwn:namespace:net}. 
+It is widely applied in network emulation, Mininet\cite{mininet} for example, to create isolated network hosts.
+\item User namespaces(\texttt{CLONE\_NEWUSER}) are the most complicated namespace, taking five years to complete, spanning from Linux 2.6.23 to Linux 3.8\cite{lwn:namespace:user}. 
+The resource user namespace provided to process is its user ID with root privilege. 
+A process can do full privilege operations inside its user namespace, even like creating other types of namespaces. Outside it user namespace, process can only do normal unprivileged operations.
+\end{itemize}
+
+\subsection{Clock Namespaces}
+Virtual time, by its definition, seems to fit into the category of namespace: it isolates time from the system wide wall clock so that a process can advance faster or slower by an offset or by a constant factor. 
+If so, virtual time should actually be called \textbf{Clock Namespace}. However, a problem hangs here: virtual time is really a per process feature; there is no need to share time by a group of processes, like sharing network or file system. 
+In other word, what can we do when we can identify that a group of processes belong to the same Clock namespace? We will see an satisfactory answer in section \ref{Sub-Sec-Alg-Impl-Freeze}.
+
+\section{The Software Interface}
+This section present 2 different software interfaces for virtual time. The first one will be deprecated.
+\subsection{Through Additional System Calls}
+Probably the most straightforward and destructive way of exposing virtual time to user space is through modifying existing system calls and adding new system calls. 
+Our first working implementation use this method to interfacing clock namespace\cite{yan:vts:pads15, yan:vtmininet:sosr15}.
+To enable the virtual time perception to processes, we added/modified the following new system calls.
+\begin{itemize}
+\item \texttt{unshare()} system call with flag \texttt{CLONE\_NEWTIME}\footnote{\texttt{CLONE\_NEWTIME} takes value \texttt{0x02000000}, which previously unused by \texttt{CLONE\_STOPPED}} is modified. 
+It is used by container-based emulators, such as Mininet, to create emulated nodes. 
+When \texttt{CLONE\_NEWTIME} is set, \texttt{unshare()} creates a new process with a default TDF 1 in a different namespace from its parent process.
+\item Newly added system call \texttt{set\_dilaiton()} offers an interface to change the TDF of a process. 
+\item Newly added system call \texttt{freeze()} and \texttt{unfreeze()} comes as a combo to control the execution and pause of a process. 
+Here pause is more than just send a signal \texttt{SIGSTOP} to process so that is stop executing; the process's clock, on freezing, actually is detached from OS's clock and is stopped. 
+See section \ref{Sub-Sec-Alg-Impl-Freeze} for detail.
+\end{itemize}
+In container based network emulation, usually we want all processes inside the same container having the same time dilation factor. 
+In other words, to keep the persistence, \texttt{set\_dilation()} should better set time dilation factor for a group of processes. 
+We can take advantage of the identification of the \textit{network host}, who is usually the root of the process tree inside a particular container. 
+We only invoke the \texttt{set\_dilation()} once for this \textit{root} process; as a leader in the container, it cascade \texttt{set\_dilation} further down to the process tree so that every process's TDF will be updated.
+
+\subsection{Through Proc Virtual File System}
+It is also possible to implement virtual time without adding system calls. Virtual file system provides a interface between kernel and user space. Since virtual time is a per process thing, it is more appropriate to create \texttt{/proc} file entry under the directory that specific to process. Virtual time interface thus consists of two extra file entry under \texttt{/proc/\$pid}.
+\begin{itemize}
+\item \texttt{/proc/\$pid/dilation} can be read and written so that process \texttt{\$pid} can enter virtual time(write non-zero value to zero TDF), exit virtual time(write zero to non-zero TDF) and change to new TDF.
+\item \texttt{/proc/\$pid/freeze} expects a boolean value and freeze or unfreeze process \texttt{\$pid} according to the written value. 
+\end{itemize}
+Change time dilation factor from zero to non-zero value will detach the process's clock from system clock, thus entering virtual time. Conversely, setting a process's TDF to zero will make it exit virtual time. 
+The traditional \texttt{unshare()} system call together with \texttt{CLONE\_NEWTIME} flag is kept as an alternative for entering virtual time.
+
+While being more elegant interface and persisting with the philosopher of Proc virtual file system, this interface is doomed with more overhead due to that introduced by necessary \texttt{open(), write()} and \texttt{close()} operations. 
+However, in practice these operations usually should not be invoked very often.
+
+\section{Algorithms and Implementations}
+In this section, we first present the extra 52 bytes variables added to process data structure. Then the pseudo-implementation/algorithms are elaborated in order.
+
+\subsection{Additional Data Structure}
+Following new fields are added into \texttt{task\_struct} so that a process can have its own perception of time.
+\begin{itemize}
+	\item \texttt{dilation} represents the time dilation factor of a time-dilated process.
+	\item \texttt{virtual\_start\_ns} represents the starting time that a process detaches from the system clock and uses the virtual time, in nanoseconds.
+	\item \texttt{physical\_start\_ns} represents the starting time that a process detaches from the system clock and uses the virtual time, in nanoseconds. It differs from \texttt{virtual\_start\_ns} when process's dilation changes from non-zero value to another non-zero value. See section \ref{Alg-SetTDF} for details.
+	\item \texttt{virtual\_past\_ns} represents how much virtual time has elapsed since the last time the process requested the current time, in nanoseconds.
+	\item \texttt{physical\_past\_ns} represents how much physical time has elapsed since the last time the process requested the current time, in nanoseconds.
+	\item \texttt{freeze\_start\_ns} represents the starting moment that a process or process group is frozen. It is always zero when the process is not frozen.
+	\item \texttt{freeze\_past\_ns} represents the accumulative time, in nanoseconds, that a running process or process group was put into freezing state. A special process \textit{leader} is responsible for maintaining and populating this variable for its members.
+\end{itemize}
+
+\algrenewcommand{\algorithmiccomment}[1]{\hskip3em$/*$ #1 $*/$}
+\subsection{Algorithm/Implementation for Change Time Dilation Factor}
+Setting a new dilation for a process may falls into several possible cases, as shown in the condition clause of Algorithm \ref{Alg-SetTDF}. 
+The difficulty here is that setting $TDF$ may happen during the lifetime/execution of a process and user should not be bothered with handling the virtual time with old dilation. 
+So, in the 3rd case following, kernel should do the old dilation's virtual time keeping.
+\begin{itemize}
+\item We return immediately when user repeat set an old time dilation factor.
+\item Then we handle the case that $TDF$ was or is going to be zero; corresponding actions are either enter or exit virtual time space by invoke helper functions \texttt{init\_virtual\_time()} and \texttt{clean\_up\_virtual\_time()}, defined in Algorithm \ref{Alg-DilateTimeKeeping}.
+\item Finally the primary case goes when both previous and future $TDF$ is non-zero value. We first clear $dilation$ and $virtual\_start\_ns$ so that we can get undilated time moment $now$. 
+Then the algorithm can do an audit for the old dilation: we calculate the time offset from $now$ to the last moment that $physical\_past\_ns$ is updated; $virtual\_past\_ns$ thus advances by a factor of physical past time according to the old dilation. 
+At last, we can say goodbye to previous dilation factor and update $physical\_start\_ns$ to $now$, minus the time that this process does not perceived at all $freeze\_past\_ns$, and dilation to the new $TDF$. 
+As we will see in subsection \ref{Alg-Freeze}, if a process does not play the role of leader, how long it is frozen, the time it should not perceived, is obtained from its leader's $freeze\_past\_ns$.
+\end{itemize}
+
+Finally, we need to cascade the update-TDF operation to all $tsk$'s children. 
+
+\begin{algorithm*}[t]
+\caption{Set Time Dilation Factor}
+\label{Alg-SetTDF}
+\begin{algorithmic}[1]
+\Function{set\_dilation}{$tsk, \;new\_tdf$}\Comment{Set $new\_tdf$ to process $tsk$}
+\State $old\_tdf \gets tsk.dilation$
+\State $vsn \gets tsk.virtual\_start\_ns$
+\If{$new\_tdf = old\_tdf$}
+	\State return 0\Comment{do nothing}
+\ElsIf{$old\_tdf = 0$}
+	\State \Call{init\_virtual\_time}{$tsk, new\_tdf$}\Comment{enter virtual time with $new\_tdf$}
+\ElsIf{$new\_tdf = 0$}
+	\State \Call{clean\_up\_virtual\_time}{$tsk$}\Comment{exit virtual time}
+\ElsIf{$new\_tdf > 0$}\Comment{real works here}
+	\State $tsk.dilation \gets 0$
+	\State $tsk.virtual\_start\_ns \gets 0$
+	\State \texttt{\_\_getnstimeofday}($ts$)\Comment{$ts$: a \texttt{timespec} temp}
+	\State $now \gets$ \texttt{timespec\_to\_ns}($ts$)
+	\State $tsk.virtual\_start\_ns \gets vsn$
+	\State $delta\_ppn \gets now \; - \; tsk.physical\_past\_ns \; - \; tsk. physical\_start\_ns \; - \; tsk.freeze\_past\_ns$
+	\State $delta\_vpn \gets delta\_ppn \; / \; old\_tdf$
+	\State $tsk.virtual\_past\_ns \; += \; delta\_vpn$
+	\State $tsk.physical\_start\_ns \gets (now \; - \; tsk.freeze\_past\_ns)$
+	\State $tsk.physical\_past\_ns \gets 0$
+	\State $tk.dilation \gets new\_tdf$
+	\State return 0
+\Else
+	\State return \texttt{-EINVAL}
+\EndIf
+\ForAll{$tsk$'s $child$}
+	\State \Call{set\_dilation}{$child$}
+\EndFor
+\EndFunction
+\end{algorithmic}
+\end{algorithm*}
+
+\subsection{Algorithm/Implementation for Freeze and Unfreeze}
+At first, we intended to let \textit{process group leader} deals with the freeze part of time keeping for all its members. Every process can just access its process group leader's frozen time when doing virtual time keeping. 
+This design would be simple and straightforward to implement if the field \texttt{group\_leader} in \texttt{task\_struct} is, by our wish and its naming, the leader/root of a process group/sub-tree. Unfortunately, it is not.\footnote{It turns out to be the thread group leader.}
+
+Anyway, we can implement this process group leader from scratch. However, the modification for this leader may span many different source files in kernel; it may even worsen the already complicated process relationships. So far this design doesn't smells very good. Perhaps freeze/unfreeze should be restricted to per process granularity.
+
+On the other hand, freeze and unfreeze in most cases should be done with respect to a entire process group. As an illustration, consider the case that we wants to freeze a container in the network emulation. 
+Recall that container here usually plays the role of a lightweight virtual machine. Therefore when we want to freeze this container, we actually wants to freeze all the processes(usually emulates applications running inside a VM) inside this container. 
+For example, when we freeze host $h_1$(container), we should also stop the clock of \texttt{ping}, \texttt{iperf} or other applications running inside $h1$. Obviously, for applications running in $h1$, we can make $h1$ their leader.
+Doing freeze/unfreeze in group, we can ensure that every member process will access the same frozen duration.
+So instead of let every process maintain its own frozen time and, maybe, communicate with other members in the same group for consistency/synchronization, we'd better make the leader a central controller of the freeze time keeping. 
+Thus everyone can just query the leader when needed, for example, in Algorithm \ref{Alg-SetTDF} and Algorithm \ref{Alg-DilateTimeKeeping}.
+The only drawback is that we waste 16 bytes for every process other than the leader.
+
+We must admit that the above discussions, and thus our virtual time's freeze implementation, is highly tailored for the purpose of container based emulation. After all this is our motivation of implementing freeze/unfreeze inside virtual time. 
+Ideally, freeze/unfreeze should be done in the unit of per process. 
+Sometimes we need this fine granularity and sometimes it makes more sense to do it in a bundle. 
+
+In short, how can we implement freeze/unfreeze with flexible scope as well as elegant design and implementation? 
+
+Here enters \textbf{Clock namespace}.
+
+The implementations for freeze/unfreeze is shown in Algorithm \ref{Alg-Freeze}. 
+First, after $kill$ a group of processes, we make a record of current moment; this record is used to calculate how long this group is frozen when we unfreeze it. It is a little bit subtle that when unfreeze, sending \texttt{SIGCONT} to all processes  is behind the time keeping part. 
+The reason is that if we resume the process group first, by any chance, an unfreeze process may be schedule to run and possibly query time before we populate the $freeze\_past\_ns$ to entire container.
+
+\label{Sub-Sec-Alg-Impl-Freeze}
+\begin{algorithm*}[t]
+\caption{Freeze and Unfreeze Process}
+\label{Alg-Freeze}
+\begin{algorithmic}[1]
+\Function{Freeze}{$tsk$}
+\State \texttt{kill\_pgrp(task\_pgrp($tsk$), SIGSTOP, 1)}
+\State \texttt{\_\_getnstimeofday}($ts$)\Comment{\texttt{timespec} $ts$}
+\State $now \gets$ \texttt{timespec\_to\_ns}($ts$)
+\State $tsk.freeze\_start\_ns \gets now$
+\EndFunction
+\\
+\Function{populate\_frozen\_time}{$tsk$}
+\ForAll{$child$ of $tsk$}
+	\State $child.freeze\_past\_nsec \gets tsk.freeze\_past\_nsec$
+	\State \Call{populate\_frozen\_time}{$child$}
+\EndFor
+\EndFunction
+\\
+\Function{Unfreeze}{$tsk$}
+\State \texttt{\_\_getnstimeofday}(\&$ts$)\Comment{\texttt{timespec} $ts$}
+\State $now \gets$ \texttt{timespec\_to\_ns}($ts$)
+\State $tsk.freeze\_past\_ns \; += \; now \; - \; tsk.freeze\_start\_ns$
+\State $tsk.freeze\_start\_ns \gets 0$
+\State \Call{populate\_frozen\_time}{$tsk$}
+\State \texttt{kill\_pgrp(task\_pgrp($tsk$), SIGCONT, 1)}
+\EndFunction
+\end{algorithmic}
+\end{algorithm*}
+
+\subsection{Algorithm/Implementation for Virtual Time Keeping}
+Firstly, we have 2 helper functions to initialize and cleanup virtual time. 
+\begin{itemize}
+\item \texttt{clean\_up\_virtual\_time()} reset all relevant variables to zero, which is also the default value for these variables when a \texttt{task\_struct} is created.
+\item Since physical and virtual time will fork as we enter virtual time, \texttt{init\_virtual\_time()} initialize both to the current moment $now$ and then set a non-zero dilation to the process. 
+\end{itemize}
+
+Unsurprisingly, \texttt{do\_virtual\_time\_keeping()} maintains virtual time including dilation and freeze. 
+It first call \texttt{update\_physical\_time()} to get the physical duration since last time we request time, excluding the frozen part; then 
+\texttt{update\_virtual\_time()} dilates this physical duration.
+At the ending of both helper methods, we finish the timekeeping by updating $physical\_past\_ns$ and $virtual\_past\_ns$.
+As an example, we show in system call \texttt{gettimeofday} the way to dilate system's wall clock time. 
+
+\begin{algorithm*}[t]
+\caption{Time Dilation Algorithm}%: Dilate \texttt{ts} if a current process uses virtual clock}
+\label{Alg-DilateTimeKeeping}
+\begin{algorithmic}[1]
+\Function{init\_virtual\_time}{$tsk,\;tdf$}
+\If{$tdf>0$}\Comment{$tsk.dilaton = 0$ before initialization}
+%    \State $tsk.virtual\_start\_ns \gets 0$
+    \State \texttt{\_\_getnstimeofday($ts$)}\Comment{$ts$: a \texttt{timespec} temp}
+    \State $now \gets $\texttt{timespec\_to\_ns($ts$)}
+    \State $tsk.virtual\_start\_ns \gets now $
+    \State $tsk.physical\_start\_ns \gets now $
+    \State $tsk.dilation \gets tdf$
+%    \State $tsk.physical\_past\_ns \gets 0$
+%    \State $tsk.virtual\_past\_ns \gets 0$
+\EndIf
+\EndFunction
+\\
+\Function{clean\_up\_virtual\_time}{$tsk$}
+\State $tsk.dilation \gets 0$
+\State $tsk.physical\_start\_ns \gets 0$
+\State $tsk.physical\_past\_ns \gets 0$
+\State $tsk.virtual\_start\_ns \gets 0$
+\State $tsk.virtual\_past\_ns \gets 0$
+\State $tsk.freeze\_start\_ns \gets 0$
+\State $tsk.freeze\_past\_ns \gets 0$
+\EndFunction
+\\
+\Function{update\_physical\_time}{$tsk, \;ts$} 
+\State $now \gets \texttt{timespec\_to\_ns($ts$)}$
+\State $delta\_ppn \gets now \; - \; tsk.physical\_past\_ns \; - \; tsk.physical\_start\_ns$
+\State $delta\_ppn \; -= \; tsk.freeze\_past\_ns$
+\State $tsk.physical\_past\_ns \; += \; delta\_ppn$
+\State return $delta\_ppn$
+\EndFunction
+\\
+\Function{update\_virtual\_time}{$delta\_ppn, \;tdf$}
+\If{$tdf \neq 0$}
+	\State $delta\_vpn \gets delta\_ppn \; / \; tdf$
+	\State $tsk.virtual\_past\_ns \; += \; delta\_vpn$
+\EndIf
+\EndFunction
+\\
+\Function{do\_virtual\_time\_keeping}{$tsk, \;ts$}\Comment{\texttt{timespec} $ts$ will be modified}
+\State $tdf \gets tsk.dilation$
+%\If{$tsk.virtual\_start\_ns > 0$}
+\If{$tdf > 0$}
+	\State $delta\_ppn \gets \Call{update\_physical\_time}{$ts$}$
+	\State \Call{update\_virtual\_past\_time}{$delta\_ppn, \;tdf$}
+	\State $virtual\_now \gets tsk.virtual\_start\_ns + tsk.virtual\_past\_ns$
+	\State $virtual\_ts \gets \texttt{ns\_to\_timespec(virtual\_now)}$
+	\State $ts.tv\_sec \gets virtual\_ts.tv\_sec$
+	\State $ts.tv\_nsec \gets virtual\_ts.tv\_nsec$
+\EndIf
+\EndFunction
+\end{algorithmic}
+\end{algorithm*}
+
+\section{Miscellaneous Parts}
+Our primary motivation of virtual time system is to benefit network emulation. 
+This section discuss issues we come across when virtual time system cooperate with other part of the operating system 
+(even sometimes, mingling with applications is necessary). 
+This section also serve as a guideline about how virtual time's user should consider tweeting(or \textbf{NOT}) the OS kernel in their expertise fields. 
+
+\subsection{Bypass virtual Dynamic Shared Object}
+One issue we notice is that the 64-bit Linux kernel running on Intel-based architectures provides the Virtual Dynamic Shared Object (vDSO) and the \texttt{vsyscall} mechanism to reduce the overhead of context switches caused by the frequently invoked system calls, 
+for example, \texttt{gettimeofday()} and \texttt{time()}\cite{lwn:vdso}. 
+Therefore, applications may bypass our virtual-time-based system calls unless we explicitly use the \texttt{syscall} function. 
+Our solution is to disable vDSO with respect to \texttt{\_\_vdso\_gettimeofday()} in order to transparently offer virtual time to applications in the containers. 
+However, as we seen in the very next subsection, sometimes it is necessary to mingle with application so that the application's time goes with virtual clock.
+
+\subsection{Inconsistent Time}
+Let's start with a widely used application in network emulation: \texttt{ping}. 
+The goal of \texttt{ping} is simply estimate the \textbf{network delay} without affected by the processing delay on host ends. 
+Basically, it\cite{iputils:ping} works by sending and receiving \textit{ICMP} packet with \texttt{SOCK\_RAW} socket\cite{linux:man:socket} in the communication domain of \textit{IPV4} network layer protocol\footnote{Format \texttt{AF\_INET} for IPV4 \texttt{ping}}. 
+
+By using raw socket that providing raw access to network layer, \texttt{ping} can bypass transport layer processing so that it can directly and manually parse the receiving ICMP packet.
+As a result, at the sending side, ping-sender will fill only 8 bytes of the data portion with the Unix \texttt{timeval}, which the sender obtained from system call \texttt{gettimeofday()}. 
+Along with the process ID and an ascending sequencing number, this very tiny \texttt{ICMP ECHO REQUEST} packet will be handed to IP layer. 
+
+Correspondingly, the receiving side receives a message from the raw socket. This message are sometimes called ancillary data because it is not a part of the socket's payload but a sequence of \texttt{cmsghdr} structure with appended data\cite{linux:man:cmsg}. Ideally, \texttt{ping} should parse this raw message to decide if it belongs to itself and calculate latency by querying system time again and subtract it from sending time extracted from the ICMP packet.
+
+So far everything goes perfectly for both sender and receiver applications. 
+If in an virtual time emulation where all the hosts are using virtual time, since applications inherit ``virtual time" from hosts, any \texttt{gettimeofday()} system call mentioned above are covered by virtual time subsystem. 
+Therefore the measured delay should be either dilated (by TDF) or adjusted (subtract frozen time in the case of freeze/unfreeze).
+However, in our benchmark experiments, if we freeze ping for 1 second, the network delay will increase 1 second very time freeze/unfreeze pair occurs. In other words, either the sending or the receiving side is not using virtual time. 
+
+The reason lies in just one line of code: \texttt{ping} set the \texttt{SO\_TIMESTAMP} option unless the user want to see \textbf{full user-to-user latency}. 
+With \texttt{SO\_TIMESTAMP} option on, socket will report the time stamp via \texttt{recvmsg()} in the control message as struct \texttt{timeval}\footnote{Higher resolution time stamp in nanoseconds is possible with \texttt{SO\_TIMESTAMPNS} option. Moreover, general timestamping(\texttt{SO\_TIMESTAMPING}) can be done on reception, transmission or both with multiple timestamp sources}.
+More specifically, when raw socket (\texttt{raw\_prot}'s virtual function \texttt{raw\_recvmsg()}) is receiving a packet $skb$ from \texttt{skb\_recv\_datagram()}, 
+\texttt{\_\_sock\_recv\_timestamp()} will query system time if any of \texttt{SO\_TIMESTAMP}, \texttt{SO\_TIMESTAMPNS} or \texttt{SO\_TIMESTAMPING} flags is set in socket options. 
+Time returned by \texttt{ktime\_get\_real()} will be put inside the \texttt{SCM\_TIMESTAMP} filed at \texttt{SOL\_SOCKET} level in the receiving message's ancillary data, e.g. \texttt{CMG} sequence.
+\texttt{ping} knows this timestamping feature in socket and prefers this time value embedded inside socket message to getting time by itself when calculating round trip time.
+This is a very clever socket technique, for \texttt{ping}, applied for measuring the network latency without effected by network stack processing delay as well as context switch overhead.
+
+However, it is bad news in the case of running with virtual time. Even if the time stamp added into \texttt{CMG} is generated by \texttt{\_\_getnstimeofday}, which is covered by virtual time system, we cannot do anything about this time stamp so that it can be adjusted. 
+The difficulty is that this time query is \textbf{NOT} done by dilated process, but \textit{inet} module which is loaded at system initialization.
+
+
+\subsection{Dilate Bandwidth Rate in Traffic Control}
+One particular case related to network emulation is the usage of \texttt{tc}, a network quality-of-service control module in Linux\cite{trafficcontrol}. 
+For instance, one can use \texttt{tc} to rate-limit a link to 100 Mbps using Hierarchic Token Bucket (HTB) \texttt{qdisc}. 
+However, as a network module in Linux, \texttt{tc} does not reference Linux kernel's time as the way user application does. 
+Therefore, \texttt{tc} is transparent to our virtual time system. 
+If the TDF is set to 8, the link bandwidth would be approximately 800 Mbps from the emulated hosts' viewpoints as we observed from \texttt{iperf3} application.
+
+One way to solve this problem is to modify the network scheduling code in kernel to provide \texttt{tc} with a dilated traffic rate. 
+In the earlier example with TDF set to 8, the experiment will run 8 times slower than the real time. To emulate a 100 Mbps link, \texttt{tc} module should configure rate limit as $rate/TDF=12.5$ Mbps. 
+
+\section{Experiments}
+\subsection{Functional Tests}
+\subsection{Overhead Measurements}
+
+\subsection{Virtual Time System Limitation and Discussion}
+
+\subsubsection{Experimental Demonstration}
+To unveil the vital limitation of current implementation of freeze/unfreeze, we configure the link latency to 1 millisecond(100 times slower than earlier configuration) and rerun the experiment in section \ref{Sec-Ping-Experiment}.
+RTT's CDF under both cases are shown in Figure \ref{Fig-PingBadRTT}.
+RTTs in the frozen case are almost all 1 ms shorter than normal case.
+Setting the link latency to 3 milliseconds, we will get very similar result: a nearly 3-millisecond gap between normal and paused \texttt{ping}.
+
+\begin{figure}[!ht]
+        \centering
+        \includegraphics[scale=0.45]{PingRttCDFBad.eps}
+        \caption{RTT of Ping Test with 1 ms Link Delay}
+        \label{Fig-PingBadRTT}
+\end{figure}
+
+Why does this offset exist between \texttt{ping} experiments?
+More strangely, why does it happen to be the configured link latency?
+%Here is a speculation on the basis of kernel code review.
+
+\subsubsection{Source of Error}
+\texttt{tc}'s network emulator \texttt{netem}\cite{Netem} provides a variety of network emulation functionalities, including packet delay, used by Mininet to emulate links with specific latency. 
+%: link delay, packet loss, packet reordering, packet duplication and packet corruption.
+%Here our interest is link delay since Mininet is using \texttt{netem} to emulate link with specific latency.
+The \texttt{netem} module, like other queue disciplines in \texttt{tc}\cite{Werner:TC:1999} family, uses queue-style interface \textbf{enqueue} and \textbf{dequeue} to decide if a packet should be transferred, delayed or dropped.
+The basic idea it to schedules packet, based on its length, a \texttt{time\_to\_send} value and tags it to the packet at enqueue.
+At the moment of dequeue, this tag will be compared with the current kernel time.
+%\texttt{netem} stores all enqueued packet in red-black tree and only the left-most node/packet needs to be considered at the moment of dequeue.
+A packet with \texttt{time\_to\_send} less than \texttt{now} goes to next network layer, possibly data-link layer, or another \texttt{qdisc}.%\footnote{By default, this packet still needs to go through \texttt{netem}'s inner \texttt{tfifo}, which keeps packets in the order of time to send. Even when no packet currently should be sent out, dequeue may also produce a packet if \texttt{netem}'s inner \texttt{qdisc}, which could be any valid \texttt{qdisc}, has packet coming to due.}
+
+If the packet should stay, \texttt{qdisc} cannot return the packet back to application and ask it to retransmit after a while.
+The solution is by turning to its \textbf{watchdog}.
+A subtraction between \texttt{now} and \texttt{time\_to\_send} could tell kernel how long the packet should wait in the queue.
+%Recall that dequeue always only considers the leftmost node in the red-black tree, corresponding to the packet with the least time to send value.
+Using this time difference as hint, watchdog will start its high resolution timer \texttt{hrtimer}\cite{Hrtimer}.
+Then \texttt{tc} can safely `recede' and wait for the hardware interrupt generated by \texttt{jiffies}' \textbf{tick event} or \textbf{Clockevent}\cite{Clockevent}.
+%An exception do exist: at the time a new \texttt{hrtimer} is started, kernel have the chance to raise \texttt{HRTIMER\_SOFTIRQ} software interrupt if it found that there is an expired \texttt{hrtimer}.
+On expiration, the watchdog's timer callback is triggered;
+it hands the packet to the output backlog of the running CPU and raise a \texttt{NET\_TX\_SOFTIRQ} software interrupt.
+%Now nobody is in this packet's way of transmission \footnote{Kernel is still in charge of this packet because transmission can only happens when it is time that kernel serves \textbf{ALL} software interrupts.};
+At the time kernel serves software interrupt, this packet will be given to the network interface's device driver for actual transmission.
+%Since Mininet uses \texttt{veth} as virtual network interface, the device driver simply put the packet on the receiving side's network stack and return \texttt{NETDEV\_TX\_OK}. %all done in an instance
+
+Once freeze happens right after that \texttt{netem} delays a packet and schedules a high resolution timer, we have a problem.
+Freeze cannot stop preprogrammed interrupts from happening.
+When the \texttt{hrtimer} expires, \texttt{NET\_TX\_SOFTIRQ} will be raised by interrupt handler even if our application process is suspended.
+Packet now is already escaped the \texttt{tc} link and ready to be received at the moment receiving host resumes.%\footnote{kernel usually serves pending software interrupt on exiting I/O and local timer hardware interrupt\cite{ULK}}. 
+%As a result, \texttt{NET\_TX\_SOFTIRQ} is raised and packet is ready to go out of the \texttt{tc} link.
+%Even worse, kernel usually serves pending software interrupt on exiting I/O and local timer hardware interrupt\cite{ULK}.
+%Chances are good that packet is already at the network interface/device and ready to be received at the moment receiving host resumes\footnote{kernel usually serves pending software interrupt on exiting I/O and local timer hardware interrupt\cite{ULK}}.
+If freeze happens very close to the point kernel started the timer, at the resuming point from the view of frozen process, his packet is barely delayed at all.
+In the 1 millisecond link delay experiment, since ping's interval is 1 second and freeze's interval is much greater than round trip time,
+almost every freeze happens right after sending out new ICMP packet, falling into the situation described.
+The experiment of 10 microsecond link delay looks better because the freeze/unfreeze almost all happens after \texttt{netem} emulating 10 $\mu s$ links, e.g. holding the packet for 10 $\mu s$.
+After all, the time difference between \texttt{now} to \texttt{time\_to\_send} is merely 10 $\mu s$.
+
+\subsubsection{Possible Solutions}
+From the perspective of implementation, this ill case could be cured by reprogramming the \texttt{hrtimer}.
+The main difficulty would be search timers that should be postpones in all timers\footnote{If kernel only support low resolution timers, we need to search in the complicated \textbf{time wheel} structure; otherwise we search in a red-black tree.}.
+%On the other hand, though software timer, like a polling style timer based on `generic time of day' can fix the problem, it is arguably difficult to implement and port modules to switch to it.
+
+Another way is to prevent this bad situation from happening at the design phase.
+The synchronization between simulation and emulation do not need to be right after any one of the host request to do so.
+If a temporal buffer is allowed, we should design a mechanism to decide a correct time to pause emulation such that not only the requesters but also all the other network hosts are not going to generate network events(packets).
+From the consideration of scalability, synchronizing emulation with simulation should be delayed unless it is done for a batch of hosts.
+For frequent synchronizations, non-blocking global event queue should be used.
+%Otherwise when there are too much coming request for synchronizing, the virtual time system may work terrible.
+Probably by introducing a synchronizing window, we may both free our implementation from the above messy situation and improve the scalability/overhead of frequent synchronization request.
+
+
+\section{Conclusions}
+TODO
+
+\section{Acknowledgments}
+TODO
+%
+% The following two commands are all you need in the
+% initial runs of your .tex file to
+% produce the bibliography for the citations in your paper.
+\bibliographystyle{abbrv}
+\bibliography{vt_doc}
+% You must have a proper ".bib" file
+%  and remember to run:
+% latex bibtex latex latex
+% to resolve all references
+%
+% ACM needs 'a single self-contained file'!
+%
+\balancecolumns
+% That's all folks!
+\end{document}
+
+
