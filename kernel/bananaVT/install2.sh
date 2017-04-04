@@ -1,19 +1,6 @@
 #!/bin/bash
 
-DST=/home/build_kernel
-
-if [ -e $DST ]; then
-        echo "Clean up previous build"
-        rm -rf $DST
-	mkdir $DST
-fi
-
-if [ ! -e bananapi-3.4.zip ]; then
-        wget https://github.com/Bananian/linux-bananapi/archive/bananapi-3.4.zip
-fi
-echo "Step 0. Unpack kernel source"
-unzip bananapi-3.4.zip
-mv linux-bananapi-bananapi-3.4/* $DST
+DST=/home/build_kernel/bananapi-kernel
 
 # generate patch file
 PATCH=VirtualTime.patch
@@ -37,7 +24,3 @@ for f in $FILES; do
         cp -v $f $DST/$f
 done
 
-echo "Step 2. Build new kernel"
-cd $DST
-
-#./build_all.sh

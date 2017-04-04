@@ -25,31 +25,31 @@ make_kernel() {
                 cp -vi /boot/config-`uname -r` .config
                 yes "" | make oldconfig
         fi
-        sudo make -j6 2>$ERR
+        make -j6 2>$ERR
         check_err make_kernel
 }
 
 install_headers() {
         echo "step 1.1 make headers"
-        sudo make headers_install 2>$ERR
+        make headers_install 2>$ERR
         check_err install_headers
 }
 
 make_modules() {
         echo "step 1.2. make modules"
-        sudo make modules 2>$ERR
+        make modules 2>$ERR
         check_err make_modules
 }
 
 install_modules() {
         echo "step 2. install modules"
-        sudo make modules_install 2>$ERR
+        make modules_install 2>$ERR
         check_err install_modules
 }
 
 install_kernel() {
         echo "step 3. install kernel"
-        sudo make install 2>$ERR
+        make install 2>$ERR
         check_err install
         echo "make/install complete for kernel 3.16.3"
 }
