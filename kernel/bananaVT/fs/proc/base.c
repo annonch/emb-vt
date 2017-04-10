@@ -89,7 +89,6 @@
 #endif
 #include <trace/events/oom.h>
 #include "internal.h"
-//#include "fd.h"
 
 /* NOTE:
  *	Implementing inode permission operations in /proc is almost
@@ -1443,7 +1442,9 @@ static const struct file_operations proc_pid_set_comm_operations = {
 static ssize_t freeze_write(struct file *file, const char __user *buf,
                             size_t count, loff_t *offset)
 {
-  struct inode *inode = file_inode(file);
+  struct dentry *dentry = file->f_path.dentry;
+  struct inode *inode = dentry->d_inode;
+  //struct inode *inode = file_inode(file);
   struct task_struct *p;
   char buffer[FREEZE_MAX_LEN];
   const size_t maxlen = sizeof(buffer) - 1;
@@ -1557,7 +1558,9 @@ static const struct file_operations proc_pid_get_fpt_operations = {
 static ssize_t dilation_write(struct file *file, const char __user *buf,
                               size_t count, loff_t *ppos)
 {
-  struct inode *inode = file_inode(file);
+  struct dentry *dentry = file->f_path.dentry;
+  struct inode *inode = dentry->d_inode;
+  //struct inode *inode = file_inode(file);
   struct task_struct *p;
   char buffer[TDF_LEN];
   const size_t maxlen = sizeof(buffer) - 1;
