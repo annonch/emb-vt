@@ -187,8 +187,8 @@ extern struct task_group root_task_group;
         .dilation       = 0,                                            \
            .physical_start_nsec = 0,                                    \
            .physical_past_nsec = 0,                                     \
-           .vitural_start_nsec = 0,                                     \
-           .vitural_past_nsec = 0,                                      \
+           .virtual_start_nsec = 0,                                     \
+           .virtual_past_nsec = 0,                                      \
            .freeze_start_nsec = 0,                                      \
            .freeze_past_nsec = 0,                                       \
            .parent	= &tsk,                                         \

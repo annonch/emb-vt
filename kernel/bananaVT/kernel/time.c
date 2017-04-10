@@ -26,8 +26,10 @@
  *	Added getnstimeofday to allow the posix timer functions to return
  *	with nanosecond accuracy
  */
+#define CLONE_NEWTIME 0x02000000
 
 #include <linux/export.h>
+#include <linux/time.h>
 #include <linux/timex.h>
 #include <linux/capability.h>
 #include <linux/clocksource.h>
