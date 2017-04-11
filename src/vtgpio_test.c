@@ -1,6 +1,6 @@
 /*
     Virtual Time Kernel Module
-    For Heterogeneous Distributed 
+    For Heterogeneous Distributed
 	Embedded Linux Environment
 
     Author: Christopher Hannon
@@ -16,15 +16,16 @@
 //#include <linux/time.h>
 
 #define DEBOUNCE_TIME 0.02
+#define MAX_PIDS 128
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Christopher Hannon");
 MODULE_DESCRIPTION("Test for sync between two emb-lins for virtual time coordination");
-MODULE_VERSION("0.1");
+MODULE_VERSION("0.2");
 
-static unsigned int gpioSIG = 7;// try 25 to see if pin broken 7; // pin for talking // gpio21 on model b+ 
+static unsigned int gpioSIG = 7;// try 25 to see if pin broken 7; // pin for talking // gpio21 on model b+
 static unsigned int gpioSIG2 = 8;
-// gpio 21 on 2B static 
+// gpio 21 on 2B static
 /*
 
  *I think 7 and 8 for banana pi 21 and 20 for raspberry pi
@@ -33,12 +34,12 @@ static unsigned int gpioSIG2 = 8;
 
  * if breaks just reboot
  * to pause write freeze/unfreeze to ....
- * /sys/vt/... 
+ * /sys/vt/...
 */
 
 unsigned int active = 1; //
-//static unsigned int last_triggered; 
-static unsigned int num_ints = 0; 
+//static unsigned int last_triggered;
+static unsigned int num_ints = 0;
 static unsigned int irqNumber;
 static unsigned int irqNumber2;
 
@@ -49,6 +50,8 @@ void resume();
 
 enum modes { DISABLED, ENABLED };
 static enum modes mode = DISABLED;
+
+static int pids[MAX_PIDS];
 
 static char vtName[6] = "vtXXX";
 
@@ -70,13 +73,29 @@ void resume() {
   printk(KERN_INFO "VT-GPIO_TEST: TIME-FALL: %llu %llu nanoseconds",(unsigned long long)seconds.tv_sec , (unsigned long long)seconds.tv_nsec);
   num_ints ++;
   printk(KERN_INFO "VT-GPIO_TEST: Falling Edge detected");
-  
+
 
   /* we have to sound the trumpets */
   /* read list of pids */
   /* kickoff kthreads to resume processes */
 
 }
+
+/** @brief A callback function to display the vt pids */
+static int pids_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
+  //int i=0;
+  //for(i;i<MAX_PIDS;i++) {
+
+  // TODO IMPLEMENT               }
+  return 0;
+
+ /** @brief A callback function to store the vt pids */
+static int pids_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count) {
+  // buf is the text input. we should convert this to an integer array.
+  return count;
+}
+
+
 
 /** @brief A callback function to display the vt mode */
 static ssize_t mode_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
@@ -94,19 +113,19 @@ static ssize_t mode_store(struct kobject *kobj, struct kobj_attribute *attr, con
     printk(KERN_INFO "VT-GPIO_TEST: pause\n");
 
     /* vt has been triggered locally */
-    /*   we need to quickly  
+    /*   we need to quickly
 	 ---------------------------
 	 change to output mode,
 	 go high on gpio
     */
-    
+
     gpio_direction_output(gpioSIG,1);
     pause();
     //printk(KERN_INFO "VT-GPIO_TEST: value of pin: %d\n", gpio_get_value(gpioSIG));
 
     //interrupt does not get called :(
-    // 
-    
+    //
+
   }
   else if (strncmp(buf,"unfreeze",count-1)==0) {
     mode = DISABLED;
@@ -115,15 +134,18 @@ static ssize_t mode_store(struct kobject *kobj, struct kobj_attribute *attr, con
     /* chgn cfg
        go low
     */
-    gpio_direction_output(gpioSIG,0); 
+    gpio_direction_output(gpioSIG,0);
     //printk(KERN_INFO "VT-GPIO_TEST: value of pin: %d\n", gpio_get_value(gpioSIG));
-    gpio_direction_input(gpioSIG); 
+    gpio_direction_input(gpioSIG);
     //printk(KERN_INFO "VT-GPIO_TEST: value of pin: %d\n", gpio_get_value(gpioSIG));
   }
   return count;
 }
 
 static struct kobj_attribute mode_attr = __ATTR(mode, 0660, mode_show, mode_store);
+static struct kobj_attribute pids_attr = __ATTR(pids, 0660, pids_show, pids_store);
+
+
 
 static struct attribute *vt_attrs[] = {
   &mode_attr.attr,
@@ -141,7 +163,7 @@ static struct kobject *vt_kobj;
 static int __init vtgpio_init(void) {
   int result=0;
   int res = 0;
-  
+
   printk(KERN_INFO "VT-GPIO_TEST: Initializing the Virtual Time GPIO_TEST LKM\n");
   if(!gpio_is_valid(gpioSIG)) {
     printk(KERN_INFO "VT-GPIO_TEST: pin %d not valid\n",gpioSIG);
@@ -165,7 +187,7 @@ static int __init vtgpio_init(void) {
     kobject_put(vt_kobj);
     return res;
   }
-  
+
   gpio_request(gpioSIG, "sysfs");
   gpio_request(gpioSIG2, "sysfs");
   gpio_direction_input(gpioSIG); // default to input to listen
@@ -196,7 +218,7 @@ static void __exit vtgpio_exit(void) {
   kobject_put(vt_kobj);
   gpio_unexport(gpioSIG);
   gpio_unexport(gpioSIG2);
-  
+
   free_irq(irqNumber, NULL);
   gpio_free(gpioSIG);
   free_irq(irqNumber2, NULL);
@@ -205,7 +227,7 @@ static void __exit vtgpio_exit(void) {
 }
 
 static irq_handler_t vtgpio_irq_handler(unsigned int irq, void *dev_id, struct pt_regs *regs) {
-  
+
   pause();
   return (irq_handler_t) IRQ_HANDLED; // return that we all good
 }
