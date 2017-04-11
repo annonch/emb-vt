@@ -46,11 +46,12 @@ int str2int(){
   int pids[128];
   int p=0;
   int j=0;
-  char *str = "345 3345 35 75 52 386";
+  int count = 0;
+  char *str = "345 3345 35 75 52 386 50 40 30 20 10 2 399";
   char *end = str;
   while(*end) {
     int n = strtol(str, &end, 10);
-    pids[p]=n;
+    pids[count]=n;
     count++;
     printf("%d\n", n);
     while (*end == ' ') {

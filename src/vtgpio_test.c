@@ -52,6 +52,7 @@ enum modes { DISABLED, ENABLED };
 static enum modes mode = DISABLED;
 
 static int pids[MAX_PIDS];
+static int num_pids = 0;
 
 static char vtName[6] = "vtXXX";
 
@@ -88,14 +89,35 @@ static int pids_show(struct kobject *kobj, struct kobj_attribute *attr, char *bu
 
   // TODO IMPLEMENT               }
   return 0;
-
- /** @brief A callback function to store the vt pids */
-static int pids_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count) {
-  // buf is the text input. we should convert this to an integer array.
-  return count;
 }
 
+/** @brief A callback function to store the vt pids */
+static ssize_t pids_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count) {
+  /*
+   * buf is the text input from sysfs.
+   * we should convert this to an integer array.
+   */
+  int num_count = 0;
+  int i = 0;
+  int cur_pid = 0;
+  char *end = buf;
+  while(*end) {
+    cur_pid = strtol(buf, &end, 10);
+    pids[num_count] = cur_pid;
+    num_count += 1;
+    while (*end == ' ') {
+      end++;
+    }
+    buf = end;
+  }
+  num_pids = num_count;
+  dilate_procs();
+  return count; // I dont know why we are returning the num chars
+}
 
+void dilate_procs(void) {
+
+}
 
 /** @brief A callback function to display the vt mode */
 static ssize_t mode_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
