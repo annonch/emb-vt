@@ -47,8 +47,11 @@ int str2int(){
   int p=0;
   int j=0;
   int count = 0;
-  char *str = "345 3345 35 75 52 386 50 40 30 20 10 2 399";
-  char *end = str;
+  const char *str = "345 3345 35 75 52 386 50 40 30 20 10 2 399";
+  char *dst = (char*) malloc(43*sizeof(char));
+
+  strncpy(dst,str,43);
+  char *end = dst;
   while(*end) {
     int n = strtol(str, &end, 10);
     pids[count]=n;
@@ -64,5 +67,6 @@ int str2int(){
     printf("%d\n", pids[j]);
 
   }
+  free(dst);
   return 0;
 }

@@ -13,6 +13,8 @@
 #include <linux/interrupt.h>     // irq  code
 #include <linux/kobject.h>
 #include <linux/kthread.h>
+#include <linux/string.h>
+#include <linux/slab.h>
 //#include <linux/time.h>
 
 #define DEBOUNCE_TIME 0.02
@@ -45,8 +47,9 @@ static unsigned int irqNumber2;
 
 static irq_handler_t vtgpio_irq_handler(unsigned int irq, void *dev_id, struct pt_regs *regs);
 static irq_handler_t vtgpio_irq_handler_fall(unsigned int irq, void *dev_id, struct pt_regs *regs);
-void pause();
-void resume();
+void pause(void);
+void resume(void);
+void dilate_procs(void);
 
 enum modes { DISABLED, ENABLED };
 static enum modes mode = DISABLED;
@@ -56,9 +59,7 @@ static int num_pids = 0;
 
 static char vtName[6] = "vtXXX";
 
-//static int pids[128];
-
-void pause() {
+void pause(void) {
   struct timespec seconds;
   //printk(KERN_INFO "VT-GPIO_TEST: Interrupt! (Im alive!)");
   getnstimeofday(&seconds);
@@ -67,7 +68,7 @@ void pause() {
   printk(KERN_INFO "VT-GPIO_TEST: Rising Edge detected");
 }
 
-void resume() {
+void resume(void) {
   struct timespec seconds;
   //printk(KERN_INFO "VT-GPIO_TEST: Interrupt! (Im alive!)");
   getnstimeofday(&seconds);
@@ -83,12 +84,12 @@ void resume() {
 }
 
 /** @brief A callback function to display the vt pids */
-static int pids_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
+static ssize_t pids_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
   //int i=0;
   //for(i;i<MAX_PIDS;i++) {
 
   // TODO IMPLEMENT               }
-  return 0;
+return 0;
 }
 
 /** @brief A callback function to store the vt pids */
@@ -99,16 +100,21 @@ static ssize_t pids_store(struct kobject *kobj, struct kobj_attribute *attr, con
    */
   int num_count = 0;
   int i = 0;
+  int result = 0;
   int cur_pid = 0;
-  char *end = buf;
+  char *dst = kmalloc(count*sizeof(char), GFP_KERNEL);
+  char *end = dst;
   while(*end) {
-    cur_pid = strtol(buf, &end, 10);
+    result = kstrtoint(dst, 10, &cur_pid);
     pids[num_count] = cur_pid;
     num_count += 1;
     while (*end == ' ') {
       end++;
     }
-    buf = end;
+    dst = end;
+  }
+  for(i=0;i<num_pids+1;i++) {
+    printk(KERN_INFO "VT-GPIO_TEST: pid: %d \n", pids[i]);
   }
   num_pids = num_count;
   dilate_procs();
@@ -116,7 +122,7 @@ static ssize_t pids_store(struct kobject *kobj, struct kobj_attribute *attr, con
 }
 
 void dilate_procs(void) {
-
+  return;
 }
 
 /** @brief A callback function to display the vt mode */
@@ -171,6 +177,7 @@ static struct kobj_attribute pids_attr = __ATTR(pids, 0660, pids_show, pids_stor
 
 static struct attribute *vt_attrs[] = {
   &mode_attr.attr,
+  &pids_attr.attr,
   NULL,
 };
 

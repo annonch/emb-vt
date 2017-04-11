@@ -1570,7 +1570,7 @@ void init_virtual_start_time(struct task_struct *tsk, int tdf)
      * now = nano seconds since Epoch 1970
      * as well as all the xxx_nsec variables in tsk
      */
-    __getnstimeofday(&ts);
+    getnstimeofday(&ts);
     now = timespec_to_ns(&ts);
 
     /* initialize fields of nsec */
