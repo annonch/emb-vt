@@ -153,7 +153,7 @@ int set_dilation(struct task_struct *tsk, int new_tdf)
      * @now is the moment we change TDF,
      * get it by calling original wall clock time
      */
-    __getnstimeofday(&ts);
+    getnstimeofday(&ts);
     now = timespec_to_ns(&ts);
 
     /**
@@ -225,7 +225,7 @@ void freeze_time(struct task_struct *tsk)
 
   /* signal STOP to freeze this @tsk's children */;
   kill_pgrp(task_pid(tsk), SIGSTOP, 1);
-  __getnstimeofday(&ts);
+  getnstimeofday(&ts);
   now = timespec_to_ns(&ts);
   /**
    * freeze_past_nsec is accumulated frozen duration,
@@ -246,7 +246,7 @@ void unfreeze_time(struct task_struct *tsk)
   struct timespec ts;
   s64 now;
 
-  __getnstimeofday(&ts);
+  getnstimeofday(&ts);
   now = timespec_to_ns(&ts);
   tsk->freeze_past_nsec += (now - tsk->freeze_start_nsec);
   /* current unfreeze may not be the last one */

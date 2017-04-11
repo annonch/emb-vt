@@ -326,6 +326,8 @@ static void do_virtual_time_keeping(struct timespec* ts)
   }
 }
 
+
+
 /**
  * __getnstimeofday - Returns the time of day in a timespec.
  * @ts:pointer to the timespec to be set
@@ -333,6 +335,7 @@ static void do_virtual_time_keeping(struct timespec* ts)
  * Updates the time of day in the timespec.
  * Returns 0 on success, or -ve when suspended (timespec will be undefined).
  */
+/*
 int __getnstimeofday(struct timespec *ts)
 {
   struct timekeeper *tk = &timekeeper;
@@ -354,14 +357,15 @@ int __getnstimeofday(struct timespec *ts)
    * Do not bail out early, in case there were callers still using
    * the value, even in the face of the WARN_ON.
    */
-  if (unlikely(timekeeping_suspended))
+/*
+if (unlikely(timekeeping_suspended))
     return -EAGAIN;
 
   return 0;
 }
 EXPORT_SYMBOL(__getnstimeofday);
 
-
+*/
 
 /**
  * getnstimeofday - Returns the time of day in a timespec
