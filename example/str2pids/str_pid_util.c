@@ -40,7 +40,7 @@ int main ()
 
 
 int main() {
-  return str2int();
+  return str2int2();
 }
 int str2int(){
   int pids[128];
@@ -68,5 +68,38 @@ int str2int(){
 
   }
   free(dst);
+  return 0;
+}
+
+
+int str2int2(){
+  int pids[128];
+  int p=0;
+  int j=0;
+  int count = 0;
+  const char *str = "345 3345 35 75 52 386 50 40 30 20 10 2 399";
+  //#char *dst = (char*) malloc(43*sizeof(char));
+
+  char newdst[44] = {0};
+  char *ddst;
+  ddst = newdst;
+  strncpy(newdst,str,43);
+  char *end = &newdst[0];
+  while(*end) {
+    int n = strtol(ddst, &end, 10);
+    pids[count]=n;
+    count++;
+    printf("%d\n", n);
+    while (*end == ' ') {
+      end++;
+    }
+    ddst = end;
+  }
+  printf("\n");
+  for(j=0;j < count;j++){
+    printf("%d\n", pids[j]);
+
+  }
+  //free(dst);
   return 0;
 }

@@ -98,22 +98,23 @@ static ssize_t pids_store(struct kobject *kobj, struct kobj_attribute *attr, con
    * buf is the text input from sysfs.
    * we should convert this to an integer array.
    */
-  char dst[128*6];
+  char dst[128*6] = {0};
   int num_count = 0;
   int i = 0;
   int result = 0;
   int cur_pid = 0;
   //char *dst = kmalloc(count*sizeof(char));
-  strncpy(&dst,str,count);
-  char *end = dst;
+  strncpy(dst,buf,count);
+  char *ddst=dst;
+  char *end = &dst[0];
   while(*end) {
-    result = kstrtoint(dst, 10, &cur_pid);
+    result = kstrtoint(ddst, 10, &cur_pid);
     pids[num_count] = cur_pid;
     num_count += 1;
     while (*end == ' ') {
       end++;
     }
-    dst = end;
+    ddst = end;
   }
   for(i=0;i<num_pids+1;i++) {
     printk(KERN_INFO "VT-GPIO_TEST: pid: %d \n", pids[i]);
