@@ -23,15 +23,14 @@ done
 echo "Step 2. Build new kernel"
 cd /home/emb-vt/linux-bananapi
 
-make sun7i_defconfig
-make menuconfig
-make -j2 uImage modules
+#make sun7i_defconfig
+#make menuconfig
+#make -j2 uImage modules
 
-make modules_install
-mount /dev/mmcblk0p1 /mnt
-mv /mnt/uImage /mnt/uImage_old  # save precedent uImage, can be restored
-cp arch/arm/boot/uImage /mnt
-sync
-umount /mnt
-reboot
-
+#make modules_install
+#mount /dev/mmcblk0p1 /mnt
+#mv /mnt/uImage /mnt/uImage_old  # save precedent uImage, can be restored
+#cp arch/arm/boot/uImage /mnt
+#sync
+#umount /mnt
+#reboot
