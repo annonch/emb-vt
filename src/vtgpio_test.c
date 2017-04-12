@@ -98,11 +98,12 @@ static ssize_t pids_store(struct kobject *kobj, struct kobj_attribute *attr, con
    * buf is the text input from sysfs.
    * we should convert this to an integer array.
    */
+  //char dst[128*6];
   int num_count = 0;
   int i = 0;
   int result = 0;
   int cur_pid = 0;
-  char *dst = kmalloc(count*sizeof(char), GFP_KERNEL);
+  char *dst = kmalloc(count*sizeof(char));
   char *end = dst;
   while(*end) {
     result = kstrtoint(dst, 10, &cur_pid);
