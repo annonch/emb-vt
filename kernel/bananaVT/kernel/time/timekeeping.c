@@ -20,7 +20,8 @@
 #include <linux/time.h>
 #include <linux/tick.h>
 #include <linux/stop_machine.h>
-#include <linux/math64.h>
+//#include <linux/math64.h>
+#include <asm/div64.h> // arm32 math
 
 extern ktime_t ntp_get_next_leap(void);
 extern int __do_adjtimex(struct timex *);
@@ -291,7 +292,14 @@ static void update_virtual_past_nsec(s64 delta_ppn, int tdf)
        * To guarantee (physical_past_nsec * 1000) won't overflow:
        * 9*10^9s / 1000 = 9*10^6s => 2500h > 104d
        */
-      delta_vpn = div_s64_rem(delta_ppn * 1000, tdf, &rem);
+      //delta_vpn = div_s64_rem(delta_ppn * 1000, tdf, &rem);
+      /*
+       * modified for arm32 opps - Chris
+       * using asm/div64.h
+       *
+       */
+      delta_vpn = do_div(delta_ppn * 1000, tdf);
+
       current->virtual_past_nsec += delta_vpn;
     }
   }

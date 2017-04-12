@@ -1636,17 +1636,17 @@ static int vpt_show(struct seq_file *m, void *v)
   put_task_struct(p);
 
   if (vpt > 1000 * NSEC_PER_SEC) {
-    s64 kseconds = vpt / NSEC_PER_SEC;
+    s64 kseconds = div_s64(vpt,  NSEC_PER_SEC);
     kseconds /= 1000;
     seq_printf(m, "%lldks\n", kseconds);
   } if (vpt > NSEC_PER_SEC) {
-    s64 seconds = vpt / NSEC_PER_SEC;
+    s64 seconds = div_s64(vpt, NSEC_PER_SEC;
     seq_printf(m, "%llds\n", seconds);
   } else if (vpt > NSEC_PER_MSEC) {
-    s64 milliseconds = vpt / NSEC_PER_MSEC;
+      s64 milliseconds = div_s64(vpt, NSEC_PER_MSEC);
     seq_printf(m, "%lldms\n", milliseconds);
   } else if (vpt > NSEC_PER_USEC) {
-    s64 microseconds = vpt / NSEC_PER_USEC;
+      s64 microseconds = div_s64(vpt, NSEC_PER_USEC);
     seq_printf(m, "%lldus\n", microseconds);
   } else {
     seq_printf(m, "%lldns\n", vpt);
@@ -1682,17 +1682,17 @@ static int ppt_show(struct seq_file *m, void *v)
   put_task_struct(p);
 
   if (ppt > 1000 * NSEC_PER_SEC) {
-    s64 kseconds = ppt / NSEC_PER_SEC;
+    s64 kseconds = div_s64(ppt, NSEC_PER_SEC);
     kseconds /= 1000;
     seq_printf(m, "%lldks\n", kseconds);
   } if (ppt > NSEC_PER_SEC) {
-    s64 seconds = ppt / NSEC_PER_SEC;
+    s64 seconds = div_s64(ppt, NSEC_PER_SEC);
     seq_printf(m, "%llds\n", seconds);
   } else if (ppt > NSEC_PER_MSEC) {
-    s64 milliseconds = ppt / NSEC_PER_MSEC;
+    s64 milliseconds = div_s64(ppt, NSEC_PER_MSEC);
     seq_printf(m, "%lldms\n", milliseconds);
   } else if (ppt > NSEC_PER_USEC) {
-    s64 microseconds = ppt / NSEC_PER_USEC;
+    s64 microseconds = div_s64(ppt,  NSEC_PER_USEC);
     seq_printf(m, "%lldus\n", microseconds);
   } else {
     seq_printf(m, "%lldns\n", ppt);
