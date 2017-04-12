@@ -1,25 +1,9 @@
 #!/bin/bash
+echo "Step 0. download source kernel"
 
-DST=/home/build_kernel
-
-if [ -e $DST ]; then
-        echo "Clean up previous build"
-        rm -rf $DST
-	mkdir $DST
-fi
-
-if [ ! -e bananapi-3.4.zip ]; then
-        wget https://github.com/Bananian/linux-bananapi/archive/bananapi-3.4.zip
-fi
-echo "Step 0. Unpack kernel source"
-unzip bananapi-3.4.zip
-mv linux-bananapi-bananapi-3.4/* $DST
-
-# generate patch file
-PATCH=VirtualTime.patch
-echo "        Patch file written to ${PATCH}"
-diff -rup $DST ./ > ${PATCH}
-echo ""
+rm -r /home/emb-vt/kernel/linux-bananapi
+cd /home/emb-vt/kernel
+git clone https://github.com/Bananian/linux-bananapi.git --depth 1
 
 FILES="kernel/fork.c		        \
 kernel/time.c			        \
@@ -28,16 +12,26 @@ include/linux/sched.h		        \
 include/linux/init_task.h	        \
 include/linux/time.h		        \
 include/linux/timekeeper_internal.h     \
-fs/proc/base.c			        \
-Makefile		                \
-build_all.sh"
+include/linux/init_task.h               \
+fs/proc/base.c"
 
 echo "Step 1. Transfer modified kernel source"
 for f in $FILES; do
-        cp -v $f $DST/$f
+        cp -v /home/emb-vt/kernel/bananaVT/$f /home/emb-vt/linux-bananapi/$f
 done
 
 echo "Step 2. Build new kernel"
-cd $DST
+cd /home/emb-vt/linux-bananapi
 
-#./build_all.sh
+make sun7i_defconfig
+make menuconfig
+make -j2 uImage modules
+
+make modules_install
+mount /dev/mmcblk0p1 /mnt
+mv /mnt/uImage /mnt/uImage_old  # save precedent uImage, can be restored
+cp arch/arm/boot/uImage /mnt
+sync
+umount /mnt
+reboot
+

@@ -3283,6 +3283,11 @@ static const struct pid_entry tgid_base_stuff[] = {
 	REG("autogroup",  S_IRUGO|S_IWUSR, proc_pid_sched_autogroup_operations),
 #endif
 	REG("comm",      S_IRUGO|S_IWUSR, proc_pid_set_comm_operations),
+	REG("freeze", S_IRUGO|S_IWUSR, proc_pid_set_freeze_operations),
+	REG("dilation", S_IRUGO|S_IWUSR, proc_pid_set_dilation_operations),
+	REG("fpt", S_IRUGO, proc_pid_get_fpt_operations),
+	REG("vpt", S_IRUGO, proc_pid_get_vpt_operations),
+	REG("ppt", S_IRUGO, proc_pid_get_ppt_operations),
 #ifdef CONFIG_HAVE_ARCH_TRACEHOOK
 	INF("syscall",    S_IRUGO, proc_pid_syscall),
 #endif
