@@ -1518,7 +1518,7 @@ static int fpt_show(struct seq_file *m, void *v)
   task_unlock(p);
   put_task_struct(p);
 
-  if (fpt > 1000 * NSEC_PER_SEC) {
+  if (fpt / 1000 >  NSEC_PER_SEC) {
     s64 kseconds = fpt / NSEC_PER_SEC;
     kseconds /= 1000;
     seq_printf(m, "%lldks\n", kseconds);
@@ -1635,12 +1635,12 @@ static int vpt_show(struct seq_file *m, void *v)
   task_unlock(p);
   put_task_struct(p);
 
-  if (vpt > 1000 * NSEC_PER_SEC) {
+  if (vpt / 1000 > NSEC_PER_SEC) {
     s64 kseconds = div_s64(vpt,  NSEC_PER_SEC);
     kseconds /= 1000;
     seq_printf(m, "%lldks\n", kseconds);
   } if (vpt > NSEC_PER_SEC) {
-    s64 seconds = div_s64(vpt, NSEC_PER_SEC;
+    s64 seconds = div_s64(vpt, NSEC_PER_SEC);
     seq_printf(m, "%llds\n", seconds);
   } else if (vpt > NSEC_PER_MSEC) {
       s64 milliseconds = div_s64(vpt, NSEC_PER_MSEC);
@@ -1681,7 +1681,7 @@ static int ppt_show(struct seq_file *m, void *v)
   task_unlock(p);
   put_task_struct(p);
 
-  if (ppt > 1000 * NSEC_PER_SEC) {
+  if (ppt / 1000 > NSEC_PER_SEC) {
     s64 kseconds = div_s64(ppt, NSEC_PER_SEC);
     kseconds /= 1000;
     seq_printf(m, "%lldks\n", kseconds);
