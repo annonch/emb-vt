@@ -17,13 +17,13 @@ fs/proc/base.c"
 
 echo "Step 1. Transfer modified kernel source"
 for f in $FILES; do
-        cp -v /home/emb-vt/kernel/bananaVT/$f /home/emb-vt/linux-bananapi/$f
+        cp -v /home/emb-vt/kernel/bananaVT/$f /home/emb-vt/kernel/linux-bananapi/$f
 done
 
 echo "Step 2. Build new kernel"
-cd /home/emb-vt/linux-bananapi
+cd /home/emb-vt/kernel/linux-bananapi
 
-#make sun7i_defconfig
+make sun7i_defconfig
 #make menuconfig
 #make -j2 uImage modules
 
