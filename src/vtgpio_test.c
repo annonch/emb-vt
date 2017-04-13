@@ -116,7 +116,7 @@ static ssize_t pids_store(struct kobject *kobj, struct kobj_attribute *attr, con
     }
     ddst = end;
   }
-  for(i=0;i<num_pids+1;i++) {
+  for(i=0;i<num_pids;i++) {
     printk(KERN_INFO "VT-GPIO_TEST: pid: %d \n", pids[i]);
   }
   num_pids = num_count;
