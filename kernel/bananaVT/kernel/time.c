@@ -37,8 +37,8 @@
 #include <linux/syscalls.h>
 #include <linux/security.h>
 #include <linux/fs.h>
-//#include <linux/math64.h>
-#include < asm/div64.h> // arm32 port
+#include <linux/math64.h>
+//#include < asm/div64.h> // arm32 port
 #include <linux/ptrace.h>
 
 #include <linux/rcupdate.h> // for accessing current's parent
