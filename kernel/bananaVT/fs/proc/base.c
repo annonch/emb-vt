@@ -1517,24 +1517,24 @@ static int fpt_show(struct seq_file *m, void *v)
   fpt = p->freeze_past_nsec;
   task_unlock(p);
   put_task_struct(p);
-
+  /*
   if (fpt / 1000 >  NSEC_PER_SEC) {
-    s64 kseconds = fpt / NSEC_PER_SEC;
+    s32 kseconds = fpt / 100000000;//NSEC_PER_SEC;
     kseconds /= 1000;
     seq_printf(m, "%lldks\n", kseconds);
-  } else if (fpt > NSEC_PER_SEC) {
-    s64 seconds = fpt / NSEC_PER_SEC;
+  } else if (fpt > 1000000000){//NSEC_PER_SEC) {
+    s32 seconds = fpt / 1000000000;//NSEC_PER_SEC;
     seq_printf(m, "%llds\n", seconds);
-  } else if (fpt > NSEC_PER_MSEC) {
-    s64 milliseconds = fpt / NSEC_PER_MSEC;
+  } else if (fpt > 1000000000){//NSEC_PER_MSEC) {
+    s32 milliseconds = fpt / 1000000;//NSEC_PER_MSEC;
     seq_printf(m, "%lldms\n", milliseconds);
-  } else if (fpt > NSEC_PER_USEC) {
-    s64 microseconds = fpt / NSEC_PER_USEC;
+  } else if (fpt > 1000){//NSEC_PER_USEC) {
+    s32 microseconds = fpt / 1000;//NSEC_PER_USEC;
     seq_printf(m, "%lldus\n", microseconds);
-  } else {
+    } else {*/
     seq_printf(m, "%lldns\n", fpt);
-  }
-
+  /*}
+  */
   return 0;
 }
 
@@ -1634,7 +1634,7 @@ static int vpt_show(struct seq_file *m, void *v)
   vpt = p->virtual_past_nsec;
   task_unlock(p);
   put_task_struct(p);
-
+  /*
   if (vpt / 1000 > NSEC_PER_SEC) {
     s64 kseconds = div_s64(vpt,  NSEC_PER_SEC);
     kseconds /= 1000;
@@ -1649,8 +1649,9 @@ static int vpt_show(struct seq_file *m, void *v)
       s64 microseconds = div_s64(vpt, NSEC_PER_USEC);
     seq_printf(m, "%lldus\n", microseconds);
   } else {
+    */
     seq_printf(m, "%lldns\n", vpt);
-  }
+    //}
 
   return 0;
 }
@@ -1680,7 +1681,7 @@ static int ppt_show(struct seq_file *m, void *v)
   ppt = p->physical_past_nsec;
   task_unlock(p);
   put_task_struct(p);
-
+  /*
   if (ppt / 1000 > NSEC_PER_SEC) {
     s64 kseconds = div_s64(ppt, NSEC_PER_SEC);
     kseconds /= 1000;
@@ -1694,9 +1695,9 @@ static int ppt_show(struct seq_file *m, void *v)
   } else if (ppt > NSEC_PER_USEC) {
     s64 microseconds = div_s64(ppt,  NSEC_PER_USEC);
     seq_printf(m, "%lldus\n", microseconds);
-  } else {
+  } else {*/
     seq_printf(m, "%lldns\n", ppt);
-  }
+    //}
 
   return 0;
 }
