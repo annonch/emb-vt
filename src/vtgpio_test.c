@@ -19,7 +19,7 @@
 //#include <linux/time.h>
 
 #define DEBOUNCE_TIME 0.02
-#define MAX_PIDS 128
+#define MAX_NUM_PIDS 16
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Christopher Hannon");
@@ -54,6 +54,7 @@ static int dilate_proc(int p);
 
 enum modes { DISABLED, ENABLED };
 static enum modes mode = DISABLED;
+static int all_pids[MAX_NUM_PIDS] = {0};
 
 static int pid_01 = 0;
 static int pid_02 = 0;
@@ -125,6 +126,12 @@ static ssize_t pid_01_store(struct kobject *kobj, struct kobj_attribute *attr, c
   ret = kstrtoint(buf, 10, &pid_01);
   if (ret < 0)
     return ret;
+  if(pid_01){
+    all_pids[0] = pid_01;
+    ret = dilate_proc(pid_01);
+  }
+  if (ret < 0)
+    return ret;
   return count;
 }
 
@@ -143,6 +150,12 @@ static ssize_t pid_02_store(struct kobject *kobj, struct kobj_attribute *attr, c
   int ret;
 
   ret = kstrtoint(buf, 10, &pid_02);
+  if (ret < 0)
+    return ret;
+  if(pid_02){
+    all_pids[1] = pid_02;
+    ret = dilate_proc(pid_02);
+  }
   if (ret < 0)
     return ret;
   return count;
@@ -164,6 +177,12 @@ static ssize_t pid_03_store(struct kobject *kobj, struct kobj_attribute *attr, c
   ret = kstrtoint(buf, 10, &pid_03);
   if (ret < 0)
     return ret;
+  if(pid_03){
+    all_pids[2] = pid_03; 
+    ret = dilate_proc(pid_03);
+  }
+  if (ret < 0)
+    return ret;
   return count;
 }
 /** @brief A callback function to display the vt pids */
@@ -181,6 +200,12 @@ static ssize_t pid_04_store(struct kobject *kobj, struct kobj_attribute *attr, c
   int ret;
 
   ret = kstrtoint(buf, 10, &pid_04);
+  if (ret < 0)
+    return ret;
+  if(pid_04){
+    all_pids[3] = pid_04;
+    ret = dilate_proc(pid_04);
+  }
   if (ret < 0)
     return ret;
   return count;
@@ -202,6 +227,12 @@ static ssize_t pid_05_store(struct kobject *kobj, struct kobj_attribute *attr, c
   ret = kstrtoint(buf, 10, &pid_05);
   if (ret < 0)
     return ret;
+  if(pid_05){
+    all_pids[4] = pid_05;
+    ret = dilate_proc(pid_05);
+  }
+  if (ret < 0)
+    return ret;
   return count;
 }
 /** @brief A callback function to display the vt pids */
@@ -219,6 +250,12 @@ static ssize_t pid_06_store(struct kobject *kobj, struct kobj_attribute *attr, c
   int ret;
 
   ret = kstrtoint(buf, 10, &pid_06);
+  if (ret < 0)
+    return ret;
+  if(pid_06){
+    all_pids[5] = pid_06; 
+    ret = dilate_proc(pid_06);
+  }
   if (ret < 0)
     return ret;
   return count;
@@ -240,6 +277,12 @@ static ssize_t pid_07_store(struct kobject *kobj, struct kobj_attribute *attr, c
   ret = kstrtoint(buf, 10, &pid_07);
   if (ret < 0)
     return ret;
+  if(pid_06){
+    all_pids[6] = pid_07;
+    ret = dilate_proc(pid_07);
+  }
+  if (ret < 0)
+    return ret;
   return count;
 }
 /** @brief A callback function to display the vt pids */
@@ -257,6 +300,12 @@ static ssize_t pid_08_store(struct kobject *kobj, struct kobj_attribute *attr, c
   int ret;
 
   ret = kstrtoint(buf, 10, &pid_08);
+  if (ret < 0)
+    return ret;
+  if(pid_08){
+    all_pids[7] = pid_08;
+    ret = dilate_proc(pid_08);
+  }
   if (ret < 0)
     return ret;
   return count;
@@ -278,6 +327,12 @@ static ssize_t pid_09_store(struct kobject *kobj, struct kobj_attribute *attr, c
   ret = kstrtoint(buf, 10, &pid_09);
   if (ret < 0)
     return ret;
+  if(pid_09){
+    all_pids[8] = pid_09;
+    ret = dilate_proc(pid_09);
+  }
+  if (ret < 0)
+    return ret;
   return count;
 }
 /** @brief A callback function to display the vt pids */
@@ -295,6 +350,12 @@ static ssize_t pid_10_store(struct kobject *kobj, struct kobj_attribute *attr, c
   int ret;
 
   ret = kstrtoint(buf, 10, &pid_10);
+  if (ret < 0)
+    return ret;
+  if(pid_10){
+    all_pids[9] = pid_10;
+    ret = dilate_proc(pid_10);
+  }
   if (ret < 0)
     return ret;
   return count;
@@ -316,6 +377,12 @@ static ssize_t pid_11_store(struct kobject *kobj, struct kobj_attribute *attr, c
   ret = kstrtoint(buf, 10, &pid_11);
   if (ret < 0)
     return ret;
+  if(pid_11){
+    all_pids[10] = pid_11;
+    ret = dilate_proc(pid_11);
+  }
+  if (ret < 0)
+    return ret;
   return count;
 }
 /** @brief A callback function to display the vt pids */
@@ -333,6 +400,12 @@ static ssize_t pid_12_store(struct kobject *kobj, struct kobj_attribute *attr, c
   int ret;
 
   ret = kstrtoint(buf, 10, &pid_12);
+  if (ret < 0)
+    return ret;
+  if(pid_12){
+    all_pids[11] = pid_12;
+    ret = dilate_proc(pid_12);
+  }
   if (ret < 0)
     return ret;
   return count;
@@ -354,6 +427,12 @@ static ssize_t pid_13_store(struct kobject *kobj, struct kobj_attribute *attr, c
   ret = kstrtoint(buf, 10, &pid_13);
   if (ret < 0)
     return ret;
+  if(pid_13){
+    all_pids[12] = pid_13;
+    ret = dilate_proc(pid_13);
+  }
+  if (ret < 0)
+    return ret;
   return count;
 }
 /** @brief A callback function to display the vt pids */
@@ -371,6 +450,12 @@ static ssize_t pid_14_store(struct kobject *kobj, struct kobj_attribute *attr, c
   int ret;
 
   ret = kstrtoint(buf, 10, &pid_14);
+  if (ret < 0)
+    return ret;
+  if(pid_14){
+    all_pids[13] = pid_14;
+    ret = dilate_proc(pid_14);
+  }
   if (ret < 0)
     return ret;
   return count;
@@ -392,6 +477,12 @@ static ssize_t pid_15_store(struct kobject *kobj, struct kobj_attribute *attr, c
   ret = kstrtoint(buf, 10, &pid_15);
   if (ret < 0)
     return ret;
+  if(pid_15){
+    all_pids[14] = pid_15;
+    ret = dilate_proc(pid_15);
+  }
+  if (ret < 0)
+    return ret;
   return count;
 }
 /** @brief A callback function to display the vt pids */
@@ -409,6 +500,12 @@ static ssize_t pid_16_store(struct kobject *kobj, struct kobj_attribute *attr, c
   int ret;
 
   ret = kstrtoint(buf, 10, &pid_16);
+  if (ret < 0)
+    return ret;
+  if(pid_16){
+    all_pids[15] = pid_16;
+    ret = dilate_proc(pid_16);
+  }
   if (ret < 0)
     return ret;
   return count;
