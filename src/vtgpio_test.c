@@ -77,28 +77,42 @@ static char vtName[6] = "vtXXX";
 
 void pause(void) {
   struct timespec seconds;
-  //printk(KERN_INFO "VT-GPIO_TEST: Interrupt! (Im alive!)");
+  struct timespec seconds_end;
+
   getnstimeofday(&seconds);
-  printk(KERN_INFO "VT-GPIO_TEST: TIME-RISE: %llu %llu nanoseconds",(unsigned long long)seconds.tv_sec , (unsigned long long)seconds.tv_nsec);
+  printk(KERN_INFO "VT-GPIO_TIME: TIME-RISE: %llu %llu nanoseconds",(unsigned long long)seconds.tv_sec , (unsigned long long)seconds.tv_nsec);
   num_ints ++;
   printk(KERN_INFO "VT-GPIO_TEST: Rising Edge detected");
 
   /* we have to sound the trumpets */
   /* read list of pids */
   /* kickoff kthreads to resume processes */
+  getnstimeofday(&seconds_end);
+  printk(KERN_INFO "VT-GPIO_TIME: TIME-RISE: %llu %llu nanoseconds",(unsigned long long)seconds_end.tv_sec , (unsigned long long)seconds_end.tv_nsec);
+  printk(KERN_INFO "VT-GPIO_TIME: TIME-PAUSE: %llu %llu nanoseconds",
+	 ((unsigned long long)seconds_end.tv_sec-(unsigned long long)seconds.tv_sec) ,
+	 ((unsigned long long)seconds_end.tv_nsec -(unsigned long long)seconds.tv_nsec));
+  
 }
 
 void resume(void) {
   struct timespec seconds;
-  //printk(KERN_INFO "VT-GPIO_TEST: Interrupt! (Im alive!)");
+  struct timespec seconds_end;
+
   getnstimeofday(&seconds);
-  printk(KERN_INFO "VT-GPIO_TEST: TIME-FALL: %llu %llu nanoseconds",(unsigned long long)seconds.tv_sec , (unsigned long long)seconds.tv_nsec);
+  printk(KERN_INFO "VT-GPIO_TIME: TIME-FALL: %llu %llu nanoseconds",(unsigned long long)seconds.tv_sec , (unsigned long long)seconds.tv_nsec);
   num_ints ++;
   printk(KERN_INFO "VT-GPIO_TEST: Falling Edge detected");
 
   /* we have to sound the trumpets */
   /* read list of pids */
   /* kickoff kthreads to resume processes */
+  getnstimeofday(&seconds_end);
+  printk(KERN_INFO "VT-GPIO_TIME: TIME-FALL: %llu %llu nanoseconds",(unsigned long long)seconds_end.tv_sec , (unsigned long long)seconds_end.tv_nsec);
+  printk(KERN_INFO "VT-GPIO_TIME: TIME-RESUME: %llu %llu nanoseconds",
+	 ((unsigned long long)seconds_end.tv_sec-(unsigned long long)seconds.tv_sec) ,
+	 ((unsigned long long)seconds_end.tv_nsec -(unsigned long long)seconds.tv_nsec));
+  
 }
 
 /* function to add pids to VT */
