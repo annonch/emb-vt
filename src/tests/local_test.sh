@@ -20,3 +20,4 @@ do
     echo "unfreeze" > /sys/vt/VT7/mode
     sleep 1
 done
+pkill print_time.py

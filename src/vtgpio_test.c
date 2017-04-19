@@ -16,8 +16,13 @@
 #include <linux/string.h>
 #include <linux/slab.h>
 #include <linux/sysfs.h>
-//#include <linux/time.h>
+#include <linux/fs.h>
+#include <asm/segment.h>
+#include <asm/uaccess.h>
+#include <linux/buffer_head.h>
+#include <linux/string.h>
 
+#define TDF_STR_LEN 8
 #define DEBOUNCE_TIME 0.02
 #define MAX_NUM_PIDS 16
 
@@ -48,13 +53,24 @@ static unsigned int irqNumber2;
 
 static irq_handler_t vtgpio_irq_handler(unsigned int irq, void *dev_id, struct pt_regs *regs);
 static irq_handler_t vtgpio_irq_handler_fall(unsigned int irq, void *dev_id, struct pt_regs *regs);
+
 void pause(void);
 void resume(void);
-static int dilate_proc(int p);
+static int dilate_proc(int pid);
+int write_proc_field(pid_t pid, char* field, char* val); // from Jiaqi's code
 
+struct file* file_open(const char* path, int flags, int rights);
+void file_close(struct file* file);
+int file_read(struct file* file, unsigned long long offset, unsigned char* data, unsigned int size);
+int file_write(struct file* file, unsigned long long offset, unsigned char* data, unsigned int size);
+int file_sync(struct file* file);
+  
 enum modes { DISABLED, ENABLED };
 static enum modes mode = DISABLED;
 static int all_pids[MAX_NUM_PIDS] = {0};
+enum IO{ RESUME,FREEZE,DILATE };
+
+static int sequential_io(enum IO io);
 
 static int pid_01 = 0;
 static int pid_02 = 0;
@@ -72,6 +88,7 @@ static int pid_13 = 0;
 static int pid_14 = 0;
 static int pid_15 = 0;
 static int pid_16 = 0;
+static int tdf = 1000;
 
 static char vtName[6] = "vtXXX";
 
@@ -87,14 +104,17 @@ void pause(void) {
   /* we have to sound the trumpets */
   /* read list of pids */
   /* kickoff kthreads to resume processes */
+
+  sequential_io(FREEZE);
+
   getnstimeofday(&seconds_end);
   printk(KERN_INFO "VT-GPIO_TIME: TIME-RISE: %llu %llu nanoseconds",(unsigned long long)seconds_end.tv_sec , (unsigned long long)seconds_end.tv_nsec);
   printk(KERN_INFO "VT-GPIO_TIME: TIME-PAUSE: %llu %llu nanoseconds",
 	 ((unsigned long long)seconds_end.tv_sec-(unsigned long long)seconds.tv_sec) ,
 	 ((unsigned long long)seconds_end.tv_nsec -(unsigned long long)seconds.tv_nsec));
-  
 }
 
+/** @brief Function to pause pids in VT */
 void resume(void) {
   struct timespec seconds;
   struct timespec seconds_end;
@@ -107,6 +127,8 @@ void resume(void) {
   /* we have to sound the trumpets */
   /* read list of pids */
   /* kickoff kthreads to resume processes */
+  sequential_io(RESUME);
+
   getnstimeofday(&seconds_end);
   printk(KERN_INFO "VT-GPIO_TIME: TIME-FALL: %llu %llu nanoseconds",(unsigned long long)seconds_end.tv_sec , (unsigned long long)seconds_end.tv_nsec);
   printk(KERN_INFO "VT-GPIO_TIME: TIME-RESUME: %llu %llu nanoseconds",
@@ -115,18 +137,97 @@ void resume(void) {
   
 }
 
-/* function to add pids to VT */
-static int dilate_proc(int p) {
+/** @brief Function to add pids to VT */
+static int dilate_proc(int pid) {
   int ret = 0;
-  /* call dilate here */
-  /* we can add this call to the store functions for all pid_xx_store() */
+  char tdf_str[TDF_STR_LEN];
+
+  ret = sprintf(tdf_str, "%d",tdf);
+  write_proc_field((pid_t)pid, "dilation", tdf_str);
+  printk(KERN_INFO "VT-GPIO_TEST: Dilating %d\n",pid);
+
   return ret;
+}
+
+/** @brief Function to add pids to VT */
+static int freeze_proc(int pid) {
+  int ret = 0;
+
+  write_proc_field((pid_t)pid, "freeze", "1");
+  printk(KERN_INFO "VT-GPIO_TEST: Freezing %d\n",pid);
+  
+  return ret;
+}
+/** @brief Function to add pids to VT */
+static int resume_proc(int pid) {
+  int ret = 0;
+
+  write_proc_field((pid_t)pid, "freeze", "0");
+  printk(KERN_INFO "VT-GPIO_TEST: Unfreezing %d\n",pid);
+  
+  return ret;
+}
+
+static int sequential_io(enum IO io) {
+  int i;
+  switch(io){
+  case DILATE:
+    for(i=0;i<MAX_NUM_PIDS;i++){
+      if(all_pids[i])
+	dilate_proc(all_pids[i]);
+      else
+	break;
+    }
+    break;
+  case FREEZE:
+    for(i=0;i<MAX_NUM_PIDS;i++){
+      if(all_pids[i])
+	freeze_proc(all_pids[i]);
+      else
+	break;
+    }
+    break;
+  case RESUME:
+    for(i=0;i<MAX_NUM_PIDS;i++){
+      if(all_pids[i])
+	resume_proc(all_pids[i]);
+      else
+	break;
+    }
+    break;
+  } 
+  return 0;
+}
+
+/* SYSFS stuff */
+
+
+/** @brief A callback function to display the vt tdf */
+static ssize_t tdf_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
+  return sprintf(buf, "%d\n", tdf);
+  return 0;
+}
+
+/** @brief A callback function to store the vt tdf */
+static ssize_t tdf_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count) {
+  /*
+   * buf is the text input from sysfs.
+   * we should convert this to an integer.
+   */
+  int ret;
+
+  ret = kstrtoint(buf, 10, &tdf);
+  if (ret < 0)
+    return ret;
+  /* we should overwrite any existing tdf */
+  sequential_io(DILATE); 
+  return count;
 }
 
 /** @brief A callback function to display the vt pids */
 static ssize_t pid_01_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
   return sprintf(buf, "%d\n", pid_01);
-return 0;
+  return 0;
 }
 
 /** @brief A callback function to store the vt pids */
@@ -152,7 +253,7 @@ static ssize_t pid_01_store(struct kobject *kobj, struct kobj_attribute *attr, c
 /** @brief A callback function to display the vt pids */
 static ssize_t pid_02_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
   return sprintf(buf, "%d\n", pid_02);
-return 0;
+  return 0;
 }
 
 /** @brief A callback function to store the vt pids */
@@ -177,7 +278,7 @@ static ssize_t pid_02_store(struct kobject *kobj, struct kobj_attribute *attr, c
 /** @brief A callback function to display the vt pids */
 static ssize_t pid_03_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
   return sprintf(buf, "%d\n", pid_03);
-return 0;
+  return 0;
 }
 
 /** @brief A callback function to store the vt pids */
@@ -202,7 +303,7 @@ static ssize_t pid_03_store(struct kobject *kobj, struct kobj_attribute *attr, c
 /** @brief A callback function to display the vt pids */
 static ssize_t pid_04_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
   return sprintf(buf, "%d\n", pid_04);
-return 0;
+  return 0;
 }
 
 /** @brief A callback function to store the vt pids */
@@ -227,7 +328,7 @@ static ssize_t pid_04_store(struct kobject *kobj, struct kobj_attribute *attr, c
 /** @brief A callback function to display the vt pids */
 static ssize_t pid_05_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
   return sprintf(buf, "%d\n", pid_05);
-return 0;
+  return 0;
 }
 
 /** @brief A callback function to store the vt pids */
@@ -252,7 +353,7 @@ static ssize_t pid_05_store(struct kobject *kobj, struct kobj_attribute *attr, c
 /** @brief A callback function to display the vt pids */
 static ssize_t pid_06_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
   return sprintf(buf, "%d\n", pid_06);
-return 0;
+  return 0;
 }
 
 /** @brief A callback function to store the vt pids */
@@ -277,7 +378,7 @@ static ssize_t pid_06_store(struct kobject *kobj, struct kobj_attribute *attr, c
 /** @brief A callback function to display the vt pids */
 static ssize_t pid_07_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
   return sprintf(buf, "%d\n", pid_07);
-return 0;
+  return 0;
 }
 
 /** @brief A callback function to store the vt pids */
@@ -302,7 +403,7 @@ static ssize_t pid_07_store(struct kobject *kobj, struct kobj_attribute *attr, c
 /** @brief A callback function to display the vt pids */
 static ssize_t pid_08_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
   return sprintf(buf, "%d\n", pid_08);
-return 0;
+  return 0;
 }
 
 /** @brief A callback function to store the vt pids */
@@ -327,7 +428,7 @@ static ssize_t pid_08_store(struct kobject *kobj, struct kobj_attribute *attr, c
 /** @brief A callback function to display the vt pids */
 static ssize_t pid_09_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
   return sprintf(buf, "%d\n", pid_09);
-return 0;
+  return 0;
 }
 
 /** @brief A callback function to store the vt pids */
@@ -352,7 +453,7 @@ static ssize_t pid_09_store(struct kobject *kobj, struct kobj_attribute *attr, c
 /** @brief A callback function to display the vt pids */
 static ssize_t pid_10_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
   return sprintf(buf, "%d\n", pid_10);
-return 0;
+  return 0;
 }
 
 /** @brief A callback function to store the vt pids */
@@ -377,7 +478,7 @@ static ssize_t pid_10_store(struct kobject *kobj, struct kobj_attribute *attr, c
 /** @brief A callback function to display the vt pids */
 static ssize_t pid_11_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
   return sprintf(buf, "%d\n", pid_11);
-return 0;
+  return 0;
 }
 
 /** @brief A callback function to store the vt pids */
@@ -402,7 +503,7 @@ static ssize_t pid_11_store(struct kobject *kobj, struct kobj_attribute *attr, c
 /** @brief A callback function to display the vt pids */
 static ssize_t pid_12_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
   return sprintf(buf, "%d\n", pid_12);
-return 0;
+  return 0;
 }
 
 /** @brief A callback function to store the vt pids */
@@ -427,7 +528,7 @@ static ssize_t pid_12_store(struct kobject *kobj, struct kobj_attribute *attr, c
 /** @brief A callback function to display the vt pids */
 static ssize_t pid_13_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
   return sprintf(buf, "%d\n", pid_13);
-return 0;
+  return 0;
 }
 
 /** @brief A callback function to store the vt pids */
@@ -452,7 +553,7 @@ static ssize_t pid_13_store(struct kobject *kobj, struct kobj_attribute *attr, c
 /** @brief A callback function to display the vt pids */
 static ssize_t pid_14_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
   return sprintf(buf, "%d\n", pid_14);
-return 0;
+  return 0;
 }
 
 /** @brief A callback function to store the vt pids */
@@ -477,7 +578,7 @@ static ssize_t pid_14_store(struct kobject *kobj, struct kobj_attribute *attr, c
 /** @brief A callback function to display the vt pids */
 static ssize_t pid_15_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
   return sprintf(buf, "%d\n", pid_15);
-return 0;
+  return 0;
 }
 
 /** @brief A callback function to store the vt pids */
@@ -502,7 +603,7 @@ static ssize_t pid_15_store(struct kobject *kobj, struct kobj_attribute *attr, c
 /** @brief A callback function to display the vt pids */
 static ssize_t pid_16_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
   return sprintf(buf, "%d\n", pid_16);
-return 0;
+  return 0;
 }
 
 /** @brief A callback function to store the vt pids */
@@ -566,12 +667,14 @@ static ssize_t mode_store(struct kobject *kobj, struct kobj_attribute *attr, con
     //printk(KERN_INFO "VT-GPIO_TEST: value of pin: %d\n", gpio_get_value(gpioSIG));
     gpio_direction_input(gpioSIG);
     //printk(KERN_INFO "VT-GPIO_TEST: value of pin: %d\n", gpio_get_value(gpioSIG));
+    resume();
   }
   return count;
 }
 
 /* Attributes */
 static struct kobj_attribute mode_attr = __ATTR(mode, 0660, mode_show, mode_store);
+static struct kobj_attribute tdf_attr = __ATTR(tdf, 0660, tdf_show, tdf_store);
 static struct kobj_attribute pid_01_attr = __ATTR(pid_01, 0660, pid_01_show, pid_01_store);
 static struct kobj_attribute pid_02_attr = __ATTR(pid_02, 0660, pid_02_show, pid_02_store);
 static struct kobj_attribute pid_03_attr = __ATTR(pid_03, 0660, pid_03_show, pid_03_store);
@@ -592,6 +695,7 @@ static struct kobj_attribute pid_16_attr = __ATTR(pid_16, 0660, pid_16_show, pid
 /* Attribute struct */
 static struct attribute *vt_attrs[] = {
   &mode_attr.attr,
+  &tdf_attr.attr,
   &pid_01_attr.attr,
   &pid_02_attr.attr,
   &pid_03_attr.attr,
@@ -620,6 +724,7 @@ static struct attribute_group attr_group = {
 static struct kobject *vt_kobj;
 //static struct task_struct * task
 
+/** @brief Function to initize kernel module */
 static int __init vtgpio_init(void) {
   int result=0;
   int res = 0;
@@ -673,6 +778,7 @@ static int __init vtgpio_init(void) {
   return result;
 }
 
+/** @brief exit function to clean up */
 static void __exit vtgpio_exit(void) {
   printk(KERN_INFO "VT-GPIO_TEST: Exiting LKM\n");
   kobject_put(vt_kobj);
@@ -686,18 +792,98 @@ static void __exit vtgpio_exit(void) {
   printk(KERN_INFO "VT-GPIO_TEST: Successfully leaving LKM\n");
 }
 
-/* handler for rising signal */
+/** @brief handler for rising signal */
 static irq_handler_t vtgpio_irq_handler(unsigned int irq, void *dev_id, struct pt_regs *regs) {
   pause();
   return (irq_handler_t) IRQ_HANDLED; // return that we all good
 }
 
-/* handler for falling signal */
+/** @brief handler for falling signal */
 static irq_handler_t vtgpio_irq_handler_fall(unsigned int irq, void *dev_id, struct pt_regs *regs) {
   resume();
   return (irq_handler_t) IRQ_HANDLED; // return that we all good
 }
 
+
+int write_proc_field(pid_t pid, char* field, char* val) {
+  int ret;
+  struct file *proc_file;
+  char path[PATH_MAX];
+  size_t val_len = strlen(val);
+  
+  sprintf(path, "/proc/%d/%s", pid, field);
+  proc_file =file_open(path,O_WRONLY,0);
+  if (!proc_file){
+    printk(KERN_INFO "VT-GPIO_ERROR: can not open %s\n",path);
+    return -1;
+  }
+    
+  ret = file_write(proc_file, 0, val, val_len);
+
+  if (ret < 0) {
+    printk(KERN_INFO "VT-GPIO_ERROR: can not write %s\n",path);
+    return -1;
+  }
+  ret = file_sync(proc_file);
+  if (ret < 0) {
+    printk(KERN_INFO "VT-GPIO_ERROR: can not sync %s\n",path);
+    return -1;
+  }
+  file_close(proc_file);
+  
+  return 0;
+}
+
+struct file* file_open(const char* path, int flags, int rights) {
+  struct file* filp = NULL;
+  mm_segment_t oldfs;
+  int err = 0;
+
+  oldfs = get_fs();
+  set_fs(get_ds());
+  filp = filp_open(path, flags, rights);
+  set_fs(oldfs);
+  if(IS_ERR(filp)) {
+    err = PTR_ERR(filp);
+    return NULL;
+  }
+  return filp;
+}
+
+void file_close(struct file* file) {
+  filp_close(file, NULL);
+}
+
+int file_read(struct file* file, unsigned long long offset, unsigned char* data, unsigned int size) {
+  mm_segment_t oldfs;
+  int ret;
+
+  oldfs = get_fs();
+  set_fs(get_ds());
+
+  ret = vfs_read(file, data, size, &offset);
+
+  set_fs(oldfs);
+  return ret;
+}
+
+int file_write(struct file* file, unsigned long long offset, unsigned char* data, unsigned int size) {
+  mm_segment_t oldfs;
+  int ret;
+
+  oldfs = get_fs();
+  set_fs(get_ds());
+
+  ret = vfs_write(file, data, size, &offset);
+
+  set_fs(oldfs);
+  return ret;
+}
+
+int file_sync(struct file* file) {
+  vfs_fsync(file, 0);
+  return 0;
+}
 
 module_init(vtgpio_init);
 module_exit(vtgpio_exit);
