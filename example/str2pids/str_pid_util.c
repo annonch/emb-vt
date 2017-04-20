@@ -79,7 +79,7 @@ int str2int2(){
   int count = 0;
   const char *str = "345 3345 35 75 52 386 50 40 30 20 10 2 399 ";
 
-  char newdst[44] = {0};
+  char newdst[144] = {0};
   char *ddst;
   ddst = newdst;
 
@@ -89,7 +89,7 @@ int str2int2(){
     int n = strtol(ddst, &end, 10);
     pids[count]=n;
     count++;
-    //printf("%d\n", n);
+    printf("%d\n", n);
     while (*end == ' ') {
       end++;
     }
