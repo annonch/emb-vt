@@ -16,10 +16,16 @@ kill -CONT $PID2
 for i in `seq 1 100`;
 while [ps -p $PID1 > /dev/null]
     echo "freezing";
+    start = date +"%T.%N"
     echo "freeze" > /sys/vt/VT7/mode
+    end = date +"%T.%N"
+    echo Time taken to freeze: $((end - start))
     sleep 10
     echo "unfreezing"
-    echo "unfreeze" > /sys/vt/VT7/mode
+    start = date +"%T.%N"
+    echo Time taken to unfreeze: "unfreeze" > /sys/vt/VT7/mode
+    end = date +"%T.%N"
+    echo $((end - start))
     sleep 10
 done
 wait $PID1
