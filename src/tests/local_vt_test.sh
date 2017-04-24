@@ -16,16 +16,16 @@ kill -CONT $PID2
 while kill -0 $PID1 >/dev/null 2>&1
 do
     echo "freezing";
-    START = 'date +"%T.%N"'
-    echo "freeze" > /sys/vt/VT7/mode
-    END = date +"%T.%N"
-    echo Time taken to freeze: $((END - START))
+    #START = 'date +"%T.%N"'
+    time echo "freeze" > /sys/vt/VT7/mode
+    #END = date +"%T.%N"
+    #echo Time taken to freeze: $((END - START))
     sleep 10
     echo "unfreezing"
-    START = date +"%T.%N"
-    echo Time taken to unfreeze: "unfreeze" > /sys/vt/VT7/mode
-    END = date +"%T.%N"
-    echo Time taken to freeze: $((END - START))
+    #START = date +"%T.%N"
+    time echo "unfreeze" > /sys/vt/VT7/mode
+    #END = date +"%T.%N"
+    #echo Time taken to freeze: $((END - START))
     sleep 10
 done
 wait $PID1

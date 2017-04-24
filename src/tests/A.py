@@ -1,9 +1,6 @@
 #!/usr/bin/python
 
-#this program will test if v time is working or not
 
-
-#
 import signal,os
 import sys
 import time

@@ -1,7 +1,5 @@
 #!/usr/bin/python
 
-# this program recieves the message from program A and prints it to a file
-
 import signal,os
 import time
 import sys
