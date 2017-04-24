@@ -21,13 +21,12 @@ def setup_pipe():
 def listen(pipe):
     return pipe.readline()
 
-if __name__ == '__main__':
-    start_time = time.time()
-    my_pipe = setup_pipe()
-    #while time.time() < (start_time + RUN_TIME):
-    while 1:
-        A = listen(my_pipe)
-        if A != "exit":
-            print('Program A time: %sProgram B time: %s \n' % ( A , time.time()))
-        else:
-            sys.exit(0)
+start_time = time.time()
+my_pipe = setup_pipe()
+#while time.time() < (start_time + RUN_TIME):
+while 1:
+    A = listen(my_pipe)
+    if A != "exit":
+        print('Program A time: %sProgram B time: %s \n' % ( A , time.time()))
+    else:
+        sys.exit(0)

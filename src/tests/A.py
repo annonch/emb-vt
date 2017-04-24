@@ -23,10 +23,10 @@ def send(msg,pipe):
         # exit quietly..
         sys.exit(0)
 
-if __name__ == '__main__':
-    my_pipe = setup_pipe()
-    for x in range(100):
-        send(str(time.time()),my_pipe)
-        time.sleep(2)
-    send("exit",my_pipe)
-    sys.exit(0)
+
+my_pipe = setup_pipe()
+for x in range(100):
+    send(str(time.time()),my_pipe)
+    time.sleep(2)
+send("exit",my_pipe)
+sys.exit(0)
