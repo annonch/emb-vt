@@ -13,8 +13,7 @@ sleep 10
 echo "starting processes"
 kill -CONT $PID1
 kill -CONT $PID2
-for i in `seq 1 100`;
-while [ps -p $PID1 > /dev/null]
+while [ps -p $PID1 > /dev/null]; do
     echo "freezing";
     start = date +"%T.%N"
     echo "freeze" > /sys/vt/VT7/mode
