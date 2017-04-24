@@ -8,7 +8,7 @@ echo $PID1
 echo $PID2
 ## DILATE ##
 echo "adding P2 to VT"
-echo $PID2 > /sys/vt/VT7/pid_01
+echo $PID1 > /sys/vt/VT7/pid_01
 sleep 10
 echo "starting processes"
 kill -CONT $PID1
