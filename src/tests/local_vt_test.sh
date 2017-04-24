@@ -1,8 +1,8 @@
 #!/bin/bash
 echo "kicking off processes in paused state"
-./start_paused.sh ./print_time.py > log_1.txt &
+./start_paused.sh ./A.py > log_1.txt &
 PID1=$!
-./start_paused.sh ./print_time.py > log_2.txt &
+./start_paused.sh ./B.py > log_2.txt &
 PID2=$!
 echo $PID1
 echo $PID2
