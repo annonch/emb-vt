@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "kicking off processes in paused state"
-./start_paused.sh ./A.py
+./start_paused.sh ./A.py &
 PID1=$!
 ./start_paused.sh ./B.py > vt_log.txt &
 PID2=$!
