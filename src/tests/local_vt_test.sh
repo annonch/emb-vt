@@ -13,18 +13,19 @@ sleep 10
 echo "starting processes"
 kill -CONT $PID1
 kill -CONT $PID2
-while [ps -p $PID1 > /dev/null]; do
+while kill -0 $PID1 >/dev/null 2>&1
+do
     echo "freezing";
-    start = 'date +"%T.%N"'
+    START = 'date +"%T.%N"'
     echo "freeze" > /sys/vt/VT7/mode
-    end = date +"%T.%N"
-    echo Time taken to freeze: $((end - start))
+    END = date +"%T.%N"
+    echo Time taken to freeze: $((END - START))
     sleep 10
     echo "unfreezing"
-    start = date +"%T.%N"
+    START = date +"%T.%N"
     echo Time taken to unfreeze: "unfreeze" > /sys/vt/VT7/mode
-    end = date +"%T.%N"
-    echo $((end - start))
+    END = date +"%T.%N"
+    echo Time taken to freeze: $((END - START))
     sleep 10
 done
 wait $PID1
