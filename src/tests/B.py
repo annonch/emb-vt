@@ -22,9 +22,11 @@ def listen(pipe):
 start_time = time.time()
 my_pipe = setup_pipe()
 #while time.time() < (start_time + RUN_TIME):
+i=0;
 while 1:
+    i+=1
     A = listen(my_pipe)
     if A != "exit":
-        print('Program A time: %sProgram B time: %s \n' % ( A , (time.time()-start_time)))
+        print('%s,%s,%s,%s' % ( i,A.rstrip(),i,(time.time()-start_time)))
     else:
         sys.exit(0)
