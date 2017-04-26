@@ -18,7 +18,7 @@ do
     echo "freezing";
     #START = 'date +"%T.%N"'
     #time
-    kill -STOP $PID1 
+    #kill -STOP $PID1 
     echo "freeze" > /sys/vt/VT7/mode
     #END = date +"%T.%N"
     #echo Time taken to freeze: $((END - START))
@@ -27,7 +27,7 @@ do
     #START = date +"%T.%N"
     #time
     echo "unfreeze" > /sys/vt/VT7/mode
-    kill -CONT $PID1
+    #kill -CONT $PID1
     #END = date +"%T.%N"
     #echo Time taken to freeze: $((END - START))
     sleep 2
