@@ -1,0 +1,90 @@
+\begin{thebibliography}{10}
+
+\bibitem{FNCS-algos}
+S.~Ciraci, J.~Daily, K.~Agarwal, J.~Fuller, L.~Marinovici, and A.~Fisher.
+\newblock Synchronization algorithms for co-simulation of power grid and
+  communication networks.
+\newblock In {\em Modelling, Analysis Simulation of Computer and
+  Telecommunication Systems (MASCOTS), 2014 IEEE 22nd International Symposium
+  on}, pages 355--364, Sept 2014.
+
+\bibitem{FNCS}
+S.~Ciraci, J.~Daily, J.~Fuller, A.~Fisher, L.~Marinovici, and K.~Agarwal.
+\newblock Fncs: A framework for power system and communication networks
+  co-simulation.
+\newblock In {\em Proceedings of the Symposium on Theory of Modeling \&
+  Simulation - DEVS Integrative}, DEVS '14, pages 36:1--36:8, San Diego, CA,
+  USA, 2014. Society for Computer Simulation International.
+
+\bibitem{RT-SmartGrid}
+C.~Dufour and J.~Belanger.
+\newblock On the use of real-time simulation technology in smart grid research
+  and development.
+\newblock {\em Industry Applications, IEEE Transactions on}, 50(6):3963--3970,
+  Nov 2014.
+
+\bibitem{rt-sim}
+M.~D.~O. Faruque, T.~Strasser, G.~Lauss, V.~Jalili-Marandi, P.~Forsyth,
+  C.~Dufour, V.~Dinavahi, A.~Monti, P.~Kotsampopoulos, J.~A. Martinez,
+  K.~Strunz, M.~Saeedifard, X.~Wang, D.~Shearer, and M.~Paolone.
+\newblock Real-time simulation technologies for power systems design, testing,
+  and analysis.
+\newblock {\em IEEE Power and Energy Technology Systems Journal}, 2(2):63--73,
+  June 2015.
+
+\bibitem{DSSco-sim}
+T.~Godfrey, S.~Mullen, R.~Dugan, C.~Rodine, D.~Griffith, and N.~Golmie.
+\newblock Modeling smart grid applications with co-simulation.
+\newblock In {\em Smart Grid Communications (SmartGridComm), 2010 First IEEE
+  International Conference on}, pages 291--296, Oct 2010.
+
+\bibitem{EPOCHS}
+K.~Hopkinson, X.~Wang, R.~Giovanini, J.~Thorp, K.~Birman, and D.~Coury.
+\newblock Epochs: a platform for agent-based electric power and communication
+  simulation built from commercial off-the-shelf components.
+\newblock {\em Power Systems, IEEE Transactions on}, 21(2):548--558, May 2006.
+
+\bibitem{Lamps:TK:pads14}
+J.~Lamps, D.~M. Nicol, and M.~Caesar.
+\newblock Timekeeper: A lightweight virtual time system for linux.
+\newblock In {\em Proceedings of the 2Nd ACM SIGSIM Conference on Principles of
+  Advanced Discrete Simulation}, SIGSIM PADS '14, pages 179--186, New York, NY,
+  USA, 2014. ACM.
+
+\bibitem{GECO}
+H.~Lin, S.~Veda, S.~Shukla, L.~Mili, and J.~Thorp.
+\newblock Geco: Global event-driven co-simulation framework for interconnected
+  power system and communication network.
+\newblock {\em Smart Grid, IEEE Transactions on}, 3(3):1444--1456, Sept 2012.
+
+\bibitem{Mets2014}
+K.~Mets, J.~Ojea, and C.~Develder.
+\newblock Combining power and communication network simulation for
+  cost-effective smart grid analysis.
+\newblock {\em Communications Surveys Tutorials, IEEE}, 16(3):1771--1796, Third
+  2014.
+
+\bibitem{DSS-RT-HIL}
+D.~Montenegro, M.~Hernandez, and G.~Ramos.
+\newblock Real time opendss framework for distribution systems simulation and
+  analysis.
+\newblock In {\em Transmission and Distribution: Latin America Conference and
+  Exposition (T D-LA), 2012 Sixth IEEE/PES}, pages 1--5, Sept 2012.
+
+\bibitem{Yan:VTS:pads15}
+J.~Yan and D.~Jin.
+\newblock A virtual time system for linux-container-based emulation of
+  software-defined networks.
+\newblock In {\em Proceedings of the 3rd ACM SIGSIM Conference on Principles of
+  Advanced Discrete Simulation}, SIGSIM PADS '15, pages 235--246, New York, NY,
+  USA, 2015. ACM.
+
+\bibitem{Yan:VTM:sosr15}
+J.~Yan and D.~Jin.
+\newblock Vt-mininet: Virtual-time-enabled mininet for scalable and accurate
+  software-define network emulation.
+\newblock In {\em Proceedings of the 1st ACM SIGCOMM Symposium on Software
+  Defined Networking Research}, SOSR '15, pages 27:1--27:7, New York, NY, USA,
+  2015. ACM.
+
+\end{thebibliography}

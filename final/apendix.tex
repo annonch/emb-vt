@@ -1,0 +1,177 @@
+\\section{Appendix}
+\begin{table*}[t]
+  \label{ex2_s1_ft}
+  \centering
+  \vspace{0.3cm}
+  \caption{Switch Configurations for the Example in Figure 1}
+  \begin{tabular}{||ccc||ccc||ccc||}
+    \hline
+    \multicolumn{3}{||c||}{ Flow Table $s_1$:FT1}&\multicolumn{3}{c||}{ Flow Table $s_2$:FT1}&\multicolumn{3}{|c||}{ Flow Table $s_7$:FT1} \\
+    \hline  \hline
+    %\vspace{.1mm}
+    FlowID & Match Field & Action &     FlowID & Match Field & Action &    FlowID & Match Field & Action \\ [0.5ex]
+    \hline
+    Flow 1 & InPort: $w$ & Group GT1   &Flow 1 & InPort: $y$ & Group GT1     &Flow 1 &InPort: $w$ & Group GT1   \\
+    Flow 2 & InPort: $y$ & OutPort: $z$ &Flow 2 & InPort: $x$ & OutPort: $y$   &Flow 2 &InPort: $x$ & OutPort: $w$ \\[1ex]
+    \hline
+    \multicolumn{9}{c}{ } \\[-1.75ex]
+    \hline%
+
+
+
+    \multicolumn{3}{||c||}{ Group Table $s_1$:GT1 Type: FF}&\multicolumn{3}{c||}{ Group Table $s_2$:GT1 Type: FF}&\multicolumn{3}{|c||}{ Group Table $s_7$:GT1 Type: FF} \\
+    \hline  \hline
+    %\vspace{.1mm}
+    Bucket ID & WatchPort & Action & Bucket ID & WatchPort & Action & Bucket ID & WatchPort & Action \\ [0.5ex]
+    \hline
+    Bucket 1 &  $y$ & OutPort: $y$   & Bucket 1 &  $x$ & OutPort: $x$ &Bucket 1 & $x$ & OutPort: $x$ \\
+    Bucket 2 &  $z$ & OutPort: $z$ & Bucket 2   &  $y$ & OutPort: $y$ &Bucket 2 & $w$ & OutPort: $w$ \\[1ex]
+    \hline
+    \multicolumn{9}{c}{ } \\[-1.75ex]
+    \hline
+
+
+
+
+
+    \multicolumn{3}{||c||}{ Flow Table $s_3$:FT1}&\multicolumn{3}{c||}{ Group Table $s_3$:GT1Type: FF}&\multicolumn{3}{|c||}{ Flow Table $s_8$:FT1} \\
+    \hline \hline
+    \vspace{.1mm}
+    Flow ID & Match Field  & Action &     Bucket ID & WatchPort & Action &    Bucket ID & WatchPort & Action \\ [0.5ex]
+    \hline
+    Flow 1 & InPort: $y$ & Group GT1   &Bucket 1 &  $x$ & OutPort: $x$  &Flow 1 &InPort: * & OutPort $z$  \\
+    Flow 2 & InPort: $x$ & OutPort $w$ &Bucket 2 &  $w$ & OutPort: $w$  &&& \\
+    Flow 3 & InPort: $w$ & OutPort $y$ &Bucket 3 &  $y$ & OutPort: $y$  &&& \\[1ex]
+    \hline
+
+  \end{tabular}
+\end{table*}
+
+\begin{algorithm}
+  \caption{Modified DFS Algorithm}
+  \label{algo1}
+  \begin{algorithmic}[1]
+
+    \Function{Algo}{$G=(V,E),s,t,M$}
+    \ForAll {$ v \in N(s)$  } %\Comment{\texttt{$N(s)$: set of neighbors of $s$}}
+    \If{$v\in T$} \Comment{\texttt{Node visited before}}
+    \If{$v\in M$} \Comment{\texttt{Case 1: backedge}}
+    \State Return
+    \ElsIf {$v\in R$} \Comment{\texttt{Case 2: crossedge}}
+    \State $Tag(v,s,M)$
+    \Else \Comment{\texttt{Case 3:no path to $t$}}
+    \State Return
+    \EndIf
+    \Else
+    \State $M = M \cup \{ v\}$\Comment{\texttt{Add $v$ to $M$}}
+    \State $M[s].child=v$
+    \If{$v=t$} \Comment{\texttt{Case 4: reached t}}
+    \State \texttt{$R= R \cup M$} \Comment{\texttt{Add $M$ to $T$}}
+    \Else \Comment{\texttt{Case 5:unexplored node}}
+    \State $T=T \cup \{ v\} $
+    \State $Algo(G,v,t,M)$ %\Comment{\texttt{Recourse}}
+    \EndIf
+    \EndIf
+    \EndFor
+    \EndFunction
+    \State \
+    \State \texttt{R=\{ \}}\Comment{\texttt{N-ary tree, contains all paths}}
+    \State \texttt{M=\{ \}}\Comment{\texttt{tmp working tree}}
+    \State \texttt{T=\{ \}}\Comment{\texttt{list of marked nodes}}
+    \State \texttt{$s$ = source}
+    \State \texttt{$t$ = destination}
+    \State \texttt{Algo(G,s,t,M)}
+
+    %\end{algorithmic}
+    %\end{algorithm}
+
+    %\begin{algorithm}
+    %\caption{Tag Routine}
+    %\label{algo2}
+    %\begin{algorithmic}[1]
+    \State \
+
+    \Function{Tag}{$v,s,M$}
+    \State $A = copy(v)$ \Comment{\texttt{creates copy of $v$}}
+    \State $M = M \cup \{ A\}$ \Comment{\texttt{add $A$ to $M$}}
+    \State \texttt{$M[s].child=A$}
+    %\State $M[A].cross = R[v]$ \Comment{\texttt{add ptr}}
+    \State $Copy\_down(v,A,M)$ \Comment{\texttt{child of $v$} \textbf{will} \texttt{reach $t$}}
+    \State $Copy\_up(v,A,M)$ \Comment{\texttt{parent of $v$} \textbf{may} \texttt{reach $t$}}
+
+    \EndFunction
+
+    %\end{algorithmic}
+    %\end{algorithm}
+
+    %   \begin{algorithm}
+    % \caption{CopyDown Routine}
+    % \label{algo3}
+    %\begin{algorithmic}[1]
+    \State \
+    \Function{Copy\_down}{$v,A,M$}
+    \ForAll{$v' \in children(v) \not\in M$}
+    \State $A' = copy(v')$
+    \State $M[A].child=A'$
+    \If {$v=t$}
+    \State $R=R \cup M$
+    \Else
+    \State $Copy\_down(v,A',M)$
+    \EndIf
+    \EndFor
+    \EndFunction
+
+    %\end{algorithmic}
+    %\end{algorithm}
+    %\begin{algorithm}
+    %  \caption{CopyUp Routine}
+    %  \label{algo4}
+    %  \begin{algorithmic}[1]
+
+    \State \
+    \Function{Copy\_up}{$v,A,M$}
+    \If{$v.parent \in M$}
+    \State Return
+    \Else
+    \State $A'=copy(v.parent)$
+    \State $M[A].child=A'$
+    \State $Tag(A',v.parent,M)$ \Comment{\texttt{treat as crossedge}}
+    \EndIf
+
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+
+Many networks that enable resiliency contain loops.
+The major difficulty for multiple paths routing through loops is that there are already rules on the switches making it difficult to keep track of which routes have been traversed before.
+When a crossedge points to a node $s \to v$ where $v$ is the node already explored from, a set of rules need to be in place to allow the packet to return to $s$ through the crossedge if no path can be found from $v \to t$. This is done by \textit{tagging} the edge.
+Tagging the edge with a VLAN through the PUSH VLAN and SET VLAN actions in OpenFlow, the crossedge can be identified and corresponding rules can be applied to the $v$ node, allowing the VLAN id to be used to match on in the flow tables of the switches along with port number. Note that any other field can be used, but we use the VLAN for example to require only layer 2 information. In this case, the children of $v$ are viable candidates to reach $t$ however if $v$ has already processed this packet earlier, then there is no possible way for the packet to reach $t$ according to lemma 1.
+
+%\vspace{-2.5mm}
+\textbf{Lemma 1: } If a packet $p$ travels through a crossedge $b= (s \to v)$, where $v$ has already been visited, there is no way for $p$ to reach $t$ through $b$.
+
+\textbf{Proof: } Suppose that it is possible for $p$ to reach $t$ through a crossedge $b=(s \to v)$ where $v$ has already processed $p$, the packet $p$ will have to reach $t$ either through a child of $v$ or the parent of $v$.
+If $p$ reaches $t$ through a child of $v$ then this path would have been discovered earlier at the first processing of $p$, similarly $p$ reaching $t$ through the parent of $v$ would require the parent to have a path to $t$ where the edge $v \to v.parent$ acts as the crossedge making this argument recursive until reaching the root.
+
+\vspace{2mm}
+
+Using Lemma 1, an additional rule is installed on both switch $v$ and $s$ in a crossedge $s\to v$.
+The rule installed on $v$ is to \textit{sign} the frames that it processes upon crankback.
+The rule installed on $s$ is to check for $v$'s signature.
+If $s$ sees $v's$ signature, then it uses the same group table entry as if sent back from $v \to s$.
+This feature of using the VLAN field as a ledger enables the passing of primitive messages between switches to allow future switches to act differently based on the past history of the packet.
+The ability to match using a mask allows for checking a single bit (or arbitrary number bits) of a VLAN id.
+A similar mechanism allows the setting of a single bit in the VLAN id using OpenFlow.
+
+
+The copy down routine allows for the copying of part of the existing N-ary tree into the current working tree. Because the existing N-ary tree has all leaves as $t$, we can copy each branch where the crossedge has reached. This is the first part of handling a crossedge.
+The nice feature of the N-ary tree is that there are no loops so that copying the sub tree at the cross edge enforces this property.
+Because the tagging routine tags the destination of the crossedge, this subtree will only be traversed if the node has not already been visited by the packet.
+If it has not already been visited, it utilizes the VLAN to ensure the correct path, i.e., back through the crossedge is taken if no path to $t$ can be found.
+
+%\subsubsection{CopyUp}
+
+On the other hand, if a packet $p$ travels through a crossedge $b= (s \to v)$, where $v$ has not already been visited, it means that between $v$ and the root there is a link failure.
+In this case it is possible for $p$ to reach $t$ through $s \to v$.
+Therefore the algorithm accounts for this case by treating the edge $e= (v, v.parent)$ as a crossedge recursively.
+
