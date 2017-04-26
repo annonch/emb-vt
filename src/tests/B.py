@@ -25,6 +25,6 @@ my_pipe = setup_pipe()
 while 1:
     A = listen(my_pipe)
     if A != "exit":
-        print('Program A time: %sProgram B time: %s \n' % ( A , time.time()))
+        print('Program A time: %sProgram B time: %s \n' % ( A , (time.time()-start_time)))
     else:
         sys.exit(0)

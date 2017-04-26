@@ -22,8 +22,9 @@ def send(msg,pipe):
 
 
 my_pipe = setup_pipe()
+start_time=time.time()
 for x in range(100):
-    send(str(time.time()),my_pipe)
-    time.sleep(2)
+    send(str(time.time()-start_time),my_pipe)
+    time.sleep(0.5)
 send("exit",my_pipe)
 sys.exit(0)
