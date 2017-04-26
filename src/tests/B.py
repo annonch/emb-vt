@@ -1,7 +1,5 @@
 #!/usr/bin/python
 
-# this program recieves the message from program A and prints it to a file
-
 import signal,os
 import time
 import sys
@@ -21,13 +19,14 @@ def setup_pipe():
 def listen(pipe):
     return pipe.readline()
 
-if __name__ == '__main__':
-    start_time = time.time()
-    my_pipe = setup_pipe()
-    #while time.time() < (start_time + RUN_TIME):
-    while 1:
-        A = listen(my_pipe)
-        if A != "exit":
-            print('Program A time: %sProgram B time: %s \n' % ( A , time.time()))
-        else:
-            sys.exit(0)
+start_time = time.time()
+my_pipe = setup_pipe()
+#while time.time() < (start_time + RUN_TIME):
+i=0;
+while 1:
+    i+=1
+    A = listen(my_pipe)
+    if A != "exit":
+        print('%s,%s,%s,%s' % ( i,A.rstrip(),i,(time.time()-start_time)))
+    else:
+        sys.exit(0)

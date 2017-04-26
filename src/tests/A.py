@@ -1,9 +1,6 @@
 #!/usr/bin/python
 
-#this program will test if v time is working or not
 
-
-#
 import signal,os
 import sys
 import time
@@ -23,10 +20,11 @@ def send(msg,pipe):
         # exit quietly..
         sys.exit(0)
 
-if __name__ == '__main__':
-    my_pipe = setup_pipe()
-    for x in range(100):
-        send(str(time.time()),my_pipe)
-        time.sleep(2)
-    send("exit",my_pipe)
-    sys.exit(0)
+
+my_pipe = setup_pipe()
+start_time=time.time()
+for x in range(100):
+    send(str(time.time()-start_time),my_pipe)
+    time.sleep(0.5)
+send("exit",my_pipe)
+sys.exit(0)

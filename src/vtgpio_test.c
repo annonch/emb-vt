@@ -667,7 +667,7 @@ static ssize_t mode_store(struct kobject *kobj, struct kobj_attribute *attr, con
     //printk(KERN_INFO "VT-GPIO_TEST: value of pin: %d\n", gpio_get_value(gpioSIG));
     gpio_direction_input(gpioSIG);
     //printk(KERN_INFO "VT-GPIO_TEST: value of pin: %d\n", gpio_get_value(gpioSIG));
-    resume();
+    resume(); // this should get called throuigh the interrupt
   }
   return count;
 }

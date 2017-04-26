@@ -15,11 +15,12 @@ kill -CONT $PID1
 kill -CONT $PID2
 for i in `seq 1 100`;
 do
+    #s = date +%s.%N
     echo "freezing";
-    echo "freeze" > /sys/vt/VT7/mode
+    time echo "freeze" > /sys/vt/VT7/mode
     sleep 10
     echo "unfreezing"
-    echo "unfreeze" > /sys/vt/VT7/mode
+    time echo "unfreeze" > /sys/vt/VT7/mode
     sleep 10
 done
 wait $PID1
