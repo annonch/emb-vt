@@ -3,9 +3,10 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: main.aux
 The style file: abbrv.bst
 Database file #1: sigproc.bib
+Warning--I didn't find a database entry for "Hannon:2016"
 You've used 12 entries,
             2118 wiz_defined-function locations,
-            588 strings with 6942 characters,
+            590 strings with 6964 characters,
 and the built_in function-call counts, 5971 in all, are:
 = -- 582
 > -- 331
@@ -44,3 +45,4 @@ warning$ -- 0
 while$ -- 47
 width$ -- 14
 write$ -- 146
+(There was 1 warning)

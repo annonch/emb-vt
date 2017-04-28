@@ -175,7 +175,14 @@ emulation + hardware ( hybrid)
 
 \section{Implemenation}
 
-\
+The simulation server we utilize from our previous work DSSnet \cite{Hannon:2016}.
+The testbed that we create is composed of 2 Banana Pi devices, 1 embedded router Banana Pi R1, and 2 Raspberry Pi devices all running Raspian Linux 3.04 kernel.
+
+\subsection{Virtual Time}
+Our largest contribution is the distributed interface to the virtual time module. The devices are physically connected on GPIO pins 7 and 9. Each device loads an identical kernel module \textit{emb-vt}. The module registers a hardware interrupt on both pins 7 and 9 which share the same physical bus. The module registers a low to high interrupt on one pin and a high to low interrupt on the other. The module also creates several kobjects in /sys/vt/VT7/ including entries to register process ids, dilation factor, and a boolean variable to trigger the freeze and unfreeze routines.
+When a process triggers the freeze, the module will change its pin 7 from low power to high power causing the rest of the devices to receive the signal to their hardware interrupt. The next step is that all devices will write to their /proc/\$PID/freeze object that triggers the timekeeping to occur as per \cite{Yan:VTS:pads15}.
+Essentially the kernel records the time and stores an accumilated offset in the proc file system for each process. The benefit of this approach is that each process has its own virtual clock.
+When the process triggers the unfreeze, the module will change its pin 7 back to low causing the interrupt on pin 9 to occur, resuming the processes clocks.
 
 \section{Evaluation}
 
