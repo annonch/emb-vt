@@ -71,11 +71,23 @@ The distributed synchronization between the devices is decentralized with the ke
 
 
 \section{Design}
-The design of the testbed includes 2 main components: the simulation and management server, and the distributed embedded communication network system.
+The design of the testbed includes 2 main components: the simulation and management server, and the distributed embedded communication network system. The simulation server processes time-step simulation events and requests from the communication models while the embedded communication can run a single model or emulate multiple modles on a single device.
 
 \subsection{Simulation and Management Server}
+The simulation and management server is responsible for interfacing the electric power simulator with the distributed linux testbed. Additionally the managment features require that the server have the ability to initiate processes on the embedded devices in order to kickoff experiments. For electric power simulation, the user specifies the configuration of the power circuit, power related parameters, and sensor and relay devices. Elements in the power system may have a communication presence and then are represented as models in either
 
 \subsection{Distributed Linux System}
+
+The distributed embedded linux system is composed of standard lightweight processors and networking devices. Figure \ref{env} shows the architecture of the distributed system. The system runs various power models such as sensors, relays, energy storage devices which have a simulated presence in the power simulator as well as power system controllers that interact with the previous devices.
+
+\begin{figure}
+  \centering
+  \label{env}
+  \includegraphics[scale=0.48]{Distributed_environment.pdf}
+  \caption{
+    The Bottom layer is the communication applications which interact during experiment. The second layer is the embedded devices which consist of commodity arm processors, and router devices. The middleware OS layer is a distributed kernel module that enables the virtual time application to run over the distributed testbed.
+    }
+\end{figure}
 
 \subsection{Synchronization Challenges}
 While it is possible to run electric power simulation in real-time \cite{rt-sim}, such simulators often require specialized hardware and proprietary closed software. Thus real-time simulation is infeasible for low-cost hybrid testbeds. Additionally, the real-time nature of power simulation can not account for the exchange of messeges with the network system for passing messages.
@@ -114,7 +126,7 @@ to retrieve power flow values while $E_2$ sets the value of a
 discharging battery based on the value returned previously.
 Since the reply $R_1$ occurs after $E_2$ this can introduce an
 error. Furthermore, such errors can be accumulated if the
-simulation keeps out of synchronization with the emulation.
+simulation keeps out of synchronization with the distributed emulation.
 
 \begin{figure}
   \centering
@@ -123,14 +135,42 @@ simulation keeps out of synchronization with the emulation.
 
   \caption{
     The execution of the system is shown with respect
-    to its own perceived time, i.e., the sum of the emulation
-    execution time (can be dilated or not dilated) and the virtual
-    time elapsed in simulation. The network emulation is paused
+    to its own perceived time, i.e., the sum of the elapsed wall clock time or emulation
+    execution time and the virtual time elapsed in simulation. The network emulation is paused
     to allow for the simulation to catch up to the emulation—
     this also ensures synchronization errors in the early example
     do not occur.
   }
 \end{figure}
+
+In order to overcome the synchronization challenges, we utilize the virtual time kernel's ability to freeze (or pause) the emulated processes clocks. The technique by which we perform the freeze and unfreeze over the distributed system is through the middleware layer that creates a unified control of virtual time over the distributed system.
+
+\subsection{Virtual Time System}
+Building on previous work by Yan \cite{Yan:VTS:pads15} we extend the virtual time kernel for distributed environments. The methods we do this by is a hardward bus that connects the devices. Communication is binary over hardware interrupts that enable the devices to indicate to each other in a distributed fashion to initiate the pausing of the virtual clocks. The synchronization algorithm is kicked off by a process that creates an event to the power simulator. Upon this time, the kernel module on the local process triggers the distributed pause using the hardware interrupt. At this time each device can freeze the required virtual clocks. When the simulator is finished processing events it places the result in the calling processes buffer and the kernel module can begin the unfreeze routine similar to the freeze one.
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.48]{Distributed_Algo.pdf}
+  \caption{
+    The overview of the distributed algorithm.
+    }
+\end{figure}
+
+\subsection{Distributed Emulation}
+\
+
+In order to enhance scalability...
+
+\
+
+hardware only
+
+\
+
+connect emulation together
+
+\
+
+emulation + hardware ( hybrid)
 
 
 \section{Implemenation}
