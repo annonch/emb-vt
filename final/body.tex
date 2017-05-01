@@ -78,7 +78,7 @@ The simulation and management server is responsible for interfacing the electric
 
 \subsection{Distributed Linux System}
 
-The distributed embedded linux system is composed of standard lightweight processors and networking devices. Figure \ref{env} shows the architecture of the distributed system. The system runs various power models such as sensors, relays, energy storage devices which have a simulated presence in the power simulator as well as power system controllers that interact with the previous devices.
+The distributed embedded linux system is composed of standard lightweight processors and networking devices. Figure 5 shows the architecture of the distributed system. The system runs various power models such as sensors, relays, energy storage devices which have a simulated presence in the power simulator as well as power system controllers that interact with the previous devices.
 
 \begin{figure}
   \centering
@@ -117,7 +117,7 @@ On the other hand, emulation and real systems' clocks progress with the real wal
   shaded box highlights the location of the error.}
 \end{figure}
 
-In Figure \ref{sim-err}, there are three cross-system events ($E_i$), each
+In Figure 3, there are three cross-system events ($E_i$), each
 with a response ($R_i$). $E_1$ occurs before $E_2$, however, $E_2$ may
 require information from $R_1$. Since the response occurs after
 the second event, the global causality is violated, and thus
@@ -158,11 +158,11 @@ Building on previous work by Yan \cite{Yan:VTS:pads15} we extend the virtual tim
 \subsection{Distributed Emulation}
 \
 
-In order to for our testbed to model larger systems, each linux device is loaded with Mininet, a network emulator which uses lightweight linux containers to run real network applications. The number of hosts Mininet may emulate is limited by the machine's CPU.
+For our testbed to model larger systems, each linux device is loaded with Mininet, a network emulator which uses lightweight linux containers to run real network applications. The number of hosts Mininet may emulate is limited by the machine's CPU.
 
 In order for our testbed to be scalable, we enabled distributed emulation by connecting remote instances of Mininet with GRE tunnels. An emulated module emulated on device A therefore may seamlessly communicate with an emulated module on device B as if they were on the same emulated network. The fact that communication between such two modules takes place over a physical link only further increases the fidelity of the testbed. Each linux device may act as single worker in a larger emulation environment, allowing the emulation capabilities to scale with each additional device.
 
-The design of this distributed emulation environment across hardware with physical communication channels enables our testbed to maintain fidelity and scalability. 
+The design of this distributed emulation environment across hardware with physical communication channels enables our testbed to maintain fidelity and scalability. Furthermore, the integration of Mininet in our design allows us to more easily pursue future research interests surrounding SDN technologies, as SDN emulation is central to Mininet development.
 
 \section{Implemenation}
 
@@ -186,21 +186,64 @@ In this section we evaluate the testbed's performance and overhead. It was first
     }
 \end{figure}
 
+\begin{figure}[H]
+  \includegraphics[scale=0.25]{clock_offset_avg.pdf}
+  \label{sim-err}
+
+  \caption{A closer look at the average and deviation of the clock offsets.
+    }
+\end{figure}
+
 With the clock offset of the devices at expectantly nominal levels, correct behavior of virtual time required validation. This was done by comparing the timestamps of two processes on a single device, one of these processes being in virtual time. Two processes A and B are started in a paused state, B is put in virtual time. Every 0.5 seconds A sends a timestamped piped message to B and B records this time and its own time. Every 2 seconds B is frozen and another 2 seconds later unfrozen. In this way, when B is unfrozen it is expected that the buffered messages from A will maintain the same interval while B will have perceived no time to have passed. Results are shown below.
 
 \begin{figure}[H]
-  \includegraphics[scale=0.20]{wc_vs_vt.png}
+  \includegraphics[scale=0.22]{wc_vs_vt.png}
   \label{sim-err}
 
   \caption{As expected, the timestamps for A grow at a linear rate, while B perceives no time to pass each time it is unfrozen. This validates the correctness several key components of the testbed, the interface to put a process in virtual time, freeze and unfreeze that process as well as the gettimeofday() system call.
     }
 \end{figure}
 
-Knowing that the key components of the testbed were in place and working as expected, the scalability of our proposed design could be tested. We found that the overhead for the freeze and unfreeze operations was on average 69.948 milliseconds with a standard deviation of 8.556 milliseconds. While this overhead is relatively consistent, it is well above what we expected and casts doubt into the scalability of a testbed using these specific devices. Note that given the nominal overhead of the hardware interrupt, each device undertakes this operational delay concurrently. Lowering this overhead moving forward is a primary goal for developing a truly scalable testbed.
+Knowing that the key components of the testbed were in place and working as expected, the scalability of our proposed design could be tested. We found that the overhead for the freeze and unfreeze operations was on average 69.948 milliseconds with a standard deviation of 8.556 milliseconds. 
+
+While this overhead is relatively consistent, it is well above what we expected and casts doubt into the scalability of a testbed using these specific devices. Note that given the nominal overhead of the hardware interrupt, each device undertakes this operational delay concurrently. Lowering this overhead moving forward is a primary goal for developing a truly scalable testbed.
 
 \section{Conclusion and Future Work}
 We present an distributed embedded linux device testbed, a testing platform that combines an
-electrical power system simulator and real communication network and distributed emulator platform. This tesbed can be used to model and simulate power flows, communication networks, and smart grid control application, and to evaluate the effect of network applications on the smart grid. Our future work includes
+electrical power system simulator and real communication network and distributed emulator platform. This tesbed can be used to model and simulate power flows, communication networks, and smart grid control application, and to evaluate the effect of network applications on the smart grid. 
+
+Our future work includes
 exploring means to extract emulation lookahead to improve
-the performance of this hybrid system, as well as evaluating the scalability of the testbed for large-scale experiments. We also plan to investigate several novel SDN
+the performance of this hybrid system, as well as evaluating the scalability of the testbed for large-scale experiments. 
+
+We also plan to investigate several novel SDN
 applications for microgrid security and resilience, such as context-aware intrusion detection with PMU networks. Finally to improve the performance of the virtual time system we plan to explore real-time linux operating systems including direct control over the linux scheduler.
+
+\section{Work Distribution}
+Below is an itemized list of the distribution of the main contributions. Most items were collaborative to some extent.
+\\
+Chris
+
+-Hardware configuration
+
+-Porting the virtual time kernel
+
+-Distributed synchronization strategy and interface
+\\
+Neil
+
+-Distributed emulation
+
+-Evaluation tests and analysis
+
+-Debugging kernel
+\\
+Collaborative
+
+-Presentation
+
+-Final Report
+
+-Charts and figures
+
+-Poster
