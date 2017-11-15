@@ -20,7 +20,7 @@ EPOCHS \cite{EPOCHS} uses commercial power simulators to co-simulate network and
 %While agents are not new to simulation,
 This platform uses agents to effectively co-simulate power and communication elements.
 The authors define agents as having the properties of autonomy and interaction.
-That they exhibit properties of mobility, intelligence, adaptivity and communication.
+That they exhibit properties of mobility, intelligence, adaptability and communication.
 In our design, our models run real processes on real hardware but can influence and extract values from the power simulator.
 This allows for us to make use of agents to as entities that exist in both systems.
 
@@ -30,7 +30,7 @@ The difference is that our approach is focused on running real network processes
 
 There are two main features that set our design apart from the existing tools.
 The first is that we are using real hardware for networking components rather than a simulator.
-The second is that our testbed's design works without real-time simulators making our apporach general and low-cost.
+The second is that our testbed's design works without real-time simulators making our approach general and low-cost.
 
 
 
@@ -42,7 +42,7 @@ The second is that our testbed's design works without real-time simulators makin
 
 \section{Project Goals}
 
-While simulation systems offer a convinient and low cost method of perfoming evaluation on models of systems it lacks the fidelity that real systems contain.
+While simulation systems offer a convenient and low cost method of performing evaluation on models of systems it lacks the fidelity that real systems contain.
 
 This project aims to achieve the following:
 \begin{itemize}
@@ -71,14 +71,14 @@ The distributed synchronization between the devices is decentralized with the ke
 
 
 \section{Design}
-The design of the testbed includes 2 main components: the simulation and management server, and the distributed embedded communication network system. The simulation server processes time-step simulation events and requests from the communication models while the embedded communication can run a single model or emulate multiple modles on a single device.
+The design of the testbed includes 2 main components: the simulation and management server, and the distributed embedded communication network system. The simulation server processes time-step simulation events and requests from the communication models while the embedded communication can run a single model or emulate multiple modules on a single device.
 
 \subsection{Simulation and Management Server}
-The simulation and management server is responsible for interfacing the electric power simulator with the distributed linux testbed. Additionally the managment features require that the server have the ability to initiate processes on the embedded devices in order to kickoff experiments. For electric power simulation, the user specifies the configuration of the power circuit, power related parameters, and sensor and relay devices. Elements in the power system may have a communication presence and then are represented as models in either
+The simulation and management server is responsible for interfacing the electric power simulator with the distributed linux testbed. Additionally the management features require that the server have the ability to initiate processes on the embedded devices in order to kickoff experiments. For electric power simulation, the user specifies the configuration of the power circuit, power related parameters, and sensor and relay devices. Elements in the power system may have a communication presence and then are represented as models in either
 
 \subsection{Distributed Linux System}
 
-The distributed embedded linux system is composed of standard lightweight processors and networking devices. Figure \ref{env} shows the architecture of the distributed system. The system runs various power models such as sensors, relays, energy storage devices which have a simulated presence in the power simulator as well as power system controllers that interact with the previous devices.
+The distributed embedded linux system is composed of standard lightweight processors and networking devices. Figure 5 shows the architecture of the distributed system. The system runs various power models such as sensors, relays, energy storage devices which have a simulated presence in the power simulator as well as power system controllers that interact with the previous devices.
 
 \begin{figure}
   \centering
@@ -90,14 +90,14 @@ The distributed embedded linux system is composed of standard lightweight proces
 \end{figure}
 
 \subsection{Synchronization Challenges}
-While it is possible to run electric power simulation in real-time \cite{rt-sim}, such simulators often require specialized hardware and proprietary closed software. Thus real-time simulation is infeasible for low-cost hybrid testbeds. Additionally, the real-time nature of power simulation can not account for the exchange of messeges with the network system for passing messages.
+While it is possible to run electric power simulation in real-time \cite{rt-sim}, such simulators often require specialized hardware and proprietary closed software. Thus real-time simulation is infeasible for low-cost hybrid testbeds. Additionally, the real-time nature of power simulation can not account for the exchange of messages with the network system for passing messages.
 
 Therefore due to the nature of the electric power simulator, it must run slower than real time.
-This is inharently different from the way that commmunication systems and communication emulation systems execute.
+This is inherently different from the way that communication systems and communication emulation systems execute.
 
 A simulation system can be thought of a queue of events with associated time stamps.
 Each event may change the state of the system, and create new events.
-When a simulator progresses in time, it simply processes the next event and moves the simulation clock to the time of the event. In the case of time-step simulation, the maximum progrression of time is the size of the time-step.
+When a simulator progresses in time, it simply processes the next event and moves the simulation clock to the time of the event. In the case of time-step simulation, the maximum progression of time is the size of the time-step.
 
 On the other hand, emulation and real systems' clocks progress with the real wall clock time. This difference in the systems can lead to temporal error. To remedy this problem we utilize the virtual time kernel \cite{Yan:VTS:pads15},\cite{Yan:VTM:sosr15} based off \cite{Lamps:TK:pads14} and expand it to work on Arm32 processor family. Additionally one of the major design differences is the distributed nature of our communication network.
 
@@ -117,7 +117,7 @@ On the other hand, emulation and real systems' clocks progress with the real wal
   shaded box highlights the location of the error.}
 \end{figure}
 
-In Figure \ref{sim-err}, there are three cross-system events ($E_i$), each
+In Figure 3, there are three cross-system events ($E_i$), each
 with a response ($R_i$). $E_1$ occurs before $E_2$, however, $E_2$ may
 require information from $R_1$. Since the response occurs after
 the second event, the global causality is violated, and thus
@@ -146,7 +146,7 @@ simulation keeps out of synchronization with the distributed emulation.
 In order to overcome the synchronization challenges, we utilize the virtual time kernel's ability to freeze (or pause) the emulated processes clocks. The technique by which we perform the freeze and unfreeze over the distributed system is through the middleware layer that creates a unified control of virtual time over the distributed system.
 
 \subsection{Virtual Time System}
-Building on previous work by Yan \cite{Yan:VTS:pads15} we extend the virtual time kernel for distributed environments. The methods we do this by is a hardward bus that connects the devices. Communication is binary over hardware interrupts that enable the devices to indicate to each other in a distributed fashion to initiate the pausing of the virtual clocks. The synchronization algorithm is kicked off by a process that creates an event to the power simulator. Upon this time, the kernel module on the local process triggers the distributed pause using the hardware interrupt. At this time each device can freeze the required virtual clocks. When the simulator is finished processing events it places the result in the calling processes buffer and the kernel module can begin the unfreeze routine similar to the freeze one.
+Building on previous work by Yan \cite{Yan:VTS:pads15} we extend the virtual time kernel for distributed environments. The methods we do this by is a hardware bus that connects the devices. Communication is binary over hardware interrupts that enable the devices to indicate to each other in a distributed fashion to initiate the pausing of the virtual clocks. The synchronization algorithm is kicked off by a process that creates an event to the power simulator. Upon this time, the kernel module on the local process triggers the distributed pause using the hardware interrupt. At this time each device can freeze the required virtual clocks. When the simulator is finished processing events it places the result in the calling processes buffer and the kernel module can begin the unfreeze routine similar to the freeze one.
 \begin{figure}
   \centering
   \includegraphics[scale=0.48]{Distributed_Algo.pdf}
@@ -158,20 +158,11 @@ Building on previous work by Yan \cite{Yan:VTS:pads15} we extend the virtual tim
 \subsection{Distributed Emulation}
 \
 
-In order to enhance scalability...
+For our testbed to model larger systems, each linux device is loaded with Mininet, a network emulator which uses lightweight linux containers to run real network applications. The number of hosts Mininet may emulate is limited by the machine's CPU.
 
-\
+In order for our testbed to be scalable, we enabled distributed emulation by connecting remote instances of Mininet with GRE tunnels. An emulated module emulated on device A therefore may seamlessly communicate with an emulated module on device B as if they were on the same emulated network. The fact that communication between such two modules takes place over a physical link only further increases the fidelity of the testbed. Each linux device may act as single worker in a larger emulation environment, allowing the emulation capabilities to scale with each additional device.
 
-hardware only
-
-\
-
-connect emulation together
-
-\
-
-emulation + hardware ( hybrid)
-
+The design of this distributed emulation environment across hardware with physical communication channels enables our testbed to maintain fidelity and scalability. Furthermore, the integration of Mininet in our design allows us to more easily pursue future research interests surrounding SDN technologies, as SDN emulation is central to Mininet development.
 
 \section{Implemenation}
 
@@ -179,16 +170,80 @@ The simulation server we utilize from our previous work DSSnet \cite{Hannon:2016
 The testbed that we create is composed of 2 Banana Pi devices, 1 embedded router Banana Pi R1, and 2 Raspberry Pi devices all running Raspian Linux 3.04 kernel.
 
 \subsection{Virtual Time}
-Our largest contribution is the distributed interface to the virtual time module. The devices are physically connected on GPIO pins 7 and 9. Each device loads an identical kernel module \textit{emb-vt}. The module registers a hardware interrupt on both pins 7 and 9 which share the same physical bus. The module registers a low to high interrupt on one pin and a high to low interrupt on the other. The module also creates several kobjects in /sys/vt/VT7/ including entries to register process ids, dilation factor, and a boolean variable to trigger the freeze and unfreeze routines.
+Our largest contribution is the distributed interface to the virtual time module. The devices are physically connected on GPIO pins 7 and 9. Each device loads an identical kernel module \textit{emb-vt}. The module registers a hardware interrupt on both pins 7 and 9 which share the same physical bus. The module registers a low to high interrupt on one pin and a high to low interrupt on the other. The module also creates several objects in /sys/vt/VT7/ including entries to register process ids, dilation factor, and a boolean variable to trigger the freeze and unfreeze routines.
 When a process triggers the freeze, the module will change its pin 7 from low power to high power causing the rest of the devices to receive the signal to their hardware interrupt. The next step is that all devices will write to their /proc/\$PID/freeze object that triggers the timekeeping to occur as per \cite{Yan:VTS:pads15}.
-Essentially the kernel records the time and stores an accumilated offset in the proc file system for each process. The benefit of this approach is that each process has its own virtual clock.
+Essentially the kernel records the time and stores an accumulated offset in the proc file system for each process. The benefit of this approach is that each process has its own virtual clock.
 When the process triggers the unfreeze, the module will change its pin 7 back to low causing the interrupt on pin 9 to occur, resuming the processes clocks.
 
 \section{Evaluation}
+In this section we evaluate the testbed's performance and overhead. It was first necessary to ensure the device clocks were synchronized and that the hardware interrupt was working as expected, i.e. with nominal delay. Device clocks are synchronized  within a single millisecond via Network Time Protocol (NTP). NTP synchronizes clocks to a remote reference time. Each clock polls these reference servers where offset and round-trip delay are calculated and clock frequencies adjusted accordingly. Results are shown below.
+
+\begin{figure}[H]
+  \includegraphics[scale=0.25]{clock_offset_cdf.pdf}
+  \label{sim-err}
+
+  \caption{The clock offsets CDF for two devices is shown. Device 1 timestamps and sends a hardware interrupt to device 2 and the offset is calculated with the timestamp taken upon received interrupt. Results show the clock offsets and interrupt overhead of the devices is nominal, on average less than a millisecond.
+    }
+\end{figure}
+
+\begin{figure}[H]
+  \includegraphics[scale=0.25]{clock_offset_avg.pdf}
+  \label{sim-err}
+
+  \caption{A closer look at the average and deviation of the clock offsets.
+    }
+\end{figure}
+
+With the clock offset of the devices at expectantly nominal levels, correct behavior of virtual time required validation. This was done by comparing the timestamps of two processes on a single device, one of these processes being in virtual time. Two processes A and B are started in a paused state, B is put in virtual time. Every 0.5 seconds A sends a timestamped piped message to B and B records this time and its own time. Every 2 seconds B is frozen and another 2 seconds later unfrozen. In this way, when B is unfrozen it is expected that the buffered messages from A will maintain the same interval while B will have perceived no time to have passed. Results are shown below.
+
+\begin{figure}[H]
+  \includegraphics[scale=0.22]{wc_vs_vt.png}
+  \label{sim-err}
+
+  \caption{As expected, the timestamps for A grow at a linear rate, while B perceives no time to pass each time it is unfrozen. This validates the correctness several key components of the testbed, the interface to put a process in virtual time, freeze and unfreeze that process as well as the gettimeofday() system call.
+    }
+\end{figure}
+
+Knowing that the key components of the testbed were in place and working as expected, the scalability of our proposed design could be tested. We found that the overhead for the freeze and unfreeze operations was on average 69.948 milliseconds with a standard deviation of 8.556 milliseconds. 
+
+While this overhead is relatively consistent, it is well above what we expected and casts doubt into the scalability of a testbed using these specific devices. Note that given the nominal overhead of the hardware interrupt, each device undertakes this operational delay concurrently. Lowering this overhead moving forward is a primary goal for developing a truly scalable testbed.
 
 \section{Conclusion and Future Work}
 We present an distributed embedded linux device testbed, a testing platform that combines an
-electrical power system simulator and real communication network and distributed emulator platform. This tesbed can be used to model and simulate power flows, communication networks, and smart grid control application, and to evaluate the effect of network applications on the smart grid. Our future work includes
+electrical power system simulator and real communication network and distributed emulator platform. This tesbed can be used to model and simulate power flows, communication networks, and smart grid control application, and to evaluate the effect of network applications on the smart grid. 
+
+Our future work includes
 exploring means to extract emulation lookahead to improve
-the performance of this hybrid system, as well as evaluating the scalabilityof the testbed for large-scale experiments. We also plan to investigate several novel SDN
+the performance of this hybrid system, as well as evaluating the scalability of the testbed for large-scale experiments. 
+
+We also plan to investigate several novel SDN
 applications for microgrid security and resilience, such as context-aware intrusion detection with PMU networks. Finally to improve the performance of the virtual time system we plan to explore real-time linux operating systems including direct control over the linux scheduler.
+
+\section{Work Distribution}
+Below is an itemized list of the distribution of the main contributions. Most items were collaborative to some extent.
+\\
+Chris
+
+-Hardware configuration
+
+-Porting the virtual time kernel
+
+-Distributed synchronization strategy and interface
+\\
+Neil
+
+-Distributed emulation
+
+-Evaluation tests and analysis
+
+-Debugging kernel
+\\
+Collaborative
+
+-Presentation
+
+-Final Report
+
+-Charts and figures
+
+-Poster
