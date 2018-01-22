@@ -7,13 +7,15 @@ def result_collector():
     results_receiver = context.socket(zmq.PULL)
     results_receiver.bind("tcp://127.0.0.1:5556")
     collecter_data = {}
-    for x in xrange(1000):
-        result = results_receiver.recv_json()
-        if collecter_data.has_key(result['consumer']):
-            collecter_data[result['consumer']] = collecter_data[result['consumer']] + 1
-        else:
-            collecter_data[result['consumer']] = 1
-        if x == 999:
-            pprint.pprint(collecter_data)
 
-result_collector()
+    result = results_receiver.recv_json()
+    collecter_data[result['consumer']] = result['Value']
+
+    pprint.pprint(collecter_data)
+
+def main():
+    result_collector()
+
+if __name__ == '__main__':
+    main()
+
