@@ -1,8 +1,15 @@
 import time
-import zmq
 import optparse
+import zmq
 
-def producer(opt, consumers_ip_listi,  sensor_id):
+
+def producer(opt, consumers_ip_list, sensor_id):
+    """
+    Args:
+    opt.................string
+    consumers_ip_list...list of string
+    sensor_id...........int
+    """
     context = zmq.Context()
     zmq_socket = context.socket(zmq.PUSH)
 
@@ -11,6 +18,7 @@ def producer(opt, consumers_ip_listi,  sensor_id):
         # Start your result manager and workers before you start your producers
         work_message = { 'Opt' : opt, 'SensorID' : sensor_id }
         zmq_socket.send_json(work_message)
+        print '[*] Producer sending:', time.ctime()
 
 
 def main():
@@ -26,13 +34,13 @@ def main():
         '-o', '--option',
         dest='opt',
         type='string', default='STOP',
-        help='''Option for sending out to all the consumers. Default : STOP.'''
+        help='''Option for sending out to all the consumers. e.g. STOP or RESUME Default : STOP.'''
     )
     parser.add_option(
         '-s', '--sensor',
         dest='sensor_id',
         type='int', default=1,
-        help='''The ID of the sensor which should return the value. '''
+        help='''The ID of the sensor which should return the value. 0 as NULL'''
     )
 
     options, args = parser.parse_args()
