@@ -72,7 +72,7 @@ def main():
         '-m', '--masterip',
         dest='master_ip',
         type='string', default='tcp://127.0.0.1:5556',
-        help='''ID of this sensor'''
+        help='''IP of the Master Controller'''
     )
     parser.add_option(
         '-p', '--pid',
