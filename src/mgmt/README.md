@@ -7,6 +7,7 @@ python vtresultcollector.py
 python vtconsumer.py -i 1 -p 1234
 python vtproducer.py -f consumers.txt -o STOP -s 1
 ```
+> **vtresultcollector.py** and **vtproducer.py** belong to the master node, **vtconsumer.py** belongs to the sensors (slaves) nodes
 
 #### vtproducer.py
 | Args           | Value                                      |
