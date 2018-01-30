@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# Install the follwoing packages if needed
+# apt-get install build-essential u-boot-tools
+# apt-get install libusb-1.0-0 libusb-1.0-0-dev git wget fakeroot kernel-package zlib1g-dev libncurses5-dev
+
 echo "Step 0. download source kernel"
 
 rm -r /home/emb-vt/kernel/linux-bananapi
@@ -24,13 +29,13 @@ echo "Step 2. Build new kernel"
 cd /home/emb-vt/kernel/linux-bananapi
 
 make sun7i_defconfig
-#make menuconfig
-#make -j2 uImage modules
+make menuconfig
+make -j2 uImage modules
 
-#make modules_install
-#mount /dev/mmcblk0p1 /mnt
-#mv /mnt/uImage /mnt/uImage_old  # save precedent uImage, can be restored
-#cp arch/arm/boot/uImage /mnt
-#sync
-#umount /mnt
-#reboot
+make modules_install
+mount /dev/mmcblk0p1 /mnt
+mv /mnt/uImage /mnt/uImage_old  # save precedent uImage, can be restored
+cp arch/arm/boot/uImage /mnt
+sync
+# umount /mnt
+reboot
