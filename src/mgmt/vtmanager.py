@@ -1,8 +1,10 @@
 import time
+import random
+import multiprocessing
 import zmq
 
 
-class NetworkService(object):
+class HostService(object):
     """class of service handling"""
     def __init__(self, type_of_service, node_id, node_value, proc_status):
         """
@@ -23,6 +25,9 @@ class NetworkService(object):
     def setValue(self, node_value):
         self.node_value = node_value
 
+    def getID(self):
+        return self.node_id
+
     def getStatus(self):
         return self.proc_status
 
@@ -30,16 +35,21 @@ class NetworkService(object):
         self.proc_status = proc_status
 
 
-def process_handler(opt, pid):
+def process_handler(opt, server_localhost):
     """
-    Arg:
+    Args:
     opt...string
-    pid...int
+    server_localhost...HostService
     """
-    if opt == 'STOP':
+    # TODO: Write PIDs into files
+    """
+    for key, val in server_localhost.getStatus:
         f1 = open('/sys/vt/VT7/pid_01', 'w')
         f1.write(str(pid))
         f1.close()
+    """
+    pass
+    if opt == 'STOP':
         f2 = open('/sys/vt/VT7/mode', 'w')
         f2.write('freeze')
         f2.close()
@@ -52,50 +62,82 @@ def process_handler(opt, pid):
         print '[*] Resume Services', time.ctime()
 
 
-def start_controller(node_id):
+def send_command(opt, server_localhost):
     """
-    start the service for controller
+    Args:
+    opt................operation e.g. STOP RESUME
+    server_localhost...HostService
+    """
+    context = zmq.Context()
+    zmq_socket = context.socket(zmq.PUSH)
+
+    # File which contains all the consumers IP e.g. tcp://127.0.0.1:5555.
+    with open('consumers.txt') as temp_file:
+        consumers_ip_list = [line.rstrip('\n') for line in temp_file]
+
+    for ip in consumers_ip_list:
+        zmq_socket.bind(ip)
+        # Start your result manager and workers before you start your producers
+        work_message = { 'Opt' : opt, 'FromID' : server_localhost.getID }
+        zmq_socket.send_json(work_message) # remove for testing
+
+    print '[*] Sending', opt, ' :', time.ctime()
+
+
+def start_listener(server_localhost):
+    """
+    start the service for listening
     Arg:
-    node_id...int
+    server_localhost...HostService
     """
-
-    print "[*] Starting Controller #%s" % (node_id)
-    # TOD: add real value
-    controller_ser = NetworkService(1, node_id, 0, {123:True})
-
     # TODO: Correct the IPs
     context = zmq.Context()
     # recieve work
     consumer_receiver = context.socket(zmq.PULL)
-    consumer_receiver.connect("tcp://127.0.0.1:5555")
-    # send work
-    consumer_sender = context.socket(zmq.PUSH)
-    consumer_sender.connect("tcp://127.0.0.1:5556")
+    consumer_receiver.connect("tcp://127.0.0.1:5555") # dummy data
 
     while True:
         work = consumer_receiver.recv_json()
         opt = work['Opt']
-        target_ids_list = work['NodeIDs']
-
+        from_sender = work['FromID']
+        # target_ids_list = work['NodeIDs']
         # handling stop or resume process
-        # process_handler(opt, pid)
-
-        if opt == 'STOP' and node_id in target_ids_list:
-            # dummy data for now
-            ret_vals = [1, 2, 3]
-            result = {'SenderID' : node_id, 'Opt' : opt, 'Values' : ret_vals}
-            print '[*] Sending:', result, time.ctime()
-            #consumer_sender.send_json(result)
+        print '[*] Receive', opt, ' From :', from_sender, '  ', time.ctime()
+        process_handler(opt, server_localhost)
 
 
-
-def strat_sensor(node_id):
+def get_sensor_data():
     """
-    start the service for sensor
+    Get the values from sensors
+    """
+    # get random value for now. to simulate getting value from real sensors
+    ret_val = random.randrange(0, 20)
+    return ret_val
+
+
+def value_retriever(server_localhost):
+    """
+    start the service for retrieving data and handling pause 
     Arg:
-    node_id...int
+    server_localhost...HostService
     """
-    pass
+
+    while True:
+        time.sleep(1)
+        sensor_val = get_sensor_data()
+        print '[*] Value: ', sensor_val 
+        if sensor_val < 2: # assume this is the situation we need to pause the system
+            print '[*] Not getting value, system pasuing'
+            send_command('STOP', server_localhost)           
+
+            # wait until you get the value
+            while sensor_val < 2:
+                time.sleep(1)
+                sensor_val = get_sensor_data()
+                print '[*] Requesting updated Value: ', sensor_val 
+            send_command('RESUME', server_localhost)   
+              
+        server_localhost.setValue([sensor_val])
 
 
 def main():
@@ -112,11 +154,17 @@ def main():
     except ValueError:
         print "Error: Please confirm your input!"
 
-
-    if type_of_service == 1:
-        start_controller(node_id)
-    elif type_of_service == 2:
-        strat_sensor(node_id)
+    # for now both of them do the same thing
+    if type_of_service == 1 or type_of_service == 2:
+        # add real value
+        server_localhost = HostService(type_of_service, node_id, [0.], {0:True}) # init
+        print "[*] Starting Service ID: #%s" % (node_id)
+        p1 = multiprocessing.Process(name='p1', target=start_listener, args=(server_localhost,))
+        p2 = multiprocessing.Process(name='p2', target=value_retriever,  args=(server_localhost,))
+        p1.start()
+        print "[*] Listening..."
+        p2.start()
+        print "[*] Retrieving..."
     else:
         print "Error: Please confirm your input"
 
