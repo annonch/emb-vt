@@ -17,7 +17,7 @@ class HostService(object):
         self.type_of_service = type_of_service
         self.node_id = node_id
         self.node_value = node_value
-        self.proc_status = proc_status
+        self.proc_status = proc_status # no more than 16
 
     def getValue(self):
         return self.node_value
@@ -41,14 +41,20 @@ def process_handler(opt, server_localhost):
     opt...string
     server_localhost...HostService
     """
-    # TODO: Write PIDs into files
-    """
-    for key, val in server_localhost.getStatus:
-        f1 = open('/sys/vt/VT7/pid_01', 'w')
-        f1.write(str(pid))
+    cp_proc_dict = server_localhost.getStatus()
+
+    for i, (key, val) in  enumerate(cp_proc_dict.items()):
+        if opt == 'STOP':
+            cp_proc_dict[key] = False
+        elif opt == 'RESUME':
+            cp_proc_dict[key] = True
+        file_name = '/sys/vt/VT7/pid_' + str(i).zfill(2)
+        f1 = open(file_name, 'w')
+        f1.write(str(key))
         f1.close()
-    """
-    pass
+    
+    server_localhost.setStatus(cp_proc_dict)
+
     if opt == 'STOP':
         f2 = open('/sys/vt/VT7/mode', 'w')
         f2.write('freeze')
@@ -69,16 +75,16 @@ def send_command(opt, server_localhost):
     server_localhost...HostService
     """
     context = zmq.Context()
-    zmq_socket = context.socket(zmq.PUSH)
+    zmq_socket = context.socket(zmq.PAIR)
 
     # File which contains all the consumers IP e.g. tcp://127.0.0.1:5555.
     with open('consumers.txt') as temp_file:
         consumers_ip_list = [line.rstrip('\n') for line in temp_file]
 
     for ip in consumers_ip_list:
-        zmq_socket.bind(ip)
+        zmq_socket.connect(ip)
         # Start your result manager and workers before you start your producers
-        work_message = { 'Opt' : opt, 'FromID' : server_localhost.getID }
+        work_message = { 'Opt' : opt, 'FromID' : str(server_localhost.getID()) }
         zmq_socket.send_json(work_message) # remove for testing
 
     print '[*] Sending', opt, ' :', time.ctime()
@@ -93,11 +99,11 @@ def start_listener(server_localhost):
     # TODO: Correct the IPs
     context = zmq.Context()
     # recieve work
-    consumer_receiver = context.socket(zmq.PULL)
-    consumer_receiver.connect("tcp://127.0.0.1:5555") # dummy data
+    socket = context.socket(zmq.PAIR)
+    socket.bind("tcp://127.0.0.1:5555") # dummy data
 
     while True:
-        work = consumer_receiver.recv_json()
+        work = socket.recv_json()
         opt = work['Opt']
         from_sender = work['FromID']
         # target_ids_list = work['NodeIDs']
@@ -111,7 +117,7 @@ def get_sensor_data():
     Get the values from sensors
     """
     # get random value for now. to simulate getting value from real sensors
-    ret_val = random.randrange(0, 20)
+    ret_val = random.randrange(0, 10)
     return ret_val
 
 
@@ -158,12 +164,10 @@ def main():
     if type_of_service == 1 or type_of_service == 2:
         # add real value
         server_localhost = HostService(type_of_service, node_id, [0.], {0:True}) # init
-        print "[*] Starting Service ID: #%s" % (node_id)
-        p1 = multiprocessing.Process(name='p1', target=start_listener, args=(server_localhost,))
-        p2 = multiprocessing.Process(name='p2', target=value_retriever,  args=(server_localhost,))
-        p1.start()
+        print "[*] Starting Service ID: #%s" % (server_localhost.getID())
+        multiprocessing.Process(name='p1', target=start_listener, args=(server_localhost,)).start()
         print "[*] Listening..."
-        p2.start()
+        multiprocessing.Process(name='p2', target=value_retriever,  args=(server_localhost,)).start()
         print "[*] Retrieving..."
     else:
         print "Error: Please confirm your input"
