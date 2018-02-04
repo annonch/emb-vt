@@ -48,7 +48,7 @@ def process_handler(opt, server_localhost):
             cp_proc_dict[key] = False
         elif opt == 'RESUME':
             cp_proc_dict[key] = True
-        file_name = '/sys/vt/VT7/pid_' + str(i).zfill(2)
+        file_name = '/sys/vt/VT7/pid_' + str(i+1).zfill(2) # pid file starts from 01 not 00
         f1 = open(file_name, 'w')
         f1.write(str(key))
         f1.close()
