@@ -46,6 +46,9 @@ class ControllerHandler(HostService):
         HostService.__init__(self, node_id, node_value, proc_status)
         self.type_of_service = type_of_service
 
+    def getFunc(self):
+        """ Return a string that contains name of Function...string"""
+        return "value_retriever" # should be different
 
 
 class SensorHandler(HostService):
@@ -60,6 +63,36 @@ class SensorHandler(HostService):
         """
         HostService.__init__(self, node_id, node_value, proc_status)
         self.type_of_service = type_of_service
+
+    def getFunc(self):
+        """ Return a string that contains name of Function...string"""
+        return "value_retriever"
+
+
+class CommandSender(object):
+    """Class to send command"""
+    def __init__(self):
+        self.context = zmq.Context()
+        self.zmq_socket = self.context.socket(zmq.PAIR)
+
+        # File which contains all the consumers IP e.g. tcp://127.0.0.1:5555.
+        with open('consumers.txt') as temp_file:
+            self.consumers_ip_list = [line.rstrip('\n') for line in temp_file]
+
+
+    def sendCommand(self, opt, server_localhost):
+        """
+        Args:
+        opt................operation e.g. STOP RESUME
+        server_localhost...HostService
+        """
+        for ip in self.consumers_ip_list:
+            self.zmq_socket.connect(ip)
+            # Start your result manager and workers before you start your producers
+            work_message = { 'Opt' : opt, 'FromID' : str(server_localhost.getID()) }
+            self.zmq_socket.send_json(work_message) # remove for testing
+
+        print '[*] Sending', opt, ' :', time.ctime()
 
 
 def process_handler(opt, server_localhost):
@@ -93,28 +126,6 @@ def process_handler(opt, server_localhost):
         f2.write('unfreeze')
         f2.close()
         print '[*] Resume Services', time.ctime()
-
-
-def send_command(opt, server_localhost):
-    """
-    Args:
-    opt................operation e.g. STOP RESUME
-    server_localhost...HostService
-    """
-    context = zmq.Context()
-    zmq_socket = context.socket(zmq.PAIR)
-
-    # File which contains all the consumers IP e.g. tcp://127.0.0.1:5555.
-    with open('consumers.txt') as temp_file:
-        consumers_ip_list = [line.rstrip('\n') for line in temp_file]
-
-    for ip in consumers_ip_list:
-        zmq_socket.connect(ip)
-        # Start your result manager and workers before you start your producers
-        work_message = { 'Opt' : opt, 'FromID' : str(server_localhost.getID()) }
-        zmq_socket.send_json(work_message) # remove for testing
-
-    print '[*] Sending', opt, ' :', time.ctime()
 
 
 def start_listener(server_localhost):
@@ -154,6 +165,8 @@ def value_retriever(server_localhost):
     Arg:
     server_localhost...HostService
     """
+    # init the sender
+    commandSender = CommandSender()
 
     while True:
         time.sleep(1)
@@ -166,14 +179,14 @@ def value_retriever(server_localhost):
         print '[*] Value: ', sensor_val
         if sensor_val < 2: # assume this is the situation we need to pause the system
             print '[*] Not getting value, system pasuing'
-            send_command('STOP', server_localhost)
+            commandSender.sendCommand('STOP', server_localhost)
 
             #  TODO: Shoudl have a lock here, wait until you get the value 
             while sensor_val < 2:
                 time.sleep(1)
                 sensor_val = get_sensor_data()
                 print '[*] Requesting updated Value: ', sensor_val
-            send_command('RESUME', server_localhost)
+            commandSender.sendCommand('RESUME', server_localhost)
 
         server_localhost.setValue([sensor_val])
 
@@ -206,7 +219,8 @@ def main():
         multiprocessing.Process(name='p1', target=start_listener, args=(server_localhost,)).start()
         print "[*] Listening..."
         # TODO: depends on the service type
-        multiprocessing.Process(name='p2', target=value_retriever,  args=(server_localhost,)).start()
+        func_for_eval = server_localhost.getFunc()
+        multiprocessing.Process(name='p2', target=eval(func_for_eval), args=(server_localhost,)).start()
         print "[*] Retrieving..."
     else:
         print "Error: Please confirm your input"
