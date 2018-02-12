@@ -95,24 +95,37 @@ class CommandSender(object):
         print '[*] Sending', opt, ' :', time.ctime()
 
 
+def write_proc_to_File(server_localhost):
+    """
+    wrtie PIDs to /sys/vt/VT7/pid_...
+    Args:
+    server_localhost...HostService
+    """ 
+    cp_proc_dict = server_localhost.getStatus()
+
+    for i, (key, _) in  enumerate(cp_proc_dict.items()):
+        file_name = '/sys/vt/VT7/pid_' + str(i+1).zfill(2) # pid file starts from 01 not 00
+        f1 = open(file_name, 'w')
+        f1.write(str(key))
+        f1.close()
+
+
 def process_handler(opt, server_localhost):
     """
+    write freeze or unfreeze to /sys/vt/VT7/mode
     Args:
     opt...string
     server_localhost...HostService
     """
     cp_proc_dict = server_localhost.getStatus()
 
-    for i, (key, val) in  enumerate(cp_proc_dict.items()):
+    for key, _ in  cp_proc_dict.items():
         if opt == 'STOP':
             cp_proc_dict[key] = False
         elif opt == 'RESUME':
             cp_proc_dict[key] = True
-        file_name = '/sys/vt/VT7/pid_' + str(i+1).zfill(2) # pid file starts from 01 not 00
-        f1 = open(file_name, 'w')
-        f1.write(str(key))
-        f1.close()
 
+    # update the dict for class
     server_localhost.setStatus(cp_proc_dict)
 
     if opt == 'STOP':
@@ -147,7 +160,7 @@ def start_listener(server_localhost):
         # target_ids_list = work['NodeIDs']
         # handling stop or resume process
         print '[*] Receive', opt, ' From :', from_sender, '  ', time.ctime()
-        # process_handler(opt, server_localhost) # take out this part for testing
+        process_handler(opt, server_localhost) # take out this part for testing
 
 
 def get_sensor_data():
@@ -216,11 +229,17 @@ def main():
             print "[*] Starting Sensor"
 
         print "[*] Starting Service ID: #%s" % (server_localhost.getID())
-        multiprocessing.Process(name='p1', target=start_listener, args=(server_localhost,)).start()
+        p1 = multiprocessing.Process(name='p1', target=start_listener, args=(server_localhost,))
+        p1.start()
         print "[*] Listening..."
-        # TODO: depends on the service type
+
         func_for_eval = server_localhost.getFunc()
-        multiprocessing.Process(name='p2', target=eval(func_for_eval), args=(server_localhost,)).start()
+        p2 = multiprocessing.Process(name='p2', target=eval(func_for_eval), args=(server_localhost,))
+        p2.start()
+        # Get p2.pid AKA the pid for the node and put it in the class
+        server_localhost.setStatus({int(p2.pid):True})
+        write_proc_to_File(server_localhost) # take out this part for testing
+        print "[*] Set PID: ", p2.pid, " to proc dict"
         print "[*] Retrieving..."
     else:
         print "Error: Please confirm your input"
