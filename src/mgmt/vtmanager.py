@@ -48,7 +48,7 @@ class ControllerHandler(HostService):
 
     def getFunc(self):
         """ Return a string that contains name of Function...string"""
-        return "valueRetrieve" # should be different
+        return "valueRetriever" # should be different
 
 
 class SensorHandler(HostService):
@@ -141,12 +141,13 @@ def writeProcToFile(server_localhost):
         f1.close()
 
 
-def startConnectionManager(server_localhost, connectionMg):
+def startConnectionManager(server_localhost):
     """
     start the service for listening
     Arg:
     server_localhost...HostService
     """
+    connectionMg = ConnectionManager()
     # TODO: Correct the IPs
     context = zmq.Context()
     # recieve work
@@ -179,13 +180,13 @@ def getSensorData():
     return ret_val
 
 
-def valueRetriever(server_localhost, connectionMg):
+def valueRetriever(server_localhost):
     """
     start the service for retrieving data and handling pause
     Arg:
     server_localhost...HostService
     """
-
+    connectionMg = ConnectionManager()
     while True:
         time.sleep(1)
         """ # take out this part for loopback
@@ -247,13 +248,12 @@ def main():
             print "[*] Starting Sensor"
 
         print "[*] Starting Service ID: #%s" % (server_localhost.getID())
-        connectionMg = ConnectionManager()
-        p1 = multiprocessing.Process(name='p1', target=startConnectionManager, args=(server_localhost, connectionMg))
+        p1 = multiprocessing.Process(name='p1', target=startConnectionManager, args=(server_localhost,))
         p1.start()
         print "[*] Connection Manager Started..."
 
         func_for_eval = server_localhost.getFunc()
-        p2 = multiprocessing.Process(name='p2', target=eval(func_for_eval), args=(server_localhost, connectionMg))
+        p2 = multiprocessing.Process(name='p2', target=eval(func_for_eval), args=(server_localhost,))
         p2.start()
         # Get p2.pid AKA the pid for the node and put it in the class
         server_localhost.setStatus({int(p2.pid):True})
