@@ -48,7 +48,7 @@ class ControllerHandler(HostService):
 
     def getFunc(self):
         """ Return a string that contains name of Function...string"""
-        return "value_retriever" # should be different
+        return "valueRetrieve" # should be different
 
 
 class SensorHandler(HostService):
@@ -66,10 +66,10 @@ class SensorHandler(HostService):
 
     def getFunc(self):
         """ Return a string that contains name of Function...string"""
-        return "value_retriever"
+        return "valueRetriever"
 
 
-class CommandSender(object):
+class ConnectionManager(object):
     """Class to send command"""
     def __init__(self):
         self.context = zmq.Context()
@@ -78,7 +78,6 @@ class CommandSender(object):
         # File which contains all the consumers IP e.g. tcp://127.0.0.1:5555.
         with open('consumers.txt') as temp_file:
             self.consumers_ip_list = [line.rstrip('\n') for line in temp_file]
-
 
     def sendCommand(self, opt, server_localhost):
         """
@@ -94,13 +93,45 @@ class CommandSender(object):
 
         print '[*] Sending', opt, ' :', time.ctime()
 
+    def processHandler(self, opt, server_localhost):
+        """
+        write freeze or unfreeze to /sys/vt/VT7/mode
+        Args:
+        opt...string
+        server_localhost...HostService
+        """
+        cp_proc_dict = server_localhost.getStatus()
 
-def write_proc_to_File(server_localhost):
+        for key, _ in  cp_proc_dict.items():
+            if opt == 'STOP':
+                cp_proc_dict[key] = False
+            elif opt == 'RESUME':
+                cp_proc_dict[key] = True
+
+     # update the dict for class
+        server_localhost.setStatus(cp_proc_dict)
+
+        if opt == 'STOP':
+            f2 = open('/sys/vt/VT7/mode', 'w')
+            f2.write('freeze')
+            f2.close()
+            print '[*] Stop Services', time.ctime()
+
+        elif opt == 'RESUME':
+            f2 = open('/sys/vt/VT7/mode', 'w')
+            f2.write('unfreeze')
+            f2.close()
+            print '[*] Resume Services', time.ctime()
+
+
+""" Connection Manager """
+
+def writeProcToFile(server_localhost):
     """
     wrtie PIDs to /sys/vt/VT7/pid_...
     Args:
     server_localhost...HostService
-    """ 
+    """
     cp_proc_dict = server_localhost.getStatus()
 
     for i, (key, _) in  enumerate(cp_proc_dict.items()):
@@ -110,38 +141,7 @@ def write_proc_to_File(server_localhost):
         f1.close()
 
 
-def process_handler(opt, server_localhost):
-    """
-    write freeze or unfreeze to /sys/vt/VT7/mode
-    Args:
-    opt...string
-    server_localhost...HostService
-    """
-    cp_proc_dict = server_localhost.getStatus()
-
-    for key, _ in  cp_proc_dict.items():
-        if opt == 'STOP':
-            cp_proc_dict[key] = False
-        elif opt == 'RESUME':
-            cp_proc_dict[key] = True
-
-    # update the dict for class
-    server_localhost.setStatus(cp_proc_dict)
-
-    if opt == 'STOP':
-        f2 = open('/sys/vt/VT7/mode', 'w')
-        f2.write('freeze')
-        f2.close()
-        print '[*] Stop Services', time.ctime()
-
-    elif opt == 'RESUME':
-        f2 = open('/sys/vt/VT7/mode', 'w')
-        f2.write('unfreeze')
-        f2.close()
-        print '[*] Resume Services', time.ctime()
-
-
-def start_listener(server_localhost):
+def startConnectionManager(server_localhost, connectionMg):
     """
     start the service for listening
     Arg:
@@ -160,10 +160,17 @@ def start_listener(server_localhost):
         # target_ids_list = work['NodeIDs']
         # handling stop or resume process
         print '[*] Receive', opt, ' From :', from_sender, '  ', time.ctime()
-        process_handler(opt, server_localhost) # take out this part for testing
+        if __debug__:
+            if opt == 'STOP':
+                time.sleep(2)
+                connectionMg.processHandler('RESUME', server_localhost)
+                print '[*] Resume: ', time.ctime()
+        else:
+            pass
 
+""" Host Activities """
 
-def get_sensor_data():
+def getSensorData():
     """
     Get the values from sensors
     """
@@ -172,14 +179,12 @@ def get_sensor_data():
     return ret_val
 
 
-def value_retriever(server_localhost):
+def valueRetriever(server_localhost, connectionMg):
     """
     start the service for retrieving data and handling pause
     Arg:
     server_localhost...HostService
     """
-    # init the sender
-    commandSender = CommandSender()
 
     while True:
         time.sleep(1)
@@ -188,24 +193,36 @@ def value_retriever(server_localhost):
             time.sleep(1)
             print '[*] Retrieving Pause'
         """
-        sensor_val = get_sensor_data()
+        sensor_val = getSensorData()
         print '[*] Value: ', sensor_val
-        if sensor_val < 2: # assume this is the situation we need to pause the system
-            print '[*] Not getting value, system pasuing'
-            commandSender.sendCommand('STOP', server_localhost)
+        if __debug__:
+           if sensor_val < 2: # assume this is the situation we need to pause the system
+                print '[*] Not getting value, system pasuing'
+                connectionMg.processHandler('STOP', server_localhost)
+                connectionMg.sendCommand('STOP', server_localhost)
+        else:
+            if sensor_val < 2: # assume this is the situation we need to pause the system
+                print '[*] Not getting value, system pasuing'
+                connectionMg.processHandler('STOP', server_localhost)
+                connectionMg.sendCommand('STOP', server_localhost)
 
-            #  TODO: Shoudl have a lock here, wait until you get the value 
-            while sensor_val < 2:
-                time.sleep(1)
-                sensor_val = get_sensor_data()
-                print '[*] Requesting updated Value: ', sensor_val
-            commandSender.sendCommand('RESUME', server_localhost)
+                #  TODO: Shoudl have a lock here, wait until you get the value
+                while sensor_val < 2:
+                    time.sleep(1)
+                    sensor_val = getSensorData()
+                    print '[*] Requesting updated Value: ', sensor_val
+                connectionMg.processHandler('STOP', server_localhost)
+                connectionMg.sendCommand('RESUME', server_localhost)
 
-        server_localhost.setValue([sensor_val])
+            server_localhost.setValue([sensor_val])
 
 
 def main():
     """main"""
+    if __debug__:
+        print 'Debug mode: ON'
+    else:
+        print 'Debug mode: OFF'
 
     try:
         type_of_service = int(raw_input('Please selete the type of service: \n1. Controller \
@@ -229,18 +246,19 @@ def main():
             print "[*] Starting Sensor"
 
         print "[*] Starting Service ID: #%s" % (server_localhost.getID())
-        p1 = multiprocessing.Process(name='p1', target=start_listener, args=(server_localhost,))
+        connectionMg = ConnectionManager()
+        p1 = multiprocessing.Process(name='p1', target=startConnectionManager, args=(server_localhost, connectionMg))
         p1.start()
-        print "[*] Listening..."
+        print "[*] Connection Manager Started..."
 
         func_for_eval = server_localhost.getFunc()
-        p2 = multiprocessing.Process(name='p2', target=eval(func_for_eval), args=(server_localhost,))
+        p2 = multiprocessing.Process(name='p2', target=eval(func_for_eval), args=(server_localhost, connectionMg))
         p2.start()
         # Get p2.pid AKA the pid for the node and put it in the class
         server_localhost.setStatus({int(p2.pid):True})
-        write_proc_to_File(server_localhost) # take out this part for testing
+        writeProcToFile(server_localhost) # take out this part for testing
         print "[*] Set PID: ", p2.pid, " to proc dict"
-        print "[*] Retrieving..."
+        print "[*] Host Activities Started..."
     else:
         print "Error: Please confirm your input"
 
