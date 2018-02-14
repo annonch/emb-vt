@@ -198,21 +198,22 @@ def valueRetriever(server_localhost, connectionMg):
         if __debug__:
            if sensor_val < 2: # assume this is the situation we need to pause the system
                 print '[*] Not getting value, system pasuing'
-                connectionMg.processHandler('STOP', server_localhost)
                 connectionMg.sendCommand('STOP', server_localhost)
+                connectionMg.processHandler('STOP', server_localhost)
         else:
             if sensor_val < 2: # assume this is the situation we need to pause the system
                 print '[*] Not getting value, system pasuing'
-                connectionMg.processHandler('STOP', server_localhost)
                 connectionMg.sendCommand('STOP', server_localhost)
+                connectionMg.processHandler('STOP', server_localhost)
 
                 #  TODO: Shoudl have a lock here, wait until you get the value
                 while sensor_val < 2:
                     time.sleep(1)
                     sensor_val = getSensorData()
                     print '[*] Requesting updated Value: ', sensor_val
+
+                connectionMg.sendCommand('STOP', server_localhost)
                 connectionMg.processHandler('STOP', server_localhost)
-                connectionMg.sendCommand('RESUME', server_localhost)
 
             server_localhost.setValue([sensor_val])
 
