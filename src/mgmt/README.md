@@ -2,6 +2,12 @@
 Using Python with [pyzmq](https://learning-0mq-with-pyzmq.readthedocs.io/en/latest/pyzmq/pyzmq.html)
 
 > Use **vtmanager.py** for now
+```
+# for debug mode
+python vtmanager.py
+# for release mode
+python -o vtmanager.py
+```
 
 ### How to use
 ```

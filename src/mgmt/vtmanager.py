@@ -78,18 +78,25 @@ class ConnectionManager(object):
         # File which contains all the consumers IP e.g. tcp://127.0.0.1:5555.
         with open('consumers.txt') as temp_file:
             self.consumers_ip_list = [line.rstrip('\n') for line in temp_file]
+        self.loopback_ip = 'tcp://127.0.0.1:5555'
 
-    def sendCommand(self, opt, server_localhost):
+    def sendCommand(self, opt, server_localhost, send_to):
         """
         Args:
         opt................operation e.g. STOP RESUME
         server_localhost...HostService
+        send_to............string loopback, comlist
         """
-        for ip in self.consumers_ip_list:
-            self.zmq_socket.connect(ip)
-            # Start your result manager and workers before you start your producers
+        if send_to == 'loopback':
+            self.zmq_socket.connect(self.loopback_ip)
             work_message = { 'Opt' : opt, 'FromID' : str(server_localhost.getID()) }
             self.zmq_socket.send_json(work_message) # remove for testing
+        else:
+            for ip in self.consumers_ip_list:
+                self.zmq_socket.connect(ip)
+                # Start your result manager and workers before you start your producers
+                work_message = { 'Opt' : opt, 'FromID' : str(server_localhost.getID()) }
+                self.zmq_socket.send_json(work_message) # remove for testing
 
         print '[*] Sending', opt, ' :', time.ctime()
 
@@ -108,7 +115,7 @@ class ConnectionManager(object):
             elif opt == 'RESUME':
                 cp_proc_dict[key] = True
 
-     # update the dict for class
+        # update the dict for class
         server_localhost.setStatus(cp_proc_dict)
 
         if opt == 'STOP':
@@ -199,12 +206,12 @@ def valueRetriever(server_localhost):
         if __debug__:
            if sensor_val < 2: # assume this is the situation we need to pause the system
                 print '[*] Not getting value, system pasuing'
-                connectionMg.sendCommand('STOP', server_localhost)
+                connectionMg.sendCommand('STOP', server_localhost, 'loopback')
                 connectionMg.processHandler('STOP', server_localhost)
         else:
             if sensor_val < 2: # assume this is the situation we need to pause the system
                 print '[*] Not getting value, system pasuing'
-                connectionMg.sendCommand('STOP', server_localhost)
+                connectionMg.sendCommand('STOP', server_localhost, 'loopback')
                 connectionMg.processHandler('STOP', server_localhost)
 
                 #  TODO: Shoudl have a lock here, wait until you get the value
@@ -213,7 +220,7 @@ def valueRetriever(server_localhost):
                     sensor_val = getSensorData()
                     print '[*] Requesting updated Value: ', sensor_val
 
-                connectionMg.sendCommand('STOP', server_localhost)
+                connectionMg.sendCommand('STOP', server_localhost, 'loopback')
                 connectionMg.processHandler('STOP', server_localhost)
 
             server_localhost.setValue([sensor_val])
