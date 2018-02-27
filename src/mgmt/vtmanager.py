@@ -1,6 +1,7 @@
 import time
 import random
 import multiprocessing
+import subprocess
 import zmq
 
 
@@ -118,16 +119,19 @@ class ConnectionManager(object):
         # update the dict for class
         server_localhost.setStatus(cp_proc_dict)
 
+        # TODO: Freeze or Unfreeze with the same state will cause kernel error e.g. Freeze form device 1 and freeze again for dev2
         if opt == 'STOP':
-            f2 = open('/sys/vt/VT7/mode', 'w')
-            f2.write('freeze')
-            f2.close()
+            # f2 = open('/sys/vt/VT7/mode', 'w')
+            # f2.write('freeze')
+            # f2.close()
+            subprocess.call("echo 'freeze' > /sys/vt/VT7/mode", shell=True)
             print '[*] Stop Services', time.ctime()
 
         elif opt == 'RESUME':
-            f2 = open('/sys/vt/VT7/mode', 'w')
-            f2.write('unfreeze')
-            f2.close()
+            # f2 = open('/sys/vt/VT7/mode', 'w')
+            # f2.write('unfreeze')
+            # f2.close()
+            subprocess.call("echo 'unfreeze' > /sys/vt/VT7/mode", shell=True)
             print '[*] Resume Services', time.ctime()
 
 
@@ -170,10 +174,12 @@ def startConnectionManager(server_localhost):
         print '[*] Receive', opt, ' From :', from_sender, '  ', time.ctime()
         if __debug__:
             if opt == 'STOP':
+                connectionMg.processHandler('STOP', server_localhost)
                 time.sleep(2)
                 connectionMg.processHandler('RESUME', server_localhost)
                 print '[*] Resume: ', time.ctime()
         else:
+            # wait until get the result from win server
             pass
 
 """ Host Activities """
@@ -196,25 +202,18 @@ def valueRetriever(server_localhost):
     connectionMg = ConnectionManager()
     while True:
         time.sleep(1)
-        """ # take out this part for loopback
-        while (False in server_localhost.getStatus().values()): # to lock the proc while in the stop state
-            time.sleep(1)
-            print '[*] Retrieving Pause'
-        """
         sensor_val = getSensorData()
         print '[*] Value: ', sensor_val
         if __debug__:
-           if sensor_val < 2: # assume this is the situation we need to pause the system
+            if sensor_val < 2: # assume this is the situation we need to pause the system
                 print '[*] Not getting value, system pasuing'
                 connectionMg.sendCommand('STOP', server_localhost, 'loopback')
-                connectionMg.processHandler('STOP', server_localhost)
         else:
             if sensor_val < 2: # assume this is the situation we need to pause the system
                 print '[*] Not getting value, system pasuing'
                 connectionMg.sendCommand('STOP', server_localhost, 'loopback')
-                connectionMg.processHandler('STOP', server_localhost)
 
-                #  TODO: Shoudl have a lock here, wait until you get the value
+                #  TODO: Should have a lock here, wait until you get the value
                 while sensor_val < 2:
                     time.sleep(1)
                     sensor_val = getSensorData()
