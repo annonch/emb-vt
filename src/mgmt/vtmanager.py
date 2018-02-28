@@ -1,7 +1,9 @@
 import time
 import random
+import ast
+import os
 import multiprocessing
-import subprocess
+import subprocess # Watch out for shell injection when using subprocess.call
 import zmq
 
 
@@ -32,6 +34,22 @@ class HostService(object):
 
     def setStatus(self, proc_status):
         self.proc_status = proc_status
+
+    def procStatus(self, pid):
+        for line in open("/proc/%d/status" % pid).readlines():
+            if line.startswith("State:"):
+                return line.split(":",1)[1].strip().split(' ')[0]
+        return None
+
+    def isAlive(self):
+        """ To check if the proc is not paused """
+        for key in self.proc_status:
+            print '[*] Checking PID: ', key , ' alive  status:', self.procStatus(key)
+            if self.procStatus(key) == 'T':
+                print '[*] PID: ', key, 'is paused'
+                return False
+        
+        return True
 
 
 class ControllerHandler(HostService):
@@ -90,13 +108,13 @@ class ConnectionManager(object):
         """
         if send_to == 'loopback':
             self.zmq_socket.connect(self.loopback_ip)
-            work_message = { 'Opt' : opt, 'FromID' : str(server_localhost.getID()) }
+            work_message = { 'Opt' : opt, 'FromID' : str(server_localhost.getID()), 'ProDict' : str(server_localhost.getStatus()) }
             self.zmq_socket.send_json(work_message) # remove for testing
         else:
             for ip in self.consumers_ip_list:
                 self.zmq_socket.connect(ip)
                 # Start your result manager and workers before you start your producers
-                work_message = { 'Opt' : opt, 'FromID' : str(server_localhost.getID()) }
+                work_message = { 'Opt' : opt, 'FromID' : str(server_localhost.getID()), 'ProDict' : str(server_localhost.getStatus()) }
                 self.zmq_socket.send_json(work_message) # remove for testing
 
         print '[*] Sending', opt, ' :', time.ctime()
@@ -119,8 +137,11 @@ class ConnectionManager(object):
         # update the dict for class
         server_localhost.setStatus(cp_proc_dict)
 
-        # TODO: Freeze or Unfreeze with the same state will cause kernel error e.g. Freeze form device 1 and freeze again for dev2
         if opt == 'STOP':
+            if not server_localhost.isAlive():
+                while not server_localhost.isAlive():
+                    print '[*] Waiting for system to resume before pausing'
+                    time.sleep(1)
             # f2 = open('/sys/vt/VT7/mode', 'w')
             # f2.write('freeze')
             # f2.close()
@@ -169,13 +190,15 @@ def startConnectionManager(server_localhost):
         work = socket.recv_json()
         opt = work['Opt']
         from_sender = work['FromID']
+        pro_dict = ast.literal_eval(work['ProDict'])
+        server_localhost.setStatus(pro_dict)
         # target_ids_list = work['NodeIDs']
         # handling stop or resume process
         print '[*] Receive', opt, ' From :', from_sender, '  ', time.ctime()
         if __debug__:
             if opt == 'STOP':
                 connectionMg.processHandler('STOP', server_localhost)
-                time.sleep(2)
+                time.sleep(5)
                 connectionMg.processHandler('RESUME', server_localhost)
                 print '[*] Resume: ', time.ctime()
         else:
@@ -200,6 +223,7 @@ def valueRetriever(server_localhost):
     server_localhost...HostService
     """
     connectionMg = ConnectionManager()
+    server_localhost.setStatus({int(os.getpid()):True})
     while True:
         time.sleep(1)
         sensor_val = getSensorData()
