@@ -1,9 +1,13 @@
-import time
+import time, datetime
 import random
 import ast
 import os
 import multiprocessing
 import subprocess # Watch out for shell injection when using subprocess.call
+import signal
+import sys
+import optparse
+import psutil # apt-get install python-dev pip install psutil
 import zmq
 
 
@@ -35,20 +39,21 @@ class HostService(object):
     def setStatus(self, proc_status):
         self.proc_status = proc_status
 
-    def procStatus(self, pid):
-        for line in open("/proc/%d/status" % pid).readlines():
-            if line.startswith("State:"):
-                return line.split(":",1)[1].strip().split(' ')[0]
-        return None
+    #def procStatus(self, pid):
+    #    for line in open("/proc/%d/status" % pid).readlines():
+    #        if line.startswith("State:"):
+    #            return line.split(":",1)[1].strip().split(' ')[0]
+    #    return None
 
     def isAlive(self):
         """ To check if the proc is not paused """
         for key in self.proc_status:
-            print '[*] Checking PID: ', key , ' alive  status:', self.procStatus(key)
-            if self.procStatus(key) == 'T':
+            print '[*] Checking PID: ', key , ' alive  status:', psutil.Process(key).status()
+            #if self.procStatus(key) == 'T':
+            if psutil.Process(key).status() == 'stopped':
                 print '[*] PID: ', key, 'is paused'
                 return False
-        
+
         return True
 
 
@@ -98,6 +103,7 @@ class ConnectionManager(object):
         with open('consumers.txt') as temp_file:
             self.consumers_ip_list = [line.rstrip('\n') for line in temp_file]
         self.loopback_ip = 'tcp://127.0.0.1:5555'
+        self.f2 = open('/sys/vt/VT7/mode', 'w')
 
     def sendCommand(self, opt, server_localhost, send_to):
         """
@@ -142,19 +148,22 @@ class ConnectionManager(object):
                 while not server_localhost.isAlive():
                     print '[*] Waiting for system to resume before pausing'
                     time.sleep(1)
-            # f2 = open('/sys/vt/VT7/mode', 'w')
-            # f2.write('freeze')
-            # f2.close()
-            subprocess.call("echo 'freeze' > /sys/vt/VT7/mode", shell=True)
+            #f2 = open('/sys/vt/VT7/mode', 'w')
+            self.f2.write('freeze')
+            #f2.close()
+            # subprocess.call("echo 'freeze' > /sys/vt/VT7/mode", shell=True)
             print '[*] Stop Services', time.ctime()
 
         elif opt == 'RESUME':
-            # f2 = open('/sys/vt/VT7/mode', 'w')
-            # f2.write('unfreeze')
-            # f2.close()
-            subprocess.call("echo 'unfreeze' > /sys/vt/VT7/mode", shell=True)
+            if server_localhost.isAlive():
+                while server_localhost.isAlive():
+                    print '[*] Waiting for system to pasue before resume'
+                    time.sleep(1)
+            #f2 = open('/sys/vt/VT7/mode', 'w')
+            self.f2.write('unfreeze')
+            #f2.close()
+            # subprocess.call("echo 'unfreeze' > /sys/vt/VT7/mode", shell=True)
             print '[*] Resume Services', time.ctime()
-
 
 """ Connection Manager """
 
@@ -198,7 +207,7 @@ def startConnectionManager(server_localhost):
         if __debug__:
             if opt == 'STOP':
                 connectionMg.processHandler('STOP', server_localhost)
-                time.sleep(5)
+                time.sleep(10)
                 connectionMg.processHandler('RESUME', server_localhost)
                 print '[*] Resume: ', time.ctime()
         else:
@@ -232,6 +241,7 @@ def valueRetriever(server_localhost):
             if sensor_val < 2: # assume this is the situation we need to pause the system
                 print '[*] Not getting value, system pasuing'
                 connectionMg.sendCommand('STOP', server_localhost, 'loopback')
+                time.sleep(2) # to simulate waiting for value
         else:
             if sensor_val < 2: # assume this is the situation we need to pause the system
                 print '[*] Not getting value, system pasuing'
@@ -249,12 +259,41 @@ def valueRetriever(server_localhost):
             server_localhost.setValue([sensor_val])
 
 
+def startingTime(time2start):
+    """
+    start the Process at specific time
+    Arg:
+    time2start...string
+    """
+    try:
+        datetime.datetime.strptime(time2start, '%H:%M:%S')
+    except ValueError:
+        raise ValueError("Incorrect data format, should be HH:MM:SS")
+
+    print '[*] Wait until', time2start, '...'
+
+    while time2start != datetime.datetime.now().strftime("%H:%M:%S"):
+        time.sleep(1)
+
+    print '[*] Start!'
+
+
+
 def main():
     """main"""
     if __debug__:
         print 'Debug mode: ON'
     else:
         print 'Debug mode: OFF'
+
+    parser = optparse.OptionParser()
+    parser.add_option(
+        '-t', '--time',
+        dest='time2start',
+        type='string', default='-1',
+        help='''Enter the start time formart:HH:MM:SS e.g. 10:12:00'''
+    )
+    options, _ = parser.parse_args()
 
     try:
         type_of_service = int(raw_input('Please selete the type of service: \n1. Controller \
@@ -267,6 +306,8 @@ def main():
     except ValueError:
         print "Error: Please confirm your input!"
 
+    if options.time2start != '-1':
+        startingTime(options.time2start)
     # for now both of them do the same thing
     if type_of_service == 1 or type_of_service == 2:
         # add real value
@@ -294,5 +335,18 @@ def main():
         print "Error: Please confirm your input"
 
 
+def kill_child_processes(signum, frame):
+    """ Handling Ctrl+Z """
+    parent_id = os.getpid()
+    ps_command = subprocess.Popen("ps -o pid --ppid %d --noheaders" % parent_id, shell=True, \
+                                  stdout=subprocess.PIPE)
+    ps_output = ps_command.stdout.read()
+    ps_command.wait()
+    for pid_str in ps_output.strip().split("\n")[:-1]:
+        os.kill(int(pid_str), signal.SIGTERM)
+    sys.exit()
+
+
 if __name__ == '__main__':
     main()
+    signal.signal(signal.SIGINT, kill_child_processes)
