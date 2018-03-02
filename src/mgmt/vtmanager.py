@@ -1,11 +1,9 @@
 import time, datetime
 import random
 import ast
-import os
+import os, sys, signal
 import multiprocessing
 import subprocess # Watch out for shell injection when using subprocess.call
-import signal
-import sys
 import optparse
 import psutil # apt-get install python-dev pip install psutil
 import zmq
@@ -103,7 +101,6 @@ class ConnectionManager(object):
         with open('consumers.txt') as temp_file:
             self.consumers_ip_list = [line.rstrip('\n') for line in temp_file]
         self.loopback_ip = 'tcp://127.0.0.1:5555'
-        self.f2 = open('/sys/vt/VT7/mode', 'w')
 
     def sendCommand(self, opt, server_localhost, send_to):
         """
@@ -149,9 +146,9 @@ class ConnectionManager(object):
                     print '[*] Waiting for system to resume before pausing'
                     time.sleep(1)
             #f2 = open('/sys/vt/VT7/mode', 'w')
-            self.f2.write('freeze')
+            #f2.write('freeze')
             #f2.close()
-            # subprocess.call("echo 'freeze' > /sys/vt/VT7/mode", shell=True)
+            subprocess.call("echo 'freeze' > /sys/vt/VT7/mode", shell=True)
             print '[*] Stop Services', time.ctime()
 
         elif opt == 'RESUME':
@@ -160,9 +157,9 @@ class ConnectionManager(object):
                     print '[*] Waiting for system to pasue before resume'
                     time.sleep(1)
             #f2 = open('/sys/vt/VT7/mode', 'w')
-            self.f2.write('unfreeze')
+            #f2.write('unfreeze')
             #f2.close()
-            # subprocess.call("echo 'unfreeze' > /sys/vt/VT7/mode", shell=True)
+            subprocess.call("echo 'unfreeze' > /sys/vt/VT7/mode", shell=True)
             print '[*] Resume Services', time.ctime()
 
 """ Connection Manager """
@@ -236,13 +233,15 @@ def valueRetriever(server_localhost):
     while True:
         time.sleep(1)
         sensor_val = getSensorData()
-        print '[*] Value: ', sensor_val
+        print '[*] Value: ', sensor_val' ...  ', time.ctime()
         if __debug__:
             if sensor_val < 2: # assume this is the situation we need to pause the system
-                print '[*] Not getting value, system pasuing'
+                print '[*] Not getting value, system pasuing...  ', time.ctime()
                 connectionMg.sendCommand('STOP', server_localhost, 'loopback')
-                time.sleep(2) # to simulate waiting for value
+                time.sleep(5) # to simulate waiting for value
         else:
+            pass
+            """
             if sensor_val < 2: # assume this is the situation we need to pause the system
                 print '[*] Not getting value, system pasuing'
                 connectionMg.sendCommand('STOP', server_localhost, 'loopback')
@@ -257,6 +256,7 @@ def valueRetriever(server_localhost):
                 connectionMg.processHandler('STOP', server_localhost)
 
             server_localhost.setValue([sensor_val])
+            """
 
 
 def startingTime(time2start):
@@ -299,12 +299,12 @@ def main():
         type_of_service = int(raw_input('Please selete the type of service: \n1. Controller \
                                         \n2. Sensor \nPress Enter: '))
     except ValueError:
-        print "Error: Please confirm your input!"
+        raise ValueError("Error: Please confirm your input!")
 
     try:
         node_id = int(raw_input('Please enter the ID for this node: \nPress Enter: '))
     except ValueError:
-        print "Error: Please confirm your input!"
+        raise ValueError("Error: Please confirm your input!")
 
     if options.time2start != '-1':
         startingTime(options.time2start)
