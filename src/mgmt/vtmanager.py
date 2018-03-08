@@ -233,7 +233,7 @@ def valueRetriever(server_localhost):
     while True:
         time.sleep(1)
         sensor_val = getSensorData()
-        print '[*] Value: ', sensor_val' ...  ', time.ctime()
+        print '[*] Value: ', sensor_val, ' ...  ', time.ctime()
         if __debug__:
             if sensor_val < 2: # assume this is the situation we need to pause the system
                 print '[*] Not getting value, system pasuing...  ', time.ctime()

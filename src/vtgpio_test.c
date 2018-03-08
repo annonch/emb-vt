@@ -29,12 +29,14 @@
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Christopher Hannon");
 MODULE_DESCRIPTION("Test for sync between two emb-lins for virtual time coordination");
-MODULE_VERSION("0.2");
+MODULE_VERSION("0.3");
 
-static unsigned int gpioSIG = 7;
+static unsigned int gpioSIG = 7; // Using CE1 to output high or low
 static unsigned int gpioSIG2 = 8;
+static unsigned int gpioSIG3 = 24; // Brian: Using GPIO5 to listening for falling
 
-/* 
+/*
+ * Brian: CE1 to output high or low, GPIO5 to listening for falling | 2018Mar8th
  * gpio 21 on 2B static
  *  try 25 to see if pin broken 7; // pin for talking // gpio21 on model b+
  * I think 7 and 8 for banana pi 21 and 20 for raspberry pi
@@ -64,7 +66,7 @@ void file_close(struct file* file);
 int file_read(struct file* file, unsigned long long offset, unsigned char* data, unsigned int size);
 int file_write(struct file* file, unsigned long long offset, unsigned char* data, unsigned int size);
 int file_sync(struct file* file);
-  
+
 enum modes { DISABLED, ENABLED };
 static enum modes mode = DISABLED;
 static int all_pids[MAX_NUM_PIDS] = {0};
@@ -134,7 +136,7 @@ void resume(void) {
   printk(KERN_INFO "VT-GPIO_TIME: TIME-RESUME: %llu %llu nanoseconds",
 	 ((unsigned long long)seconds_end.tv_sec-(unsigned long long)seconds.tv_sec) ,
 	 ((unsigned long long)seconds_end.tv_nsec -(unsigned long long)seconds.tv_nsec));
-  
+
 }
 
 /** @brief Function to add pids to VT */
@@ -155,7 +157,7 @@ static int freeze_proc(int pid) {
 
   write_proc_field((pid_t)pid, "freeze", "1");
   printk(KERN_INFO "VT-GPIO_TEST: Freezing %d\n",pid);
-  
+
   return ret;
 }
 /** @brief Function to add pids to VT */
@@ -164,7 +166,7 @@ static int resume_proc(int pid) {
 
   write_proc_field((pid_t)pid, "freeze", "0");
   printk(KERN_INFO "VT-GPIO_TEST: Unfreezing %d\n",pid);
-  
+
   return ret;
 }
 
@@ -195,7 +197,7 @@ static int sequential_io(enum IO io) {
 	break;
     }
     break;
-  } 
+  }
   return 0;
 }
 
@@ -220,7 +222,7 @@ static ssize_t tdf_store(struct kobject *kobj, struct kobj_attribute *attr, cons
   if (ret < 0)
     return ret;
   /* we should overwrite any existing tdf */
-  sequential_io(DILATE); 
+  sequential_io(DILATE);
   return count;
 }
 
@@ -293,7 +295,7 @@ static ssize_t pid_03_store(struct kobject *kobj, struct kobj_attribute *attr, c
   if (ret < 0)
     return ret;
   if(pid_03){
-    all_pids[2] = pid_03; 
+    all_pids[2] = pid_03;
     ret = dilate_proc(pid_03);
   }
   if (ret < 0)
@@ -368,7 +370,7 @@ static ssize_t pid_06_store(struct kobject *kobj, struct kobj_attribute *attr, c
   if (ret < 0)
     return ret;
   if(pid_06){
-    all_pids[5] = pid_06; 
+    all_pids[5] = pid_06;
     ret = dilate_proc(pid_06);
   }
   if (ret < 0)
@@ -642,19 +644,19 @@ static ssize_t mode_store(struct kobject *kobj, struct kobj_attribute *attr, con
     mode = ENABLED;
     printk(KERN_INFO "VT-GPIO_TEST: pause\n");
 
-    /* vt has been triggered locally 
+    /* vt has been triggered locally
      *   we need to quickly
      *	 change to output mode
      */
 
     gpio_direction_output(gpioSIG,1);
 
-    /* 
+    /*
      * interrupt does not get called automatically
      * so we need to pause manually for the caller
      */
 
-    pause();  
+    // pause(); // Brian: let the pause be called by irq
     //printk(KERN_INFO "VT-GPIO_TEST: value of pin: %d\n", gpio_get_value(gpioSIG));
   }
   else if (strncmp(buf,"unfreeze",count-1)==0) {
@@ -666,7 +668,7 @@ static ssize_t mode_store(struct kobject *kobj, struct kobj_attribute *attr, con
     gpio_direction_output(gpioSIG,0);
     //printk(KERN_INFO "VT-GPIO_TEST: value of pin: %d\n", gpio_get_value(gpioSIG));
     gpio_direction_input(gpioSIG);
-    //printk(KERN_INFO "VT-GPIO_TEST: value of pin: %d\n", gpio_get_value(gpioSIG));
+    printk(KERN_INFO "VT-GPIO_TEST: value of pin: %d\n", gpio_get_value(gpioSIG));
     //resume(); // this should get called throuigh the interrupt
   }
   return count;
@@ -738,6 +740,10 @@ static int __init vtgpio_init(void) {
     printk(KERN_INFO "VT-GPIO_TEST: pin %d not valid\n",gpioSIG2);
     return -ENODEV;
   }
+  if(!gpio_is_valid(gpioSIG3)) {
+    printk(KERN_INFO "VT-GPIO_TEST: pin %d not valid\n",gpioSIG3);
+    return -ENODEV;
+  }
   sprintf(vtName, "VT%d", gpioSIG);
   vt_kobj = kobject_create_and_add("vt", kernel_kobj->parent);
 
@@ -755,14 +761,18 @@ static int __init vtgpio_init(void) {
 
   gpio_request(gpioSIG, "sysfs");
   gpio_request(gpioSIG2, "sysfs");
+  gpio_request(gpioSIG3, "sysfs");
   gpio_direction_input(gpioSIG); // default to input to listen
   gpio_direction_input(gpioSIG2); // default to input to listen
+  gpio_direction_input(gpioSIG3); // default to input to listen
   gpio_set_debounce(gpioSIG, DEBOUNCE_TIME);
   gpio_set_debounce(gpioSIG2, DEBOUNCE_TIME);
+  gpio_set_debounce(gpioSIG3, DEBOUNCE_TIME);
   gpio_export(gpioSIG, true);    // true = we should be able to change direction
   gpio_export(gpioSIG2, true);    // true = we should be able to change direction
+  gpio_export(gpioSIG3, true);    // true = we should be able to change direction
 
-  irqNumber = gpio_to_irq(gpioSIG);
+  irqNumber = gpio_to_irq(gpioSIG3);
   printk(KERN_INFO "VT-GPIO_TEST: Input signal is mapped to IRQ: %d\n", irqNumber);
   irqNumber2 = gpio_to_irq(gpioSIG2);
   printk(KERN_INFO "VT-GPIO_TEST: Input signal is mapped to IRQ: %d\n", irqNumber2);
@@ -784,9 +794,11 @@ static void __exit vtgpio_exit(void) {
   kobject_put(vt_kobj);
   gpio_unexport(gpioSIG);
   gpio_unexport(gpioSIG2);
+  gpio_unexport(gpioSIG3);
 
   free_irq(irqNumber, NULL);
   gpio_free(gpioSIG);
+  gpio_free(gpioSIG3);
   free_irq(irqNumber2, NULL);
   gpio_free(gpioSIG2);
   printk(KERN_INFO "VT-GPIO_TEST: Successfully leaving LKM\n");
@@ -810,14 +822,14 @@ int write_proc_field(pid_t pid, char* field, char* val) {
   struct file *proc_file;
   char path[PATH_MAX];
   size_t val_len = strlen(val);
-  
+
   sprintf(path, "/proc/%d/%s", pid, field);
   proc_file =file_open(path,O_WRONLY,0);
   if (!proc_file){
     printk(KERN_INFO "VT-GPIO_ERROR: can not open %s\n",path);
     return -1;
   }
-    
+
   ret = file_write(proc_file, 0, val, val_len);
 
   if (ret < 0) {
@@ -830,7 +842,7 @@ int write_proc_field(pid_t pid, char* field, char* val) {
     return -1;
   }
   file_close(proc_file);
-  
+
   return 0;
 }
 
@@ -904,22 +916,22 @@ return 0;
 /** @brief A callback function to store the vt pids */
 /*
 static ssize_t pids_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count) {
-  
+
    //c buf is the text input from sysfs.
    // we should convert this to an integer array.
-  
+
   char buf2[128*6] = {0};
-  static int cur_pid = 0; 
+  static int cur_pid = 0;
   int num_count = 0;
   int i = 0;
   int result = 0;
   char *dst;
   char *ddst;
-  
+
   strncpy(buf2,buf,count);
 
   printk(KERN_INFO "VT-GPIO_DEGUG: enter pidstore");
-  
+
   dst = buf2;
   ddst = buf2;
 
@@ -937,23 +949,23 @@ static ssize_t pids_store(struct kobject *kobj, struct kobj_attribute *attr, con
     if (ddst[0] == ' ') {
       result = kstrtoint(dst,(uint)10,&cur_pid);
       dst=ddst+1;
-    
+
     printk(KERN_INFO "VT-GPIO_DEGUG: kstrtoint %d ",cur_pid);
     printk(KERN_INFO "VT-GPIO_DEGUG: kstrtoint res: %d ",result);
     pids[num_count] = cur_pid;
     num_count += 1;
     }
   }
-  
+
   for(i=0;i<num_pids;i++) {
     printk(KERN_INFO "VT-GPIO_TEST: pid: %d \n", pids[i]);
   }
-  
+
   num_pids = num_count;
   dilate_procs();
   printk(KERN_INFO "VT-GPIO_DEBUG: leaving pidstore\n");
-  
-  return count; 
+
+  return count;
 }
 
 */
