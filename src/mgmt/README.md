@@ -1,36 +1,38 @@
 # Management Application for Smart Grid System
-Using Python with [pyzmq](https://learning-0mq-with-pyzmq.readthedocs.io/en/latest/pyzmq/pyzmq.html)
+
+Using Python and ZMQ with [pyzmq](https://learning-0mq-with-pyzmq.readthedocs.io/en/latest/pyzmq/pyzmq.html)
+
+> Use **vtmanager.py** for now
 
 ### How to use
+
 ```
-python vtresultcollector.py
-python vtconsumer.py -i 1 -p 1234
-python vtproducer.py -f consumers.txt -o STOP -s 1
+# for debug mode
+python vtmanager.py
+# for release mode
+python -o vtmanager.py
 ```
-> **vtresultcollector.py** and **vtproducer.py** belong to the master node, **vtconsumer.py** belongs to the sensors (slaves) nodes
 
-#### vtproducer.py
-| Args           | Value                                      |
-|:--------------:| ------------------------------------------ |
-| '-f' '--file'  | File which contains all the consumers IPs  |
-| '-o' '--option'| Option for sending out to all the consumers|
-| '-s' '--sensor'| The ID of the sensor                       |
-| '-h' '--help'  | Help                                       |
+To start VTManager with timer. By default, it starts without waitng.
 
-#### vtconsumer.py
-| Args             | Value                      |
-|:----------------:| -------------------------- |
-| '-i' '--id'      | ID of this sensor          |
-| '-m' '--masterip'| IP of the Master Controller|
-| '-p' '--pid'     | Process ID                 |
-| '-h' '--help'    | Help                       |
+You may want to use `date` command to check for current system time.
 
-#### vtresultcollector.py
-| Args           | Value                                      |
-|:--------------:| ------------------------------------------ |
-| '-f' '--file'  | File which contains all the consumers IPs  |
-| '-o' '--option'| Option for sending out to all the consumers|
-| '-h' '--help'  | Help                                       |
+```
+python vtmanager.py -t HH:MM:SS
+# e.g.
+python vtmanager.py -t 10:12:00
+```
+
+#### vtmanager.py 
+
+| Args           | Value                                                |
+|:--------------:| ---------------------------------------------------- |
+| '-t' '--time'  | Enter the start time formart:HH:MM:SS e.g. 10:12:00  |
+
+
+`vmgm.log` contains the log for VT Manager.
+
+`dmesg.log` will be generated after signal.SIGINT `Ctrl+Z`.
 
 `consumers.txt` contains all the sensors' IP.
 

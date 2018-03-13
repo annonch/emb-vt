@@ -224,6 +224,9 @@ void freeze_time(struct task_struct *tsk)
   struct timespec ts;
   s64 now;
   int kill_status=0;
+
+  // Brian: F->F->F->U->U->U
+  if (tsk->freeze_start_nsec > 0) return;
  
   //printk("VT-DEBUG: in freeze_time\n");
   /* signal STOP to freeze this @tsk's children */;
@@ -250,6 +253,9 @@ void unfreeze_time(struct task_struct *tsk)
   struct timespec ts;
   s64 now;
   int kill_status=0;
+
+  // Brian: F->F->F->U->U->U
+  if (tsk->freeze_start_nsec == 0) return;
 
   //printk("VT-DEBUG: in unfreeze_time\n");
   getnstimeofday(&ts);
