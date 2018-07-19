@@ -26,6 +26,8 @@
 #define DEBOUNCE_TIME 0.02
 #define MAX_NUM_PIDS 16
 
+#define ftrace 1
+
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Christopher Hannon");
 MODULE_DESCRIPTION("Sync between multiple embedded linux devices for virtual time coordination");
@@ -99,9 +101,19 @@ void pause(void) {
   struct timespec seconds_end;
 
   getnstimeofday(&seconds);
-  printk(KERN_INFO "VT-GPIO_TIME: TIME-RISE: %llu %llu nanoseconds",(unsigned long long)seconds.tv_sec , (unsigned long long)seconds.tv_nsec);
+  if(ftrace){
+    trace_printk(KERN_INFO "VT-GPIO_TIME: TIME-RISE: %llu %llu nanoseconds",(unsigned long long)seconds.tv_sec , (unsigned long long)seconds.tv_nsec);
+  }
+  else {
+    printk(KERN_INFO "VT-GPIO_TIME: TIME-RISE: %llu %llu nanoseconds",(unsigned long long)seconds.tv_sec , (unsigned long long)seconds.tv_nsec);
+  }
   num_ints ++;
-  printk(KERN_INFO "VT-GPIO_TEST: Rising Edge detected");
+  if(ftrace) {
+    trace_printk(KERN_INFO "VT-GPIO_TEST: Rising Edge detected");
+  }
+  else {
+    printk(KERN_INFO "VT-GPIO_TEST: Rising Edge detected");
+  }
   
   /* read list of pids */
   /* kickoff kthreads to resume processes */
@@ -109,10 +121,18 @@ void pause(void) {
   sequential_io(FREEZE);
 
   getnstimeofday(&seconds_end);
-  printk(KERN_INFO "VT-GPIO_TIME: TIME-RISE: %llu %llu nanoseconds",(unsigned long long)seconds_end.tv_sec , (unsigned long long)seconds_end.tv_nsec);
-  printk(KERN_INFO "VT-GPIO_TIME: TIME-PAUSE: %llu %llu nanoseconds",
+  if(ftrace) {
+    trace_printk(KERN_INFO "VT-GPIO_TIME: TIME-RISE: %llu %llu nanoseconds",(unsigned long long)seconds_end.tv_sec , (unsigned long long)seconds_end.tv_nsec);
+    trace_printk(KERN_INFO "VT-GPIO_TIME: TIME-PAUSE: %llu %llu nanoseconds",
 	 ((unsigned long long)seconds_end.tv_sec-(unsigned long long)seconds.tv_sec) ,
 	 ((unsigned long long)seconds_end.tv_nsec -(unsigned long long)seconds.tv_nsec));
+  }
+  else {
+    printk(KERN_INFO "VT-GPIO_TIME: TIME-RISE: %llu %llu nanoseconds",(unsigned long long)seconds_end.tv_sec , (unsigned long long)seconds_end.tv_nsec);
+    printk(KERN_INFO "VT-GPIO_TIME: TIME-PAUSE: %llu %llu nanoseconds",
+	 ((unsigned long long)seconds_end.tv_sec-(unsigned long long)seconds.tv_sec) ,
+	 ((unsigned long long)seconds_end.tv_nsec -(unsigned long long)seconds.tv_nsec));
+  }
 }
 
 /** @brief Function to pause pids in VT */
@@ -121,21 +141,37 @@ void resume(void) {
   struct timespec seconds_end;
 
   getnstimeofday(&seconds);
-  printk(KERN_INFO "VT-GPIO_TIME: TIME-FALL: %llu %llu nanoseconds",(unsigned long long)seconds.tv_sec , (unsigned long long)seconds.tv_nsec);
+  if(ftrace){
+    trace_printk(KERN_INFO "VT-GPIO_TIME: TIME-FALL: %llu %llu nanoseconds",(unsigned long long)seconds.tv_sec , (unsigned long long)seconds.tv_nsec);
+  }
+  else{
+    printk(KERN_INFO "VT-GPIO_TIME: TIME-FALL: %llu %llu nanoseconds",(unsigned long long)seconds.tv_sec , (unsigned long long)seconds.tv_nsec);
+  }
   num_ints ++;
-  printk(KERN_INFO "VT-GPIO_TEST: Falling Edge detected");
-
+  if(ftrace) {
+    trace_printk(KERN_INFO "VT-GPIO_TEST: Falling Edge detected");
+  }
+  else{
+    printk(KERN_INFO "VT-GPIO_TEST: Falling Edge detected");
+  }
   /* we have to sound the trumpets */
   /* read list of pids */
   /* kickoff kthreads to resume processes */
   sequential_io(RESUME);
 
   getnstimeofday(&seconds_end);
-  printk(KERN_INFO "VT-GPIO_TIME: TIME-FALL: %llu %llu nanoseconds",(unsigned long long)seconds_end.tv_sec , (unsigned long long)seconds_end.tv_nsec);
-  printk(KERN_INFO "VT-GPIO_TIME: TIME-RESUME: %llu %llu nanoseconds",
+  if(ftrace) {
+    trace_printk(KERN_INFO "VT-GPIO_TIME: TIME-FALL: %llu %llu nanoseconds",(unsigned long long)seconds_end.tv_sec , (unsigned long long)seconds_end.tv_nsec);
+    trace_printk(KERN_INFO "VT-GPIO_TIME: TIME-RESUME: %llu %llu nanoseconds",
 	 ((unsigned long long)seconds_end.tv_sec-(unsigned long long)seconds.tv_sec) ,
 	 ((unsigned long long)seconds_end.tv_nsec -(unsigned long long)seconds.tv_nsec));
-
+  }
+  else {
+    printk(KERN_INFO "VT-GPIO_TIME: TIME-FALL: %llu %llu nanoseconds",(unsigned long long)seconds_end.tv_sec , (unsigned long long)seconds_end.tv_nsec);
+    printk(KERN_INFO "VT-GPIO_TIME: TIME-RESUME: %llu %llu nanoseconds",
+	 ((unsigned long long)seconds_end.tv_sec-(unsigned long long)seconds.tv_sec) ,
+	 ((unsigned long long)seconds_end.tv_nsec -(unsigned long long)seconds.tv_nsec));
+  }
 }
 
 /** @brief Function to add pids to VT */
@@ -145,8 +181,12 @@ static int dilate_proc(int pid) {
 
   ret = sprintf(tdf_str, "%d",tdf);
   write_proc_field((pid_t)pid, "dilation", tdf_str);
-  printk(KERN_INFO "VT-GPIO_TEST: Dilating %d\n",pid);
-
+  if(ftrace){
+    trace_printk(KERN_INFO "VT-GPIO_TEST: Dilating %d\n",pid);
+  }
+  else {
+    printk(KERN_INFO "VT-GPIO_TEST: Dilating %d\n",pid);
+  }
   return ret;
 }
 
@@ -155,8 +195,12 @@ static int freeze_proc(int pid) {
   int ret = 0;
 
   write_proc_field((pid_t)pid, "freeze", "1");
-  printk(KERN_INFO "VT-GPIO_TEST: Freezing %d\n",pid);
-
+  if(ftrace){
+    trace_printk(KERN_INFO "VT-GPIO_TEST: Freezing %d\n",pid);
+  }
+  else{
+    printk(KERN_INFO "VT-GPIO_TEST: Freezing %d\n",pid);
+  }
   return ret;
 }
 /** @brief Function to add pids to VT */
@@ -164,8 +208,12 @@ static int resume_proc(int pid) {
   int ret = 0;
 
   write_proc_field((pid_t)pid, "freeze", "0");
-  printk(KERN_INFO "VT-GPIO_TEST: Unfreezing %d\n",pid);
-
+  if(ftrace){
+    trace_printk(KERN_INFO "VT-GPIO_TEST: Unfreezing %d\n",pid);
+  }
+  else{
+    printk(KERN_INFO "VT-GPIO_TEST: Unfreezing %d\n",pid);
+  }
   return ret;
 }
 
@@ -645,8 +693,12 @@ static ssize_t mode_show(struct kobject *kobj, struct kobj_attribute *attr, char
 static ssize_t mode_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count) {
   if(strncmp(buf,"freeze",count-1)==0) {
     mode = ENABLED;
-    printk(KERN_INFO "VT-GPIO_TEST: pause\n");
-
+    if(ftrace) {
+      trace_printk(KERN_INFO "VT-GPIO_TEST: pause\n");
+    }
+    else{
+      printk(KERN_INFO "VT-GPIO_TEST: pause\n");
+    }
     /* vt has been triggered locally
      *   we need to quickly
      *	 change to output mode
@@ -664,14 +716,19 @@ static ssize_t mode_store(struct kobject *kobj, struct kobj_attribute *attr, con
   }
   else if (strncmp(buf,"unfreeze",count-1)==0) {
     mode = DISABLED;
-    printk(KERN_INFO "VT-GPIO_TEST: resume\n");
+    if(ftrace){
+      trace_printk(KERN_INFO "VT-GPIO_TEST: resume\n");
+    }
+    else{
+      printk(KERN_INFO "VT-GPIO_TEST: resume\n");
+    }
     /* chgn cfg
      * go low
      */
     gpio_direction_output(gpioSIG,0);
     //printk(KERN_INFO "VT-GPIO_TEST: value of pin: %d\n", gpio_get_value(gpioSIG));
     gpio_direction_input(gpioSIG);
-    printk(KERN_INFO "VT-GPIO_TEST: value of pin: %d\n", gpio_get_value(gpioSIG));
+    //printk(KERN_INFO "VT-GPIO_TEST: value of pin: %d\n", gpio_get_value(gpioSIG));
     //resume(); // this should get called throuigh the interrupt
   }
   return count;
