@@ -28,7 +28,7 @@
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Christopher Hannon");
-MODULE_DESCRIPTION("Test for sync between two emb-lins for virtual time coordination");
+MODULE_DESCRIPTION("Sync between multiple embedded linux devices for virtual time coordination");
 MODULE_VERSION("0.3");
 
 static unsigned int gpioSIG = 7; // Using CE1 to output high or low
@@ -102,8 +102,7 @@ void pause(void) {
   printk(KERN_INFO "VT-GPIO_TIME: TIME-RISE: %llu %llu nanoseconds",(unsigned long long)seconds.tv_sec , (unsigned long long)seconds.tv_nsec);
   num_ints ++;
   printk(KERN_INFO "VT-GPIO_TEST: Rising Edge detected");
-
-  /* we have to sound the trumpets */
+  
   /* read list of pids */
   /* kickoff kthreads to resume processes */
 
@@ -171,6 +170,10 @@ static int resume_proc(int pid) {
 }
 
 static int sequential_io(enum IO io) {
+  /* Because of the break in the for loop,
+   *  pids should be added to the next available
+   */
+
   int i;
   switch(io){
   case DILATE:

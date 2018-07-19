@@ -4,7 +4,7 @@
 #  yliu301@iit.edu  #
 #####################
 #      EMB VT       #
-#    Version 0.5    #
+#   Version 0.9.1   #
 #####################
 import time, datetime
 import random
@@ -16,7 +16,9 @@ import subprocess # Watch out for shell injection for using subprocess.call
 import optparse
 import psutil # apt-get install python-dev pip install psutil
 import zmq
+# import vtclock
 
+CLOCK_REALTIME = 1
 
 # Initial Logger for multiprocess
 logger = logging.getLogger()
@@ -168,8 +170,8 @@ class ConnectionManager(object):
             #f2 = open('/sys/vt/VT7/mode', 'w')
             #f2.write('freeze')
             #f2.close()
+            logger.info("NCProcHandler_Stop_Services: %.9f", time.time())
             subprocess.call("echo 'freeze' > /sys/vt/VT7/mode", shell=True)
-            logger.info("NCProcHandler_Stop_Services: %f", time.time())
             print '[*] Stop Services', time.ctime()
 
         elif opt == 'RESUME':
@@ -180,8 +182,8 @@ class ConnectionManager(object):
             #f2 = open('/sys/vt/VT7/mode', 'w')
             #f2.write('unfreeze')
             #f2.close()
+            logger.info("NCProcHandler_Resume_Services: %.9f", time.time())
             subprocess.call("echo 'unfreeze' > /sys/vt/VT7/mode", shell=True)
-            logger.info("NCProcHandler_Resume_Services: %f", time.time())
             print '[*] Resume Services', time.ctime()
 
 """ Connection Manager """
@@ -226,10 +228,10 @@ def startConnectionManager(server_localhost):
         if __debug__:
             if opt == 'STOP':
                 connectionMg.processHandler('STOP', server_localhost)
-                logger.info("NetCoor_Stop_Services: %f", time.time())
-                time.sleep(10)
+                logger.info("NetCoor_Stop_Services: %.9f", time.time())
+                time.sleep(random.randint(5,10))
                 connectionMg.processHandler('RESUME', server_localhost)
-                logger.info("NetCoor_Resume_Services: %f", time.time())
+                logger.info("NetCoor_Resume_Services: %.9f", time.time())
                 print '[*] Resume: ', time.ctime()
         else:
             # wait until get the result from win server
@@ -261,7 +263,9 @@ def valueRetriever(server_localhost):
         if __debug__:
             if sensor_val < 2: # assume this is the situation we need to pause the system
                 print '[*] Not getting value, system pasuing...  ', time.ctime()
-                logger.info("Host_System_pasuing: %f", time.time())
+                process = subprocess.Popen(['cat', '/proc/'+str(os.getpid())+'/fpt'], stdout=subprocess.PIPE)
+                out, err = process.communicate()
+                logger.info("Host_System_pasuing: %.9f", (float(out[:-3])*0.000000001) +  time.time())
                 connectionMg.sendCommand('STOP', server_localhost, 'loopback')
                 time.sleep(5) # to simulate waiting for value
         else:
@@ -347,13 +351,13 @@ def main():
         print "[*] Starting Service ID: #%s" % (server_localhost.getID())
         p1 = multiprocessing.Process(name='p1', target=startConnectionManager, args=(server_localhost,))
         p1.start()
-        logger.info("Connection Manager Started: %f", time.time())
+        logger.info("Connection Manager Started: %.9f", time.time())
         print "[*] Connection Manager Started..."
 
         func_for_eval = server_localhost.getFunc()
         p2 = multiprocessing.Process(name='p2', target=eval(func_for_eval), args=(server_localhost,))
         p2.start()
-        logger.info("Host Activities Started: %f", time.time())
+        logger.info("Host Activities Started: %.9f", time.time())
         # Get p2.pid AKA the pid for the node and put it in the class
         server_localhost.setStatus({int(p2.pid):True})
         writeProcToFile(server_localhost) # take out this part for testing
