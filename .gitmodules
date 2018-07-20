@@ -1,0 +1,3 @@
+[submodule "kernel/linux-bananapi"]
+	path = kernel/linux-bananapi
+	url = https://github.com/hominlinx/linux-bananapi.git
