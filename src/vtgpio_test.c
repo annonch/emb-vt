@@ -97,6 +97,7 @@ static int tdf = 1000;
 static char vtName[6] = "vtXXX";
 
 void pause(void) {
+  trace_printk(KERN_INFO "VT_TEST_PAUSE");
   struct timespec seconds;
   struct timespec seconds_end;
 
@@ -137,6 +138,7 @@ void pause(void) {
 
 /** @brief Function to pause pids in VT */
 void resume(void) {
+  trace_printk(KERN_INFO "VT_TEST_RESUME");
   struct timespec seconds;
   struct timespec seconds_end;
 
@@ -194,26 +196,26 @@ static int dilate_proc(int pid) {
 static int freeze_proc(int pid) {
   int ret = 0;
 
-  write_proc_field((pid_t)pid, "freeze", "1");
   if(ftrace){
     trace_printk(KERN_INFO "VT-GPIO_TEST: Freezing %d\n",pid);
   }
   else{
     printk(KERN_INFO "VT-GPIO_TEST: Freezing %d\n",pid);
   }
+  write_proc_field((pid_t)pid, "freeze", "1");
   return ret;
 }
 /** @brief Function to add pids to VT */
 static int resume_proc(int pid) {
   int ret = 0;
 
-  write_proc_field((pid_t)pid, "freeze", "0");
   if(ftrace){
     trace_printk(KERN_INFO "VT-GPIO_TEST: Unfreezing %d\n",pid);
   }
   else{
     printk(KERN_INFO "VT-GPIO_TEST: Unfreezing %d\n",pid);
   }
+  write_proc_field((pid_t)pid, "freeze", "0");
   return ret;
 }
 
