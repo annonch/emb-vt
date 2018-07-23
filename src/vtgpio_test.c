@@ -97,7 +97,8 @@ static int tdf = 1000;
 static char vtName[6] = "vtXXX";
 
 void pause(void) {
-  trace_printk(KERN_INFO "VT_TEST_PAUSE");
+  //tracing_on();
+  trace_printk(KERN_INFO "VT_TEST_PAUSE\n");
   struct timespec seconds;
   struct timespec seconds_end;
 
@@ -134,11 +135,12 @@ void pause(void) {
 	 ((unsigned long long)seconds_end.tv_sec-(unsigned long long)seconds.tv_sec) ,
 	 ((unsigned long long)seconds_end.tv_nsec -(unsigned long long)seconds.tv_nsec));
   }
+  //tracing_off();
 }
 
 /** @brief Function to pause pids in VT */
 void resume(void) {
-  trace_printk(KERN_INFO "VT_TEST_RESUME");
+  trace_printk(KERN_INFO "VT_TEST_RESUME\n");
   struct timespec seconds;
   struct timespec seconds_end;
 
@@ -868,12 +870,14 @@ static void __exit vtgpio_exit(void) {
 
 /** @brief handler for rising signal */
 static irq_handler_t vtgpio_irq_handler(unsigned int irq, void *dev_id, struct pt_regs *regs) {
+  trace_printk(KERN_INFO "rise\n");
   pause();
   return (irq_handler_t) IRQ_HANDLED; // return that we all good
 }
 
 /** @brief handler for falling signal */
 static irq_handler_t vtgpio_irq_handler_fall(unsigned int irq, void *dev_id, struct pt_regs *regs) {
+  trace_printk(KERN_INFO "fall\n");
   resume();
   return (irq_handler_t) IRQ_HANDLED; // return that we all good
 }
