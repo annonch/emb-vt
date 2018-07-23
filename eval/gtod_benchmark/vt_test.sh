@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "kicking off processes in paused state"
-/home/emb-vt/eval/gtod_benchmark/start_paused.sh home/emb-vt/eval/gtod_benchmark/gtod_loop &
+/home/emb-vt/eval/gtod_benchmark/start_paused.sh /home/emb-vt/eval/gtod_benchmark/gtod_loop &
 PID1=$!
 echo $PID1
 ## DILATE ##
