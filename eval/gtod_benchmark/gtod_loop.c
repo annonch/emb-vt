@@ -55,8 +55,8 @@ long double gt(){
 
   
   
-  write(trace_fd, "0", 1);
-  write(marker_fd, "before GTOD\n", 12);
+  write(trace_fd, "1", 1);
+  write(marker_fd, "Before GTOD\n", 12);
 
   gettimeofday(&tv, NULL);
   starttime=tv.tv_sec;
@@ -67,13 +67,22 @@ long double gt(){
     gettimeofday(&tv, NULL);
   }
   
-  write(marker_fd, "after GTOD\n", 11);
+  write(marker_fd, "After GTOD\n", 11);
   write(trace_fd, "0", 1);
 
   curtime=tv.tv_sec;
   ms=tv.tv_usec;
 
+  if(ms > startms) {
+    printf("%ld\n",((long)curtime - (long)starttime));
+    printf("%ld\n",((long)ms - (long)startms));
+  }
+  else {
+    printf("%ld\n",((long)curtime - 1 - (long)starttime));
+    printf("%ld\n",((long)ms+1000000 - (long)startms));
+  }
   
+  /*
   printf("startTime:\n");
   printf("%ld\n",(long)starttime);
   printf("%ld\n",(long)startms);
@@ -81,7 +90,7 @@ long double gt(){
   printf("endTime:\n");
   printf("%ld\n",(long)curtime);
   printf("%ld\n",(long)ms);
-
+  */
   res = ((long double) curtime + (long double)ms/1000000.0);
   //printf("%Lf\n", res);
   return res;
