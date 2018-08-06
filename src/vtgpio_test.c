@@ -120,10 +120,10 @@ static char vtName[6] = "vtXXX";
 
 /* variables for benchmarking pause and resume times */
 #ifdef BENCHMARK
-static unsigned long long OHseconds;
-static unsigned long long OHns;
-static unsigned long long OH_R_seconds;
-static unsigned long long OH_R_ns;
+unsigned long long OHseconds;
+unsigned long long OHns;
+unsigned long long OH_R_seconds;
+unsigned long long OH_R_ns;
 #endif
 
 /* core function for pausing */
@@ -328,29 +328,32 @@ static int sequential_io(enum IO io) {
 #ifdef BENCHMARK
 static ssize_t OH_S_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
   return sprintf(buf, "%llu\n", OHseconds);
-  return 0;
 }
+
 static ssize_t OH_NS_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
   return sprintf(buf, "%llu\n", OHns);
-  return 0;
 }
+
 static ssize_t OH_R_S_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
   return sprintf(buf, "%llu\n", OH_R_seconds);
-  return 0;
 }
+
 static ssize_t OH_R_NS_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
   return sprintf(buf, "%llu\n", OH_R_ns);
-  return 0;
 }
+
 static ssize_t OH_S_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count) {
   return 0;
 }
+
 static ssize_t OH_NS_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count) {
   return 0;
 }
+
 static ssize_t OH_R_S_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count) {
   return 0;
 }
+
 static ssize_t OH_R_NS_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count) {
   return 0;
 }
