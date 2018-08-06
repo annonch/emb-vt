@@ -129,6 +129,7 @@ unsigned long long OH_R_ns;
 /* core function for pausing */
 void pause(void) {
   //tracing_on();
+#ifdef BENCHMARK
   struct timespec seconds;
   struct timespec seconds_end;
 
@@ -151,15 +152,16 @@ void pause(void) {
     printk(KERN_INFO "VT-GPIO_TEST: Rising Edge detected");
   }
 #endif
-  
+#endif
   /* read list of pids */
   /* kickoff kthreads to resume processes */
 
   num_ints ++;
   sequential_io(FREEZE);
-  getnstimeofday(&seconds_end);
 
 #ifdef BENCHMARK
+  getnstimeofday(&seconds_end);
+
   if(seconds_end.tv_nsec > seconds.tv_nsec) {
     OHseconds = seconds_end.tv_sec - seconds.tv_sec;
     OHns = seconds_end.tv_nsec - seconds.tv_nsec;
@@ -168,8 +170,9 @@ void pause(void) {
     OHseconds = seconds_end.tv_sec - 1 - seconds.tv_sec;
     OHns = seconds_end.tv_nsec - (SEC_NSEC + seconds.tv_nsec);
   }
-  
-#endif
+  printk(KERN_INFO "Pause ; %llu ; %llu \n",
+	 ((unsigned long long)OHseconds),
+	 ((unsigned long long)OHns)); 
   
 #ifndef QUIET
   if(FTRACE) {
@@ -187,38 +190,44 @@ void pause(void) {
 	   ((unsigned long long)seconds_end.tv_nsec -(unsigned long long)seconds.tv_nsec));
   }
 #endif
+#endif
   //tracing_off();
 }
 
 /** @brief Function to resume pids in VT */
 void resume(void) {
-  trace_printk(KERN_INFO "VT_TEST_RESUME\n");
+#ifdef BENCHMARK
   struct timespec seconds;
   struct timespec seconds_end;
 
   getnstimeofday(&seconds);
 
+  
 #ifndef QUIET
   if(FTRACE){
+    trace_printk(KERN_INFO "VT_TEST_RESUME\n");
     trace_printk(KERN_INFO "VT-GPIO_TIME: TIME-FALL: %llu %llu nanoseconds",
 		 (unsigned long long)seconds.tv_sec ,
 		 (unsigned long long)seconds.tv_nsec);
     trace_printk(KERN_INFO "VT-GPIO_TEST: Falling Edge detected");
   }
   else{
+    printk(KERN_INFO "VT_TEST_RESUME\n");
     printk(KERN_INFO "VT-GPIO_TIME: TIME-FALL: %llu %llu nanoseconds",
 	   (unsigned long long)seconds.tv_sec ,
 	   (unsigned long long)seconds.tv_nsec);
     printk(KERN_INFO "VT-GPIO_TEST: Falling Edge detected");
   }
 #endif
+#endif
   
   num_ints ++;
 
   sequential_io(RESUME);
-  getnstimeofday(&seconds_end);
 
 #ifdef BENCHMARK
+  getnstimeofday(&seconds_end);
+
   if(seconds_end.tv_nsec > seconds.tv_nsec) {
     OH_R_seconds = seconds_end.tv_sec - seconds.tv_sec;
     OH_R_ns = seconds_end.tv_nsec - seconds.tv_nsec;
@@ -226,8 +235,10 @@ void resume(void) {
   else {
     OH_R_seconds = seconds_end.tv_sec - 1 - seconds.tv_sec;
     OH_R_ns = seconds_end.tv_nsec - (SEC_NSEC + seconds.tv_nsec);
-  }  
-#endif
+  }
+  printk(KERN_INFO "Pause ; %llu ; %llu \n",
+	 ((unsigned long long)OH__R_seconds),
+	 ((unsigned long long)OH_R_ns));
 
   
 #ifndef QUIET
@@ -243,6 +254,7 @@ void resume(void) {
 	 ((unsigned long long)seconds_end.tv_sec-(unsigned long long)seconds.tv_sec) ,
 	 ((unsigned long long)seconds_end.tv_nsec -(unsigned long long)seconds.tv_nsec));
   }
+#endif
 #endif
 }
 
@@ -325,45 +337,6 @@ static int sequential_io(enum IO io) {
 }
 
 /* SYSFS stuff */
-#ifdef BENCHMARK
-static ssize_t OH_S_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
-  return sprintf(buf, "%llu\n", OHseconds);
-}
-
-static ssize_t OH_NS_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
-  return sprintf(buf, "%llu\n", OHns);
-}
-
-static ssize_t OH_R_S_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
-  return sprintf(buf, "%llu\n", OH_R_seconds);
-}
-
-static ssize_t OH_R_NS_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
-  return sprintf(buf, "%llu\n", OH_R_ns);
-}
-
-static ssize_t OH_S_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count) {
-  printk(KERN_INFO "Pause ; %llu ; %llu \n",
-	 ((unsigned long long)OHseconds),
-	 ((unsigned long long)OHns));
-  return 0;
-}
-
-static ssize_t OH_NS_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count) {
-  return 0;
-}
-
-static ssize_t OH_R_S_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count) {
-  printk(KERN_INFO "Pause ; %llu ; %llu \n",
-	 ((unsigned long long)OH_R_seconds),
-	 ((unsigned long long)OH_R_ns));
-  return 0;
-}
-
-static ssize_t OH_R_NS_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count) {
-  return 0;
-}
-#endif
 
 /** @brief A callback function to display the vt tdf */
 static ssize_t tdf_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
@@ -851,12 +824,6 @@ static ssize_t mode_store(struct kobject *kobj, struct kobj_attribute *attr, con
 /* Attributes */
 static struct kobj_attribute mode_attr   = __ATTR(mode, 0660, mode_show, mode_store);
 static struct kobj_attribute tdf_attr    = __ATTR(tdf, 0660, tdf_show, tdf_store);
-#ifdef BENCHMARK
-static struct kobj_attribute OH_S_attr    = __ATTR(OHseconds, 0660, OH_S_show, OH_S_store);
-static struct kobj_attribute OH_NS_attr   = __ATTR(OHns, 0660, OH_NS_show, OH_NS_store);
-static struct kobj_attribute OH_R_S_attr  = __ATTR(OH_R_seconds, 0660, OH_R_S_show, OH_R_S_store);
-static struct kobj_attribute OH_R_NS_attr = __ATTR(OH_R_ns, 0660, OH_R_NS_show, OH_R_NS_store);
-#endif
 static struct kobj_attribute pid_01_attr = __ATTR(pid_01, 0660, pid_01_show, pid_01_store);
 static struct kobj_attribute pid_02_attr = __ATTR(pid_02, 0660, pid_02_show, pid_02_store);
 static struct kobj_attribute pid_03_attr = __ATTR(pid_03, 0660, pid_03_show, pid_03_store);
@@ -878,12 +845,6 @@ static struct kobj_attribute pid_16_attr = __ATTR(pid_16, 0660, pid_16_show, pid
 static struct attribute *vt_attrs[] = {
   &mode_attr.attr,
   &tdf_attr.attr,
-#ifdef BENCHMARK
-  &OH_S_attr.attr,
-  &OH_NS_attr.attr,
-  &OH_R_S_attr.attr,
-  &OH_R_NS_attr.attr,
-#endif
   &pid_01_attr.attr,
   &pid_02_attr.attr,
   &pid_03_attr.attr,
@@ -1087,6 +1048,10 @@ int file_sync(struct file* file) {
 
 module_init(vtgpio_init);
 module_exit(vtgpio_exit);
+
+
+
+
 
 /* el fin */
 
