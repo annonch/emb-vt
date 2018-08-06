@@ -3,7 +3,7 @@
     For Heterogeneous Distributed
 	Embedded Linux Environment
 
-    Author: Christopher Hannon
+    Author: Christopher Hannon, Brian Liu
  */
 
 #include <linux/init.h>
@@ -26,56 +26,75 @@
 #define DEBOUNCE_TIME 0.02
 #define MAX_NUM_PIDS 16
 
-#define ftrace 1
+#define SEC_NSEC 1000000000 /*10^9 nsec in sec */
+
+#define BENCHMARK 0 /* value to denote time logging feature */
+/*
+ * populates kobjects with pause / resume times 
+ *  for evauluation purposes
+ */
+
+#define FTRACE 1  /* value to toggle ftrace vs regular prints  */
+/* useless if Quiet is enabled */
+
+#define QUIET 1 /* value to surpress real-time pause/resume */
+/* comment out to enable  printk */
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Christopher Hannon");
-MODULE_DESCRIPTION("Sync between multiple embedded linux devices for virtual time coordination");
-MODULE_VERSION("0.3");
+MODULE_DESCRIPTION("Distributed Virtual time synchronization module");
+MODULE_VERSION("0.4");
 
 static unsigned int gpioSIG = 7; // Using CE1 to output high or low
-static unsigned int gpioSIG2 = 8;
-static unsigned int gpioSIG3 = 24; // Brian: Using GPIO5 to listening for falling
+static unsigned int gpioSIG2 = 8;  // Listen to rising edge (pause)
+static unsigned int gpioSIG3 = 24; // Listen to falling edge (resume)
 
 /*
  * Brian: CE1 to output high or low, GPIO5 to listening for falling | 2018Mar8th
- * gpio 21 on 2B static
- *  try 25 to see if pin broken 7; // pin for talking // gpio21 on model b+
- * I think 7 and 8 for banana pi 21 and 20 for raspberry pi
- *  To install use insmod gpio_test.ko and lsmod to see the module
+ * Deprecated:
+ *     gpio 21 on 2B static
+ *     try 25 to see if pin broken 7; // pin for talking // gpio21 on model b+
+ *     I think 7 and 8 for banana pi 21 and 20 for raspberry pi
+ * 
+ * To install use insmod gpio_test.ko and lsmod to see the module
  * To uninstall use rmmod vtgpio_test and lsmod to confirm
- * if breaks just reboot
  * to pause write freeze/unfreeze to ....
- * /sys/vt/...
+ * /sys/vt/VT7/mode i.e. echo 'freeze' > /sys/vt/VT7/mode
  */
 
-unsigned int active = 1; //
-//static unsigned int last_triggered;
+unsigned int active = 1; 
 static unsigned int num_ints = 0;
 static unsigned int irqNumber;
 static unsigned int irqNumber2;
 
+/* irq handler functions */
 static irq_handler_t vtgpio_irq_handler(unsigned int irq, void *dev_id, struct pt_regs *regs);
 static irq_handler_t vtgpio_irq_handler_fall(unsigned int irq, void *dev_id, struct pt_regs *regs);
 
+/* functions for pausing resuming processes and clocks */
 void pause(void);
 void resume(void);
 static int dilate_proc(int pid);
 int write_proc_field(pid_t pid, char* field, char* val); // from Jiaqi's code
 
+/*support functions for writing to fields */
 struct file* file_open(const char* path, int flags, int rights);
 void file_close(struct file* file);
 int file_read(struct file* file, unsigned long long offset, unsigned char* data, unsigned int size);
 int file_write(struct file* file, unsigned long long offset, unsigned char* data, unsigned int size);
 int file_sync(struct file* file);
 
+/* varibles for filesystem and */
 enum modes { DISABLED, ENABLED };
 static enum modes mode = DISABLED;
 static int all_pids[MAX_NUM_PIDS] = {0};
+
+/* function for pausing ( currently sequential ) */
 enum IO{ RESUME,FREEZE,DILATE };
 
 static int sequential_io(enum IO io);
 
+/* PID variables for tracking processes in VT */
 static int pid_01 = 0;
 static int pid_02 = 0;
 static int pid_03 = 0;
@@ -92,79 +111,127 @@ static int pid_13 = 0;
 static int pid_14 = 0;
 static int pid_15 = 0;
 static int pid_16 = 0;
+
+/* default time dilation factor for clocks (x1000) see various references for more details */
 static int tdf = 1000;
 
+/* name of filesystem accessable from user space */
 static char vtName[6] = "vtXXX";
 
+/* variables for benchmarking pause and resume times */
+#ifdef BENCHMARK
+static unsigned long long OHseconds;
+static unsigned long long OHns;
+static unsigned long long OH_R_seconds;
+static unsigned long long OH_R_ns;
+#endif
+
+/* core function for pausing */
 void pause(void) {
   //tracing_on();
-  trace_printk(KERN_INFO "VT_TEST_PAUSE\n");
   struct timespec seconds;
   struct timespec seconds_end;
 
   getnstimeofday(&seconds);
-  if(ftrace){
-    trace_printk(KERN_INFO "VT-GPIO_TIME: TIME-RISE: %llu %llu nanoseconds",(unsigned long long)seconds.tv_sec , (unsigned long long)seconds.tv_nsec);
-  }
-  else {
-    printk(KERN_INFO "VT-GPIO_TIME: TIME-RISE: %llu %llu nanoseconds",(unsigned long long)seconds.tv_sec , (unsigned long long)seconds.tv_nsec);
-  }
-  num_ints ++;
-  if(ftrace) {
+
+#ifndef QUIET
+  if(FTRACE){
+    trace_printk(KERN_INFO "VT_TEST_PAUSE\n");
+    trace_printk(KERN_INFO "VT-GPIO_TIME: TIME-RISE: %llu %llu nanoseconds",
+		 (unsigned long long)seconds.tv_sec ,
+		 (unsigned long long)seconds.tv_nsec);
     trace_printk(KERN_INFO "VT-GPIO_TEST: Rising Edge detected");
+
   }
   else {
+    trace_printk(KERN_INFO "VT_TEST_PAUSE\n");
+    printk(KERN_INFO "VT-GPIO_TIME: TIME-RISE: %llu %llu nanoseconds",
+	   (unsigned long long)seconds.tv_sec ,
+	   (unsigned long long)seconds.tv_nsec);
     printk(KERN_INFO "VT-GPIO_TEST: Rising Edge detected");
   }
+#endif
   
   /* read list of pids */
   /* kickoff kthreads to resume processes */
 
+  num_ints ++;
   sequential_io(FREEZE);
-
   getnstimeofday(&seconds_end);
-  if(ftrace) {
-    trace_printk(KERN_INFO "VT-GPIO_TIME: TIME-RISE: %llu %llu nanoseconds",(unsigned long long)seconds_end.tv_sec , (unsigned long long)seconds_end.tv_nsec);
-    trace_printk(KERN_INFO "VT-GPIO_TIME: TIME-PAUSE: %llu %llu nanoseconds",
-	 ((unsigned long long)seconds_end.tv_sec-(unsigned long long)seconds.tv_sec) ,
-	 ((unsigned long long)seconds_end.tv_nsec -(unsigned long long)seconds.tv_nsec));
+
+#ifdef BENCHMARK
+  if(seconds_end.tv_nsec > seconds.tv_nsec) {
+    OHseconds = seconds_end.tv_sec - seconds.tv_sec;
+    OHns = seconds_end.tv_nsec - seconds.tv_nsec;
   }
   else {
-    printk(KERN_INFO "VT-GPIO_TIME: TIME-RISE: %llu %llu nanoseconds",(unsigned long long)seconds_end.tv_sec , (unsigned long long)seconds_end.tv_nsec);
-    printk(KERN_INFO "VT-GPIO_TIME: TIME-PAUSE: %llu %llu nanoseconds",
-	 ((unsigned long long)seconds_end.tv_sec-(unsigned long long)seconds.tv_sec) ,
-	 ((unsigned long long)seconds_end.tv_nsec -(unsigned long long)seconds.tv_nsec));
+    OHseconds = seconds_end.tv_sec - 1 - seconds.tv_sec;
+    OHns = seconds_end.tv_nsec - (SEC_NSEC + seconds.tv_nsec);
   }
+  
+#endif
+  
+#ifndef QUIET
+  if(FTRACE) {
+    trace_printk(KERN_INFO "VT-GPIO_TIME: TIME-RISE: %llu %llu nanoseconds",
+		 (unsigned long long)seconds_end.tv_sec , (unsigned long long)seconds_end.tv_nsec);
+    trace_printk(KERN_INFO "VT-GPIO_TIME: TIME-PAUSE: %llu %llu nanoseconds",
+		 ((unsigned long long)seconds_end.tv_sec-(unsigned long long)seconds.tv_sec) ,
+		 ((unsigned long long)seconds_end.tv_nsec -(unsigned long long)seconds.tv_nsec));
+  }
+  else {
+    printk(KERN_INFO "VT-GPIO_TIME: TIME-RISE: %llu %llu nanoseconds",
+	   (unsigned long long)seconds_end.tv_sec , (unsigned long long)seconds_end.tv_nsec);
+    printk(KERN_INFO "VT-GPIO_TIME: TIME-PAUSE: %llu %llu nanoseconds",
+	   ((unsigned long long)seconds_end.tv_sec-(unsigned long long)seconds.tv_sec) ,
+	   ((unsigned long long)seconds_end.tv_nsec -(unsigned long long)seconds.tv_nsec));
+  }
+#endif
   //tracing_off();
 }
 
-/** @brief Function to pause pids in VT */
+/** @brief Function to resume pids in VT */
 void resume(void) {
   trace_printk(KERN_INFO "VT_TEST_RESUME\n");
   struct timespec seconds;
   struct timespec seconds_end;
 
   getnstimeofday(&seconds);
-  if(ftrace){
-    trace_printk(KERN_INFO "VT-GPIO_TIME: TIME-FALL: %llu %llu nanoseconds",(unsigned long long)seconds.tv_sec , (unsigned long long)seconds.tv_nsec);
-  }
-  else{
-    printk(KERN_INFO "VT-GPIO_TIME: TIME-FALL: %llu %llu nanoseconds",(unsigned long long)seconds.tv_sec , (unsigned long long)seconds.tv_nsec);
-  }
-  num_ints ++;
-  if(ftrace) {
+
+#ifndef QUIET
+  if(FTRACE){
+    trace_printk(KERN_INFO "VT-GPIO_TIME: TIME-FALL: %llu %llu nanoseconds",
+		 (unsigned long long)seconds.tv_sec ,
+		 (unsigned long long)seconds.tv_nsec);
     trace_printk(KERN_INFO "VT-GPIO_TEST: Falling Edge detected");
   }
   else{
+    printk(KERN_INFO "VT-GPIO_TIME: TIME-FALL: %llu %llu nanoseconds",
+	   (unsigned long long)seconds.tv_sec ,
+	   (unsigned long long)seconds.tv_nsec);
     printk(KERN_INFO "VT-GPIO_TEST: Falling Edge detected");
   }
-  /* we have to sound the trumpets */
-  /* read list of pids */
-  /* kickoff kthreads to resume processes */
-  sequential_io(RESUME);
+#endif
+  
+  num_ints ++;
 
+  sequential_io(RESUME);
   getnstimeofday(&seconds_end);
-  if(ftrace) {
+
+#ifdef BENCHMARK
+  if(seconds_end.tv_nsec > seconds.tv_nsec) {
+    OH_R_seconds = seconds_end.tv_sec - seconds.tv_sec;
+    OH_R_ns = seconds_end.tv_nsec - seconds.tv_nsec;
+  }
+  else {
+    OH_R_seconds = seconds_end.tv_sec - 1 - seconds.tv_sec;
+    OH_R_ns = seconds_end.tv_nsec - (SEC_NSEC + seconds.tv_nsec);
+  }  
+#endif
+
+  
+#ifndef QUIET
+  if(FTRACE) {
     trace_printk(KERN_INFO "VT-GPIO_TIME: TIME-FALL: %llu %llu nanoseconds",(unsigned long long)seconds_end.tv_sec , (unsigned long long)seconds_end.tv_nsec);
     trace_printk(KERN_INFO "VT-GPIO_TIME: TIME-RESUME: %llu %llu nanoseconds",
 	 ((unsigned long long)seconds_end.tv_sec-(unsigned long long)seconds.tv_sec) ,
@@ -176,6 +243,7 @@ void resume(void) {
 	 ((unsigned long long)seconds_end.tv_sec-(unsigned long long)seconds.tv_sec) ,
 	 ((unsigned long long)seconds_end.tv_nsec -(unsigned long long)seconds.tv_nsec));
   }
+#endif
 }
 
 /** @brief Function to add pids to VT */
@@ -185,7 +253,7 @@ static int dilate_proc(int pid) {
 
   ret = sprintf(tdf_str, "%d",tdf);
   write_proc_field((pid_t)pid, "dilation", tdf_str);
-  if(ftrace){
+  if(FTRACE){
     trace_printk(KERN_INFO "VT-GPIO_TEST: Dilating %d\n",pid);
   }
   else {
@@ -198,7 +266,7 @@ static int dilate_proc(int pid) {
 static int freeze_proc(int pid) {
   int ret = 0;
 
-  if(ftrace){
+  if(FTRACE){
     trace_printk(KERN_INFO "VT-GPIO_TEST: Freezing %d\n",pid);
   }
   else{
@@ -211,7 +279,7 @@ static int freeze_proc(int pid) {
 static int resume_proc(int pid) {
   int ret = 0;
 
-  if(ftrace){
+  if(FTRACE){
     trace_printk(KERN_INFO "VT-GPIO_TEST: Unfreezing %d\n",pid);
   }
   else{
@@ -257,7 +325,24 @@ static int sequential_io(enum IO io) {
 }
 
 /* SYSFS stuff */
-
+#ifdef BENCHMARK
+static ssize_t OH_S_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
+  return sprintf(buf, "%d\n", OHseconds);
+  return 0;
+}
+static ssize_t OH_NS_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
+  return sprintf(buf, "%d\n", OHns);
+  return 0;
+}
+static ssize_t OH_R_S_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
+  return sprintf(buf, "%d\n", OH_R_seconds);
+  return 0;
+}
+static ssize_t OH_R_NS_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
+  return sprintf(buf, "%d\n", OH_R_ns);
+  return 0;
+}
+#endif
 
 /** @brief A callback function to display the vt tdf */
 static ssize_t tdf_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
@@ -697,12 +782,14 @@ static ssize_t mode_show(struct kobject *kobj, struct kobj_attribute *attr, char
 static ssize_t mode_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count) {
   if(strncmp(buf,"freeze",count-1)==0) {
     mode = ENABLED;
-    if(ftrace) {
+#ifndef QUIET
+    if(FTRACE) {
       trace_printk(KERN_INFO "VT-GPIO_TEST: pause\n");
     }
     else{
       printk(KERN_INFO "VT-GPIO_TEST: pause\n");
     }
+#endif
     /* vt has been triggered locally
      *   we need to quickly
      *	 change to output mode
@@ -720,12 +807,14 @@ static ssize_t mode_store(struct kobject *kobj, struct kobj_attribute *attr, con
   }
   else if (strncmp(buf,"unfreeze",count-1)==0) {
     mode = DISABLED;
-    if(ftrace){
+#ifndef QUIET
+    if(FTRACE){
       trace_printk(KERN_INFO "VT-GPIO_TEST: resume\n");
     }
     else{
       printk(KERN_INFO "VT-GPIO_TEST: resume\n");
     }
+#endif
     /* chgn cfg
      * go low
      */
@@ -739,8 +828,14 @@ static ssize_t mode_store(struct kobject *kobj, struct kobj_attribute *attr, con
 }
 
 /* Attributes */
-static struct kobj_attribute mode_attr = __ATTR(mode, 0660, mode_show, mode_store);
-static struct kobj_attribute tdf_attr = __ATTR(tdf, 0660, tdf_show, tdf_store);
+static struct kobj_attribute mode_attr   = __ATTR(mode, 0660, mode_show, mode_store);
+static struct kobj_attribute tdf_attr    = __ATTR(tdf, 0660, tdf_show, tdf_store);
+#ifdef BENCHMARK
+static struct kobj_attribute OH_S_attr    = __ATTR(OHseconds, 0440, OHseconds_show);//, pid_01_store);
+static struct kobj_attribute OH_NS_attr   = __ATTR(OHns, 0440, OHns_show);//, pid_01_store);
+static struct kobj_attribute OH_R_S_attr  = __ATTR(OH_R_seconds, 0440, OH_R_seconds_show);//, pid_01_store);
+static struct kobj_attribute OH_R_NS_attr = __ATTR(OH_R_ns, 0440, OH_R_ns_show);//, pid_01_store);
+#endif
 static struct kobj_attribute pid_01_attr = __ATTR(pid_01, 0660, pid_01_show, pid_01_store);
 static struct kobj_attribute pid_02_attr = __ATTR(pid_02, 0660, pid_02_show, pid_02_store);
 static struct kobj_attribute pid_03_attr = __ATTR(pid_03, 0660, pid_03_show, pid_03_store);
@@ -762,6 +857,12 @@ static struct kobj_attribute pid_16_attr = __ATTR(pid_16, 0660, pid_16_show, pid
 static struct attribute *vt_attrs[] = {
   &mode_attr.attr,
   &tdf_attr.attr,
+#ifdef BENCHMARK
+  &OH_S_attr.attr,
+  &OH_NS_attr.attr,
+  &OH_R_seconds_attr.attr,
+  &OH_R_NS_attr.attr,
+#endif
   &pid_01_attr.attr,
   &pid_02_attr.attr,
   &pid_03_attr.attr,
