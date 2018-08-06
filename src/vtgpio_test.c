@@ -343,6 +343,9 @@ static ssize_t OH_R_NS_show(struct kobject *kobj, struct kobj_attribute *attr, c
 }
 
 static ssize_t OH_S_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count) {
+  printk(KERN_INFO "Pause ; %llu ; %llu \n",
+	 ((unsigned long long)OHseconds),
+	 ((unsigned long long)OHns));
   return 0;
 }
 
@@ -351,6 +354,9 @@ static ssize_t OH_NS_store(struct kobject *kobj, struct kobj_attribute *attr, co
 }
 
 static ssize_t OH_R_S_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count) {
+  printk(KERN_INFO "Pause ; %llu ; %llu \n",
+	 ((unsigned long long)OH_R_seconds),
+	 ((unsigned long long)OH_R_ns));
   return 0;
 }
 
