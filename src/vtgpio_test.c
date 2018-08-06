@@ -846,10 +846,10 @@ static ssize_t mode_store(struct kobject *kobj, struct kobj_attribute *attr, con
 static struct kobj_attribute mode_attr   = __ATTR(mode, 0660, mode_show, mode_store);
 static struct kobj_attribute tdf_attr    = __ATTR(tdf, 0660, tdf_show, tdf_store);
 #ifdef BENCHMARK
-static struct kobj_attribute OH_S_attr    = __ATTR(OHseconds, 0440, OH_S_show, OH_S_store);
-static struct kobj_attribute OH_NS_attr   = __ATTR(OHns, 0440, OH_NS_show, OH_NS_store);
-static struct kobj_attribute OH_R_S_attr  = __ATTR(OH_R_seconds, 0440, OH_R_S_show, OH_R_S_store);
-static struct kobj_attribute OH_R_NS_attr = __ATTR(OH_R_ns, 0440, OH_R_NS_show, OH_R_NS_store);
+static struct kobj_attribute OH_S_attr    = __ATTR(OHseconds, 0660, OH_S_show, OH_S_store);
+static struct kobj_attribute OH_NS_attr   = __ATTR(OHns, 0660, OH_NS_show, OH_NS_store);
+static struct kobj_attribute OH_R_S_attr  = __ATTR(OH_R_seconds, 0660, OH_R_S_show, OH_R_S_store);
+static struct kobj_attribute OH_R_NS_attr = __ATTR(OH_R_ns, 0660, OH_R_NS_show, OH_R_NS_store);
 #endif
 static struct kobj_attribute pid_01_attr = __ATTR(pid_01, 0660, pid_01_show, pid_01_store);
 static struct kobj_attribute pid_02_attr = __ATTR(pid_02, 0660, pid_02_show, pid_02_store);
