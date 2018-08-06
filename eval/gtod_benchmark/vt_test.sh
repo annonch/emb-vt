@@ -27,6 +27,15 @@ do
     #kill -CONT $PID1
     #END = date +"%T.%N"
     #echo Time taken to freeze: $((END - START))
-    sleep 1
+    sleep .5
+    cat /sys/vt/VT7/OHseconds >> ./PAUSE_LOG.txt
+    echo ';' >> ./PAUSE_LOG.txt
+    cat /sys/vt/VT7/OHns >> ./PAUSE_LOG.txt
+    echo '\n' >> ./PAUSE_LOG.txt
+    cat /sys/vt/VT7/OH_R_seconds >> ./RESUME_LOG.txt
+    echo ';' >> ./PAUSE_LOG.txt
+    cat /sys/vt/VT7/OH_R_ns >> ./RESUME_LOG.txt
+    echo '\n' >> ./PAUSE_LOG.txt
+    sleep .5
 done
 wait $PID1
