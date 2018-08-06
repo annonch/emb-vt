@@ -28,7 +28,7 @@
 
 #define SEC_NSEC 1000000000 /*10^9 nsec in sec */
 
-#define BENCHMARK 0 /* value to denote time logging feature */
+#define BENCHMARK 1 /* value to denote time logging feature */
 /*
  * populates kobjects with pause / resume times 
  *  for evauluation purposes
@@ -327,19 +327,31 @@ static int sequential_io(enum IO io) {
 /* SYSFS stuff */
 #ifdef BENCHMARK
 static ssize_t OH_S_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
-  return sprintf(buf, "%d\n", OHseconds);
+  return sprintf(buf, "%llu\n", OHseconds);
   return 0;
 }
 static ssize_t OH_NS_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
-  return sprintf(buf, "%d\n", OHns);
+  return sprintf(buf, "%llu\n", OHns);
   return 0;
 }
 static ssize_t OH_R_S_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
-  return sprintf(buf, "%d\n", OH_R_seconds);
+  return sprintf(buf, "%llu\n", OH_R_seconds);
   return 0;
 }
 static ssize_t OH_R_NS_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
-  return sprintf(buf, "%d\n", OH_R_ns);
+  return sprintf(buf, "%llu\n", OH_R_ns);
+  return 0;
+}
+static ssize_t OH_S_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count) {
+  return 0;
+}
+static ssize_t OH_NS_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count) {
+  return 0;
+}
+static ssize_t OH_R_S_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count) {
+  return 0;
+}
+static ssize_t OH_R_NS_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count) {
   return 0;
 }
 #endif
@@ -831,10 +843,10 @@ static ssize_t mode_store(struct kobject *kobj, struct kobj_attribute *attr, con
 static struct kobj_attribute mode_attr   = __ATTR(mode, 0660, mode_show, mode_store);
 static struct kobj_attribute tdf_attr    = __ATTR(tdf, 0660, tdf_show, tdf_store);
 #ifdef BENCHMARK
-static struct kobj_attribute OH_S_attr    = __ATTR(OHseconds, 0440, OHseconds_show);//, pid_01_store);
-static struct kobj_attribute OH_NS_attr   = __ATTR(OHns, 0440, OHns_show);//, pid_01_store);
-static struct kobj_attribute OH_R_S_attr  = __ATTR(OH_R_seconds, 0440, OH_R_seconds_show);//, pid_01_store);
-static struct kobj_attribute OH_R_NS_attr = __ATTR(OH_R_ns, 0440, OH_R_ns_show);//, pid_01_store);
+static struct kobj_attribute OH_S_attr    = __ATTR(OHseconds, 0440, OH_S_show, OH_S_store);
+static struct kobj_attribute OH_NS_attr   = __ATTR(OHns, 0440, OH_NS_show, OH_NS_store);
+static struct kobj_attribute OH_R_S_attr  = __ATTR(OH_R_seconds, 0440, OH_R_S_show, OH_R_S_store);
+static struct kobj_attribute OH_R_NS_attr = __ATTR(OH_R_ns, 0440, OH_R_NS_show, OH_R_NS_store);
 #endif
 static struct kobj_attribute pid_01_attr = __ATTR(pid_01, 0660, pid_01_show, pid_01_store);
 static struct kobj_attribute pid_02_attr = __ATTR(pid_02, 0660, pid_02_show, pid_02_store);
@@ -860,7 +872,7 @@ static struct attribute *vt_attrs[] = {
 #ifdef BENCHMARK
   &OH_S_attr.attr,
   &OH_NS_attr.attr,
-  &OH_R_seconds_attr.attr,
+  &OH_R_S_attr.attr,
   &OH_R_NS_attr.attr,
 #endif
   &pid_01_attr.attr,
