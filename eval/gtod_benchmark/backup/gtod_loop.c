@@ -4,7 +4,6 @@
 #include <string.h>
 #include <unistd.h>
 
-
 // stuff for ftrace
 int trace_fd = -1;
 int marker_fd = -1;
@@ -13,7 +12,6 @@ int marker_fd = -1;
 #define MAX_PATH 256
 #define _STR(x) #x
 #define STR(x) _STR(x)
-
 
 static char *find_debugfs(void)
 {
@@ -46,48 +44,44 @@ static char *find_debugfs(void)
 }
 
 
-long double gt(){
+long double gt(int numTimes){
 
-  struct timeval tv[NUM_RUNS];
+  volatile struct timeval tv, tv2;
 
   time_t curtime, starttime;
   suseconds_t ms, startms;
   long double res;
-  volatile int x;
-  long int misc_total;
-  
+  int x;
   
   write(trace_fd, "1", 1);
   write(marker_fd, "Before GTOD\n", 12);
 
-  gettimeofday(&tv[0], NULL);
-  starttime=tv[0].tv_sec;
-  startms=tv[0].tv_usec;
-
+  gettimeofday(&tv, NULL);
+  
   //nanosleep(&req, NULL);
   for(x=0;x<NUM_RUNS;x++) {
-    gettimeofday(&tv[x], NULL);
+    gettimeofday(&tv2, NULL);
+    asm("");
   }
+
   
   write(marker_fd, "After GTOD\n", 11);
   write(trace_fd, "0", 1);
 
-  curtime=tv[NUM_RUNS-1].tv_sec;
-  ms=tv[NUM_RUNS-1].tv_usec;
+  starttime=tv.tv_sec;
+  startms=tv.tv_usec;
+
+  curtime=tv2.tv_sec;
+  ms=tv2.tv_usec;
 
   if(ms > startms) {
-    printf("%ld\n",((long)curtime - (long)starttime));
+    printf("%ld;",((long)curtime - (long)starttime));
     printf("%ld\n",((long)ms - (long)startms));
   }
   else {
-    printf("%ld\n",((long)curtime - 1 - (long)starttime));
+    printf("%ld;",((long)curtime - 1 - (long)starttime));
     printf("%ld\n",((long)ms+1000000 - (long)startms));
   }
-
-  for(x=2;x<NUM_RUNS;x++) {
-    misc_total += tv[x].tv_sec - tv[x-1].tv_usec ;
-  }
-  printf("ignore this number (trying to trick the compiler) %ld\n",(long)misc_total);
   
   /*
   printf("startTime:\n");
@@ -103,7 +97,7 @@ long double gt(){
   return res;
 }
 
-int  main(){
+int  main(int argc, char* argv){
   //ftrace stuff
   char *debugfs;
   char path[256];
@@ -121,6 +115,7 @@ int  main(){
     marker_fd = open(path, O_WRONLY);
   }
 
-  gt();
+  //#gt(atoi(argv[1]));
+  gt(1000000);
   return 0;
 }

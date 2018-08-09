@@ -6,7 +6,7 @@ echo $PID1
 ## DILATE ##
 echo "adding Proc to VT"
 echo $PID1 > /sys/vt/VT7/pid_01
-sleep 4
+sleep 2
 echo "starting processes"
 kill -CONT $PID1
 
@@ -27,21 +27,6 @@ do
     #kill -CONT $PID1
     #END = date +"%T.%N"
     #echo Time taken to freeze: $((END - START))
-    sleep .5
-
-    echo "NULL" > /sys/vt/VT7/OHseconds
-    echo "NULL" > /sys/vt/VT7/OHns
-    echo "NULL" > /sys/vt/VT7/OH_R_seconds
-    echo "NULL" > /sys/vt/VT7/OH_R_ns
-    
-    cat /sys/vt/VT7/OHseconds >> ./PAUSE_LOG.txt
-    echo ';' >> ./PAUSE_LOG.txt
-    cat /sys/vt/VT7/OHns >> ./PAUSE_LOG.txt
-    echo '\n' >> ./PAUSE_LOG.txt
-    cat /sys/vt/VT7/OH_R_seconds >> ./RESUME_LOG.txt
-    echo ';' >> ./PAUSE_LOG.txt
-    cat /sys/vt/VT7/OH_R_ns >> ./RESUME_LOG.txt
-    echo '\n' >> ./PAUSE_LOG.txt
-    sleep .5
+    sleep 1
 done
 wait $PID1

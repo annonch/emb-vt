@@ -28,13 +28,18 @@
 
 #define SEC_NSEC 1000000000 /*10^9 nsec in sec */
 
-#define BENCHMARK 1 /* value to denote time logging feature */
+#ifndef BENCHMARK
+#define BENCHMARK
+#endif
+
+/* value to denote time logging feature */
+
 /*
- * populates kobjects with pause / resume times 
+ * prints pause / resume times 
  *  for evauluation purposes
  */
 
-#define FTRACE 1  /* value to toggle ftrace vs regular prints  */
+#define FTRACE 0  /* value to toggle ftrace vs regular prints  */
 /* useless if Quiet is enabled */
 
 #define QUIET 1 /* value to surpress real-time pause/resume */
@@ -118,18 +123,14 @@ static int tdf = 1000;
 /* name of filesystem accessable from user space */
 static char vtName[6] = "vtXXX";
 
-/* variables for benchmarking pause and resume times */
-#ifdef BENCHMARK
-unsigned long long OHseconds;
-unsigned long long OHns;
-unsigned long long OH_R_seconds;
-unsigned long long OH_R_ns;
-#endif
 
 /* core function for pausing */
 void pause(void) {
   //tracing_on();
 #ifdef BENCHMARK
+  unsigned long long OHseconds;
+  unsigned long long OHns;
+
   struct timespec seconds;
   struct timespec seconds_end;
 
@@ -170,7 +171,7 @@ void pause(void) {
     OHseconds = seconds_end.tv_sec - 1 - seconds.tv_sec;
     OHns = seconds_end.tv_nsec - (SEC_NSEC + seconds.tv_nsec);
   }
-  printk(KERN_INFO "Pause ; %llu ; %llu \n",
+  printk(KERN_INFO "VT-GPIO_BENCHMARK: Pause ; %llu ; %llu ",
 	 ((unsigned long long)OHseconds),
 	 ((unsigned long long)OHns)); 
   
@@ -197,6 +198,8 @@ void pause(void) {
 /** @brief Function to resume pids in VT */
 void resume(void) {
 #ifdef BENCHMARK
+  unsigned long long OH_R_seconds;
+  unsigned long long OH_R_ns;
   struct timespec seconds;
   struct timespec seconds_end;
 
@@ -236,8 +239,8 @@ void resume(void) {
     OH_R_seconds = seconds_end.tv_sec - 1 - seconds.tv_sec;
     OH_R_ns = seconds_end.tv_nsec - (SEC_NSEC + seconds.tv_nsec);
   }
-  printk(KERN_INFO "Pause ; %llu ; %llu \n",
-	 ((unsigned long long)OH__R_seconds),
+  printk(KERN_INFO "VT-GPIO_BENCHMARK: Resume ; %llu ; %llu ",
+	 ((unsigned long long)OH_R_seconds),
 	 ((unsigned long long)OH_R_ns));
 
   
@@ -277,26 +280,28 @@ static int dilate_proc(int pid) {
 /** @brief Function to add pids to VT */
 static int freeze_proc(int pid) {
   int ret = 0;
-
+#ifndef QUIET
   if(FTRACE){
     trace_printk(KERN_INFO "VT-GPIO_TEST: Freezing %d\n",pid);
   }
   else{
     printk(KERN_INFO "VT-GPIO_TEST: Freezing %d\n",pid);
   }
+#endif
   write_proc_field((pid_t)pid, "freeze", "1");
   return ret;
 }
 /** @brief Function to add pids to VT */
 static int resume_proc(int pid) {
   int ret = 0;
-
+#ifndef QUIET
   if(FTRACE){
     trace_printk(KERN_INFO "VT-GPIO_TEST: Unfreezing %d\n",pid);
   }
   else{
     printk(KERN_INFO "VT-GPIO_TEST: Unfreezing %d\n",pid);
   }
+#endif
   write_proc_field((pid_t)pid, "freeze", "0");
   return ret;
 }

@@ -238,7 +238,7 @@ void freeze_time(struct task_struct *tsk)
    * so we MUST NOT zero it here
    */
   tsk->freeze_start_nsec = now;
-  printk("VT-DEBUG: returning from freeze_time with %llun sec and kill status %d \n", now,kill_status);
+  //printk("VT-DEBUG: returning from freeze_time with %llun sec and kill status %d \n", now,kill_status);
 }
 EXPORT_SYMBOL(freeze_time);
 
@@ -267,7 +267,7 @@ void unfreeze_time(struct task_struct *tsk)
 
   /* signal CONTINUE to unfreeze @tsk's children after timekeeping */
   kill_status = kill_pid(task_pid(tsk), SIGCONT, 1);
-  printk("VT-DEBUG: returning from unfreeze_time with %llun nsec and kill status %d\n", now, kill_status);
+  //printk("VT-DEBUG: returning from unfreeze_time with %llun nsec and kill status %d\n", now, kill_status);
 
 }
 EXPORT_SYMBOL(unfreeze_time);
