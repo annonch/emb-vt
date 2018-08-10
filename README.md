@@ -1,18 +1,21 @@
 # emb-vt
-Kernel Module for enabling virtual time in distributed heterogeneous embedded linux environment
+Distibuted Kernel Module and modified time keeping functions for enabling virtual time in distributed heterogeneous embedded linux environments
 
-About: 1GB RAM 1Ghz 2 cores
+About: Banana Pi devices with 1GB RAM 1.2 Ghz 2 core processors and Banana Pi Routers for ethernet 1 gbps networking
 
-Environment:
+Software Environment:
 
-cd /home/emb-vt
+base directory for the project
 
-git pull 
+cd /home/emb-vt 
 
 src is the source for the kernel Module
 
 kernel contains the source for the modified kernel 
 
+eval contains the benchmarking code and various example scripts to test performance
+
+if kernel is compiled with debug and function tracer environments then /debug can be mounted see EVAL / TEST sections
 
 ## Kernel Module
 
@@ -80,6 +83,8 @@ Basically the kernel module is a wrapper that modifies the /proc/$PID/ file syst
 - after resuming, if app A calls gettimeofday system call, it will see the wallclock time - the amount of time frozen for .
 
 ## Distributed algorithm stuff
+
+TODO
 
 pin arrangement
 
