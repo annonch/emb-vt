@@ -1,3 +1,5 @@
+
+
 #!/usr/bin/python
 
 import numpy as np
@@ -5,11 +7,120 @@ import matplotlib.pyplot as plt
 import matplotlib
 import argparse
 
+#matplotlib.rcParams['ps.useafm'] = True
+#matplotlib.rcParams['pdf.use14corefonts'] = True
+#matplotlib.rcParams['text.usetex'] = True
 
-matplotlib.rcParams['ps.useafm'] = True
-matplotlib.rcParams['pdf.use14corefonts'] = True
-matplotlib.rcParams['text.usetex'] = True
 
+
+
+
+
+
+#############################################################################################
+# 
+# 1) read in files
+#
+# 2) split RESUME and PAUSE / UNFREEZE and FREEZE
+# 
+# 3) cdfs for each 2x5
+#
+# 4) time x # processes with confidence intervals
+#
+#############################################################################################
+
+
+def start():
+    num = 1
+    rank = 0
+    pause = []
+    resume = []
+    files = ['1Host.csv','2Host.csv','4Host.csv','8Host.csv','16Host.csv']
+
+    for file in files:
+        rawF = np.genfromtxt(file, delimiter=';', usecols=2 )
+        pause.append([])
+        resume.append([])
+
+        #print rawF
+        #pause = 0,2,4, ...
+        
+        indx = 1
+        for  el in rawF:
+            indx += 1
+            if indx % 2 == 0 :
+                pause[rank].append(el/1000000)
+            else:
+                resume[rank].append(el/1000000)
+        rank += 1
+    
+    #pause
+    #  1H | 2H | 4H | 8H | 16H 
+    x_axis_vals = [1,2,4,8,16]
+    y_axis_vals_pause = [avg(pause[0]), avg(pause[1]), avg(pause[2]), avg(pause[3]), avg(pause[4])]
+
+    std_pause = [stdev(pause[0]),stdev(pause[1]),stdev(pause[2]),stdev(pause[3]),stdev(pause[4])]
+    for x in std_pause:
+        x = x* 1.96
+
+    y_axis_vals_resume = [avg(resume[0]), avg(resume[1]), avg(resume[2]), avg(resume[3]), avg(resume[4])]
+    std_resume = [stdev(resume[0]),stdev(resume[1]),stdev(resume[2]),stdev(resume[3]),stdev(resume[4])]
+
+    for x in std_resume:
+        x = x* 1.96
+    #print y_axis_vals_resume
+    #print x_axis_vals
+    #print y_axis_vals_pause
+    #print std_pause
+
+    plt.errorbar(x_axis_vals, y_axis_vals_pause,fmt='b', capsize = 5, yerr = std_pause, label = 'pause', linestyle = '--' )
+    plt.errorbar(x_axis_vals, y_axis_vals_resume,fmt='r',capsize = 5, yerr = std_resume, label = 'resume')
+    plt.axis([0,17,0,15])
+    plt.legend(fontsize=12,loc='lower right')
+
+    plt.xlabel('Number of Virtual Time Processes', fontsize=14)
+    plt.ylabel('Milliseconds', fontsize=14)
+    plt.grid(True)
+    plt.title('Overhead of Pause and Resume')
+    plt.show()
+
+    ########
+    # cdfs #
+    ########
+    
+    plot_compare_cdf(pause,resume)
+    
+
+
+def mean(data):
+    """Return the sample arithmetic mean of data."""
+    n = len(data)
+    if n < 1:
+        raise ValueError('mean requires at least one data point')
+    return sum(data)/float(n) # in Python 2 use sum(data)/float(n)
+
+def _ss(data):
+    """Return sum of square deviations of sequence data."""
+    c = mean(data)
+    ss = sum((x-c)**2 for x in data)
+    return ss
+
+def stdev(data, ddof=0):
+    """Calculates the population standard deviation
+    by default; specify ddof=1 to compute the sample
+    standard deviation."""
+    n = len(data)
+    if n < 2:
+        raise ValueError('variance requires at least two data points')
+    ss = _ss(data)
+    pvar = ss/(n-ddof)
+    return pvar**0.5
+
+def avg(p):
+    sum = 0.0;
+    for x in p:
+        sum += x
+    return float(sum/len(p))
 
 def plot_err_cdf(data1, data2):
     """draw cdf to see the error between without/with freeze"""
@@ -44,28 +155,39 @@ def plot_err_cdf(data1, data2):
     plt.savefig('err_%s_cdf.eps' % topic_name, format='eps')
 
 
-def plot_compare_cdf(data1, data2):
-    """draw cdf to compare without/with freeze elapsed time"""
-    num_bins = 5000
-    counts1, bin_edges1 = np.histogram(data1, bins=num_bins)
-    cdf1 = np.cumsum(counts1) / float(len(data1))
-    counts2, bin_edges2 = np.histogram(data2, bins=num_bins)
-    cdf2 = np.cumsum(counts2) / float(len(data2))
+colors=['b','r','g','c','m','y','k','coral','steelblue','tan']
+linestyles = ['solid','dotted']
 
-    xlim_min = min(min(data1), min(data2))
-    xlim_max = max(max(data1), max(data2))
-    plt.figure()
-    # plt.xlim(0.98 * xlim_min, 1.02 * xlim_max)
-    # plt.xlim(65000, 70000)
-    plt.ylim(0, 1.05)
-    p1 = plt.plot(bin_edges1[1:], cdf1, 'b', label=label1)
-    p2 = plt.plot(bin_edges2[1:], cdf2, 'r', linestyle='--', label=label2)
-    plt.legend(loc='lower right', fontsize=18)
-    plt.xlabel('PING RTT (Milliseconds)', fontsize=20)
-    plt.ylabel('Cumulative Distribution', fontsize=20)
-    plt.grid(True)
-    # plt.show()
-    plt.savefig('cmp_%s_cdf.eps' % topic_name, format='eps')
+def plot_compare_cdf(pd, pr):
+    """draw cdf to compare without/with freeze elapsed time"""
+    label1 = ['1Host','2Host','4Host','8Host','16Host']
+    labell = -1
+
+    for data1,data2 in zip(pd,pr):
+        #global labell,label1
+        labell += 1
+        num_bins = 100
+        counts1, bin_edges1 = np.histogram(data1, bins=num_bins)
+        cdf1 = np.cumsum(counts1) / float(len(data1))
+        counts2, bin_edges2 = np.histogram(data2, bins=num_bins)
+        cdf2 = np.cumsum(counts2) / float(len(data2))
+        
+        xlim_min = min(min(data1), min(data2))
+        xlim_max = max(max(data1), max(data2))
+        #plt.figure()
+        # plt.xlim(0.98 * xlim_min, 1.02 * xlim_max)
+        # plt.xlim(65000, 70000)
+        plt.ylim(0, 1.05)
+        l1_t=('Pause w/ %s' % label1[labell])
+        p1 = plt.plot(bin_edges1[1:], cdf1, 'b', label=l1_t)
+        l2_t = ('Resume w/ %s'%label1[labell])
+        p2 = plt.plot(bin_edges2[1:], cdf2, 'r', linestyle='--', label=l2_t)
+        plt.legend(loc='lower right', fontsize=12)
+        plt.xlabel('Overhead (Milliseconds)', fontsize=12)
+        plt.ylabel('Cumulative Distribution', fontsize=12)
+        plt.grid(True)
+        plt.show()
+    #plt.savefig('cmp_%s_cdf.eps' % topic_name, format='eps')
 
 def plot_variance_cdf(data):
     avg = np.mean(data)
@@ -118,4 +240,4 @@ if __name__ == "__main__":
     topic_name = results.topic_name
     label_err = results.label_err
 
-    main()
+    start()
