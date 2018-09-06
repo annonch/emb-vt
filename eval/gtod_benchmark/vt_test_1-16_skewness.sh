@@ -1,113 +1,92 @@
 #!/bin/bash
-echo "kicking off processes in paused state"
-/home/emb-vt/eval/gtod_benchmark/start_paused.sh /home/emb-vt/eval/gtod_benchmark/gtod_loop &
-PID1=$!
-echo $PID1
-
-sleep 150 &
-PID2=$!
-echo $PID2
-
-sleep 150 &
-PID3=$!
-echo $PID3
-
-sleep 150 &
-PID4=$!
-echo $PID4
-
-sleep 150 &
-PID5=$!
-echo $PID5
-
-sleep 150 &
-PID6=$!
-echo $PID6
-
-sleep 150 &
-PID7=$!
-echo $PID7
-
-sleep 150 &
-PID8=$!
-echo $PID8
-
-sleep 150 &
-PID9=$!
-echo $PID9
-
-sleep 150 &
-PID10=$!
-echo $PID10
-
-sleep 150 &
-PID11=$!
-echo $PID11
-
-sleep 150 &
-PID12=$!
-echo $PID12
-
-sleep 150 &
-PID13=$!
-echo $PID13
-
-sleep 150 &
-PID14=$!
-echo $PID14
-
-sleep 150 &
-PID15=$!
-echo $PID15
-
-sleep 150 &
-PID16=$!
-echo $PID16
-
-## DILATE ##
-echo "adding Proc to VT"
-echo $PID1 > /sys/vt/VT7/pid_01
-
-echo $PID2 > /sys/vt/VT7/pid_02
-echo $PID3 > /sys/vt/VT7/pid_03
-echo $PID4 > /sys/vt/VT7/pid_04
-echo $PID5 > /sys/vt/VT7/pid_05
-echo $PID6 > /sys/vt/VT7/pid_06
-echo $PID7 > /sys/vt/VT7/pid_07
-echo $PID8 > /sys/vt/VT7/pid_08
-
-echo $PID9 > /sys/vt/VT7/pid_09
-echo $PID10 > /sys/vt/VT7/pid_10
-echo $PID11 > /sys/vt/VT7/pid_11
-echo $PID12 > /sys/vt/VT7/pid_12
-echo $PID13 > /sys/vt/VT7/pid_13
-echo $PID14 > /sys/vt/VT7/pid_14
-echo $PID15 > /sys/vt/VT7/pid_15
-echo $PID16 > /sys/vt/VT7/pid_16
-
-sleep 2
-echo "starting processes"
-kill -CONT $PID1 $PID2 $PID3 $PID4 $PID5 $PID6 $PID7 $PID8 $PID9 $PID10 $PID11 $PID12 $PID13 $PID14 $PID15 $PID16
-
-while kill -0 $PID1 >/dev/null 2>&1
+#
+# Author: Christopher Hannon
+# Date: 9-6-18
+#
+for i in 2 4 8 16
 do
-    echo "freezing";
-    #START = 'date +"%T.%N"'
-    #time
-    #kill -STOP $PID1 
-    echo "freeze" > /sys/vt/VT7/mode
-    #END = date +"%T.%N"
-    #echo Time taken to freeze: $((END - START))
-    sleep 1
-    echo "unfreezing"
-    #START = date +"%T.%N"
-    #time
-    echo "unfreeze" > /sys/vt/VT7/mode
-    #kill -CONT $PID1
-    #END = date +"%T.%N"
-    #echo Time taken to freeze: $((END - START))
-    sleep 1
+    # clear dmesg
+    dmesg --clear
+    ########################
+    ### setup experiment ###
+    ########################
+    echo "setting up experiment ${i}"
+    # declare array
+    declare -a pids
+    #
+    # process 0
+    /home/emb-vt/eval/gtod_benchmark/start_paused.sh /home/emb-vt/eval/gtod_benchmark/gtod_loop &
+    pids[0]=$!
+    echo $! > /sys/vt/VT7/pid_01
+    #
+    # z = upperbound
+    z=$(($i-1))
+    #
+    # start sleeping procs
+    for j in seq `1 $z`; do
+	#
+	# get pid variable to be double digits (+1)
+	jj=$j
+	# make jj 2 digits for the pid_02-16 variable
+	while [[ ${#jj} -lt 2 ]] ; do
+	    jj="0${jj}"
+	done
+	#
+	# add sleeping procs to VT
+	sleep 150 &
+	pids[j]=$!
+	pid_path="/sys/vt/VT7/pid_${jj}"
+	echo $! > pid_path
+    done
+    ######################
+    ### run experiment ###
+    ######################
+    echo "running experiment ${i}"
+    #
+    # start all procs
+    kill -CONT ${pids[*]}
+    #
+    # start pause/resume loop
+    while kill -0 ${pids[0]} >/dev/null 2>&1
+    do
+	echo "freeze" > /sys/vt/VT7/mode
+	sleep 1
+	echo "unfreeze" > /sys/vt/VT7/mode
+	for j in "${pids}"
+	do
+	    #
+	    # removes ns\n and replaces with , save to file
+	    cat /proc/${j} | tr 'ns\n' ',' >> skew_${i}.log
+	done
+	echo "\n" >> skew.log
+	sleep 1
+    done
+    wait ${pids[0]}
+    #
+    #######################
+    ### exit experiment ###
+    #######################
+    #
+    # saving log files
+    #
+    echo "saving log files to /home/emb-vt/eval/skew/skew_${i}.log and /home/emb-vt/eval/overhead/overhead_${i}.log"
+    # 
+    kill -9 ${pids[@]}
+    #
+    # save dmesg
+    dmesg > overhead_${i}.log
 done
-wait $PID1
-kill -9  $PID2  $PID3  $PID4 $PID5 $PID6 $PID7 $PID8 $PID9 $PID10 $PID11 $PID12 $PID13 $PID14 $PID15 $PID16
+#
+# Cleanup
+# clear pids
+for x in `seq 1 16`;
+do
+    xx=$x
+    while [[ ${#xx} -lt 2 ]] ; do
+	xx="0${xx}"
+    done
+    echo " " > /sys/vt/VT7/pid_${xx}
+done
+echo "------------------------------------------------------------\nmake sure to save the log files into a new directory so that rerunning this script does not append to old files."
+echo "thank you and goodbye\n-------------------------------------------------------------\n"
 
