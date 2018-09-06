@@ -1,444 +1,3 @@
-[    0.000000] Booting Linux on physical CPU 0
-[    0.000000] Initializing cgroup subsys cpuset
-[    0.000000] Initializing cgroup subsys cpu
-[    0.000000] Linux version 3.4.113+ (root@bananapi1) (gcc version 4.9.2 (Debian 4.9.2-10) ) #1 SMP PREEMPT Thu Aug 9 15:48:08 CDT 2018
-[    0.000000] CPU: ARMv7 Processor [410fc074] revision 4 (ARMv7), cr=10c5387d
-[    0.000000] CPU: PIPT / VIPT nonaliasing data cache, VIPT aliasing instruction cache
-[    0.000000] Machine: sun7i
-[    0.000000] Memory Reserved:
-[    0.000000] 	SYS  : 0x43000000 - 0x4300ffff  (  64 kB)
-[    0.000000] 	LCD  : 0x44000000 - 0x45ffffff  (  32 MB)
-[    0.000000] Memory policy: ECC disabled, Data cache writealloc
-[    0.000000] sunxi: Allwinner A20 (AW1651/sun7i) detected.
-[    0.000000] On node 0 totalpages: 262144
-[    0.000000] free_area_init_node: node 0, pgdat c0aa1e40, node_mem_map d0000000
-[    0.000000]   DMA zone: 512 pages used for memmap
-[    0.000000]   DMA zone: 0 pages reserved
-[    0.000000]   DMA zone: 65024 pages, LIFO batch:15
-[    0.000000]   Normal zone: 1008 pages used for memmap
-[    0.000000]   Normal zone: 128016 pages, LIFO batch:31
-[    0.000000]   HighMem zone: 528 pages used for memmap
-[    0.000000]   HighMem zone: 67056 pages, LIFO batch:15
-[    0.000000] PERCPU: Embedded 8 pages/cpu @d0808000 s11968 r8192 d12608 u32768
-[    0.000000] pcpu-alloc: s11968 r8192 d12608 u32768 alloc=8*4096
-[    0.000000] pcpu-alloc: [0] 0 [0] 1 
-[    0.000000] Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 260096
-[    0.000000] Kernel command line: console=ttyS0,115200 console=tty0 console=tty1 sunxi_g2d_mem_reserve=0 sunxi_ve_mem_reserve=0 hdmi.audio=EDID:0 disp.screen0_output_mode=EDID:1680x1050p60 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline rootwait
-[    0.000000] PID hash table entries: 4096 (order: 2, 16384 bytes)
-[    0.000000] Dentry cache hash table entries: 131072 (order: 7, 524288 bytes)
-[    0.000000] Inode-cache hash table entries: 65536 (order: 6, 262144 bytes)
-[    0.000000] allocated 2097152 bytes of page_cgroup
-[    0.000000] please try 'cgroup_disable=memory' option if you don't want memory cgroups
-[    0.000000] Memory: 1024MB = 1024MB total
-[    0.000000] Memory: 991664k/991664k available, 56912k reserved, 270336K highmem
-[    0.000000] Virtual kernel memory layout:
-[    0.000000]     vector  : 0xffff0000 - 0xffff1000   (   4 kB)
-[    0.000000]     fixmap  : 0xfff00000 - 0xfffe0000   ( 896 kB)
-[    0.000000]     vmalloc : 0xf0000000 - 0xff000000   ( 240 MB)
-[    0.000000]     lowmem  : 0xc0000000 - 0xef800000   ( 760 MB)
-[    0.000000]     pkmap   : 0xbfe00000 - 0xc0000000   (   2 MB)
-[    0.000000]     modules : 0xbf000000 - 0xbfe00000   (  14 MB)
-[    0.000000]       .text : 0xc0008000 - 0xc09d19c0   (10023 kB)
-[    0.000000]       .init : 0xc09d2000 - 0xc0a29ec0   ( 352 kB)
-[    0.000000]       .data : 0xc0a2a000 - 0xc0aadd48   ( 528 kB)
-[    0.000000]        .bss : 0xc0aadd6c - 0xc0ca33a8   (2006 kB)
-[    0.000000] SLUB: Genslabs=11, HWalign=64, Order=0-3, MinObjects=0, CPUs=2, Nodes=1
-[    0.000000] Preemptible hierarchical RCU implementation.
-[    0.000000] 	RCU dyntick-idle grace-period acceleration is enabled.
-[    0.000000] 	Additional per-CPU info printed with stalls.
-[    0.000000] NR_IRQS:192
-[    0.000000] Architected local timer running at 24.00MHz.
-[    0.000000] sched_clock: 32 bits at 24MHz, resolution 41ns, wraps every 178956ms
-[    0.000000] start_kernel(): bug: interrupts were enabled early
-[    0.000000] Console: colour dummy device 80x30
-[    0.000000] console [tty0] enabled
-[    0.014121] Calibrating delay loop... 1816.98 BogoMIPS (lpj=9084928)
-[    0.076015] pid_max: default: 32768 minimum: 301
-[    0.079743] Mount-cache hash table entries: 512
-[    0.084122] Initializing cgroup subsys cpuacct
-[    0.087475] Initializing cgroup subsys memory
-[    0.090923] Initializing cgroup subsys devices
-[    0.094388] Initializing cgroup subsys freezer
-[    0.097634] Initializing cgroup subsys blkio
-[    0.101334] Initializing cgroup subsys perf_event
-[    0.104962] CPU: Testing write buffer coherency: ok
-[    0.109657] ftrace: allocating 23568 entries in 70 pages
-[    0.161078] CPU0: thread -1, cpu 0, socket 0, mpidr 80000000
-[    0.168269] hw perfevents: enabled with ARMv7 Cortex-A7 PMU driver, 5 counters available
-[    0.173858] Setting up static identity map for 0x406b3640 - 0x406b3698
-[    0.289997] CPU1: Booted secondary processor
-[    0.348858] CPU1: thread -1, cpu 1, socket 0, mpidr 80000001
-[    0.350879] Brought up 2 CPUs
-[    0.356227] SMP: Total of 2 processors activated (3640.52 BogoMIPS).
-[    0.359582] devtmpfs: initialized
-[    0.365842] dummy: 
-[    0.369563] NET: Registered protocol family 16
-[    0.376021] DMA: preallocated 256 KiB pool for atomic coherent allocations
-[    0.383938] hw-breakpoint: found 5 (+1 reserved) breakpoint and 4 watchpoint registers.
-[    0.388858] hw-breakpoint: maximum watchpoint size is 8 bytes.
-[    0.392034] [ccu-inf] aw clock manager init
-[    0.394317] [ccu-inf] aw_ccu_init
-[    0.398331] [ccu-inf] script config pll3 to 297MHz
-[    0.402102] [ccu-inf] script config pll4 to 300MHz
-[    0.405864] [ccu-inf] script config pll6 to 600MHz
-[    0.409645] [ccu-inf] script config pll7 to 297MHz
-[    0.413407] [ccu-inf] script config pll8 to 336MHz
-[    0.416194] Init eGon pin module V2.0
-[    0.426710] bio: create slab <bio-0> at 0
-[    0.430406] sunxi_gpio driver init ver 1.3
-[    0.436800] gpiochip_add: registered GPIOs 1 to 88 on device: A1X_GPIO
-[    0.440060] SCSI subsystem initialized
-[    0.442934] libata version 3.00 loaded.
-[    0.447652] usbcore: registered new interface driver usbfs
-[    0.452012] usbcore: registered new interface driver hub
-[    0.456238] usbcore: registered new device driver usb
-[    0.459494] Linux media interface: v0.10
-[    0.463126] Linux video capture interface: v2.00
-[    0.468954] Advanced Linux Sound Architecture Driver Version 1.0.25.
-[    0.474151] Switching to clocksource arch_sys_counter
-[    0.498405] FS-Cache: Loaded
-[    0.500795] CacheFiles: Loaded
-[    0.515318] WRN:L287(drivers/usb/sunxi_usb/manager/usb_manager.c):ERR: det_vbus pin is invaild
-[    0.522708] WRN:L426(drivers/usb/sunxi_usb/manager/usb_manager.c):ERR: check_usb_board_info failed
-[    0.530391] WRN:L480(drivers/usb/sunxi_usb/manager/usb_manager.c):ERR: get_usb_cfg failed
-[    0.536727] NET: Registered protocol family 2
-[    0.553695] IP route cache hash table entries: 32768 (order: 5, 131072 bytes)
-[    0.560780] TCP established hash table entries: 131072 (order: 8, 1048576 bytes)
-[    0.568325] TCP bind hash table entries: 65536 (order: 7, 786432 bytes)
-[    0.575057] TCP: Hash tables configured (established 131072 bind 65536)
-[    0.577279] TCP: reno registered
-[    0.582169] UDP hash table entries: 512 (order: 2, 16384 bytes)
-[    0.587522] UDP-Lite hash table entries: 512 (order: 2, 16384 bytes)
-[    0.591190] NET: Registered protocol family 1
-[    0.596608] RPC: Registered named UNIX socket transport module.
-[    0.600348] RPC: Registered udp transport module.
-[    0.604021] RPC: Registered tcp transport module.
-[    0.609424] RPC: Registered tcp NFSv4.1 backchannel transport module.
-[    0.615202] audit: initializing netlink socket (disabled)
-[    0.619002] type=2000 audit(0.590:1): initialized
-[    0.623584] highmem bounce pool size: 64 pages
-[    0.635964] VFS: Disk quotas dquot_6.5.2
-[    0.641558] Dquot-cache hash table entries: 1024 (order 0, 4096 bytes)
-[    0.648695] squashfs: version 4.0 (2009/01/31) Phillip Lougher
-[    0.653487] NFS: Registering the id_resolver key type
-[    0.658439] NTFS driver 2.1.30 [Flags: R/W].
-[    0.661970] fuse init (API version 7.18)
-[    0.665518] msgmni has been set to 1408
-[    0.673528] alg: No test for stdrng (krng)
-[    0.680242] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 252)
-[    0.683387] io scheduler noop registered
-[    0.687501] io scheduler deadline registered (default)
-[    0.690398] io scheduler cfq registered
-[    0.695256] sunxi disp driver loaded (/dev/disp api 1.0)
-[    0.700984] Serial: 8250/16550 driver, 32 ports, IRQ sharing disabled
-[    0.709786] [uart]: used uart info.: 0x8d
-[    0.714514] [uart]: serial probe 0 irq 33 mapbase 0x01c28000
-[    0.740936] sunxi-uart.0: ttyS0 at MMIO 0x1c28000 (irq = 33) is a U6_16550A
-[    1.350211] console [ttyS0] enabled
-[    1.358617] [uart]: serial probe 2 irq 35 mapbase 0x01c28800
-[    1.390563] sunxi-uart.2: ttyS1 at MMIO 0x1c28800 (irq = 35) is a U6_16550A
-[    1.402424] [uart]: serial probe 3 irq 36 mapbase 0x01c28c00
-[    1.434337] sunxi-uart.3: ttyS2 at MMIO 0x1c28c00 (irq = 36) is a U6_16550A
-[    1.446174] [uart]: serial probe 7 irq 52 mapbase 0x01c29c00
-[    1.478067] sunxi-uart.7: ttyS3 at MMIO 0x1c29c00 (irq = 52) is a U6_16550A
-[    1.487685] G2D: drv_g2d_init
-[    1.491053] G2D: Module initialized.major:250
-[    1.504952] brd: module loaded
-[    1.513836] loop: module loaded
-[    1.520983] gpio count < =0 ,gpio_count is: 0
-[    1.531322] sw_ahci sw_ahci.0: controller can't do PMP, turning off CAP_PMP
-[    1.542790] ahci: SSS flag set, parallel bus scan disabled
-[    1.555731] sw_ahci sw_ahci.0: AHCI 0001.0100 32 slots 1 ports 3 Gbps 0x1 impl platform mode
-[    1.571063] sw_ahci sw_ahci.0: flags: ncq sntf stag pm led clo only pio slum part ccc 
-[    1.582423] scsi0 : sw_ahci_platform
-[    1.593283] ata1: SATA max UDMA/133 mmio [mem 0x01c18000-0x01c18fff] port 0x100 irq 88
-[    1.605550] Fixed MDIO Bus: probed
-[    1.613798] eth%d: device MAC address 02:93:09:81:b4:02
-[    1.622099] gmac_para gpio count is 18
-[    1.627335] [gmac]: sun6i_gmac platform driver registration completed
-[    1.630651] PPP generic driver version 2.4.2
-[    1.638957] PPP BSD Compression module registered
-[    1.647676] PPP Deflate Compression module registered
-[    1.656166] NET: Registered protocol family 24
-[    1.666426] ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
-[    1.678200] ohci_hcd: USB 1.1 'Open' Host Controller (OHCI) Driver
-[    1.686873] [sw-ehci1]: open clock
-[    1.709558] [sw-ehci1]: Set USB Power ON
-[    1.715998] sw-ehci sw-ehci.1: SW USB2.0 'Enhanced' Host Controller (EHCI) Driver
-[    1.729798] sw-ehci sw-ehci.1: new USB bus registered, assigned bus number 1
-[    1.741287] sw-ehci sw-ehci.1: irq 71, io mem 0x01c14000
-[    1.768612] sw-ehci sw-ehci.1: USB 2.0 started, EHCI 1.00
-[    1.776639] ehci_irq: port change detect
-[    1.782381] usb usb1: New USB device found, idVendor=1d6b, idProduct=0002
-[    1.795333] usb usb1: New USB device strings: Mfr=3, Product=2, SerialNumber=1
-[    1.808977] usb usb1: Product: SW USB2.0 'Enhanced' Host Controller (EHCI) Driver
-[    1.820972] usb usb1: Manufacturer: Linux 3.4.113+ ehci_hcd
-[    1.829669] usb usb1: SerialNumber: sw-ehci
-[    1.837166] hub 1-0:1.0: USB hub found
-[    1.843823] hub 1-0:1.0: 1 port detected
-[    1.850406] [sw-ohci1]: open clock
-[    1.876565] sw-ohci sw-ohci.1: SW USB2.0 'Open' Host Controller (OHCI) Driver
-[    1.889961] sw-ohci sw-ohci.1: new USB bus registered, assigned bus number 2
-[    1.901348] sw-ohci sw-ohci.1: irq 96, io mem 0x01c14400
-[    1.948622] ata1: SATA link down (SStatus 0 SControl 300)
-[    1.974081] usb usb2: New USB device found, idVendor=1d6b, idProduct=0001
-[    1.987076] usb usb2: New USB device strings: Mfr=3, Product=2, SerialNumber=1
-[    2.000412] usb usb2: Product: SW USB2.0 'Open' Host Controller (OHCI) Driver
-[    2.012090] usb usb2: Manufacturer: Linux 3.4.113+ ohci_hcd
-[    2.020817] usb usb2: SerialNumber: sw-ohci
-[    2.028289] hub 2-0:1.0: USB hub found
-[    2.034932] hub 2-0:1.0: 1 port detected
-[    2.041559] [sw-ehci2]: open clock
-[    2.046973] ehci_irq: port change detect
-[    2.064378] [sw-ehci2]: Set USB Power ON
-[    2.070838] sw-ehci sw-ehci.2: SW USB2.0 'Enhanced' Host Controller (EHCI) Driver
-[    2.084631] sw-ehci sw-ehci.2: new USB bus registered, assigned bus number 3
-[    2.096106] sw-ehci sw-ehci.2: irq 72, io mem 0x01c1c000
-[    2.106930] The port change to OHCI now!
-[    2.128622] sw-ehci sw-ehci.2: USB 2.0 started, EHCI 1.00
-[    2.139866] usb usb3: New USB device found, idVendor=1d6b, idProduct=0002
-[    2.152912] usb usb3: New USB device strings: Mfr=3, Product=2, SerialNumber=1
-[    2.166596] usb usb3: Product: SW USB2.0 'Enhanced' Host Controller (EHCI) Driver
-[    2.178624] usb usb3: Manufacturer: Linux 3.4.113+ ehci_hcd
-[    2.187363] usb usb3: SerialNumber: sw-ehci
-[    2.194838] hub 3-0:1.0: USB hub found
-[    2.201545] hub 3-0:1.0: 1 port detected
-[    2.208138] [sw-ohci2]: open clock
-[    2.234299] sw-ohci sw-ohci.2: SW USB2.0 'Open' Host Controller (OHCI) Driver
-[    2.247690] sw-ohci sw-ohci.2: new USB bus registered, assigned bus number 4
-[    2.259138] sw-ohci sw-ohci.2: irq 97, io mem 0x01c1c400
-[    2.334068] usb usb4: New USB device found, idVendor=1d6b, idProduct=0001
-[    2.347052] usb usb4: New USB device strings: Mfr=3, Product=2, SerialNumber=1
-[    2.360384] usb usb4: Product: SW USB2.0 'Open' Host Controller (OHCI) Driver
-[    2.372062] usb usb4: Manufacturer: Linux 3.4.113+ ohci_hcd
-[    2.380786] usb usb4: SerialNumber: sw-ohci
-[    2.388256] hub 4-0:1.0: USB hub found
-[    2.394919] hub 4-0:1.0: 1 port detected
-[    2.400228] usb 2-1: new low-speed USB device number 2 using sw-ohci
-[    2.414767] Initializing USB Mass Storage driver...
-[    2.424837] usbcore: registered new interface driver usb-storage
-[    2.434447] USB Mass Storage support registered.
-[    2.443993] mousedev: PS/2 mouse device common for all mice
-[    2.454694] input: sunxi-ir as /devices/virtual/input/input0
-[    2.461926] IR Initial OK
-[    2.466954] sunxi-rtc sunxi-rtc: Warning: RTC time is wrong!
-[    2.477958] sunxi-rtc sunxi-rtc: rtc core: registered rtc as rtc0
-[    2.486589] i2c /dev entries driver
-[    2.493964] config i2c gpio with gpio_config api
-[    2.499679] axp_mfd 0-0034: AXP (CHIP ID: 0x41) detected
-[    2.510842] axp_mfd 0-0034: AXP internal temperature monitoring enabled
-[    2.522783] [AXP]axp driver uning configuration failed(342)
-[    2.524713] [AXP]power_start = 0
-[    2.527819] I2C: i2c-0: AW16XX I2C adapter
-[    2.535327] config i2c gpio with gpio_config api
-[    2.538793] I2C: i2c-1: AW16XX I2C adapter
-[    2.546351] config i2c gpio with gpio_config api
-[    2.549751] I2C: i2c-2: AW16XX I2C adapter
-[    2.557241] config i2c gpio with gpio_config api
-[    2.560620] I2C: i2c-3: AW16XX I2C adapter
-[    2.566559] [ace_drv] start!!!
-[    2.569003] [ace_drv] init end!!!
-[    2.570672] [pa_drv] start!!!
-[    2.572923] [pa_drv] init end!!!
-[    2.577018] Driver for 1-wire Dallas network protocol.
-[    2.586470] invalid gpio pin in fex configuration : -1
-[    2.594145] axp20_ldo1: 1300 mV 
-[    2.602666] axp20_ldo2: 1800 <--> 3300 mV at 3000 mV 
-[    2.613485] usb 2-1: New USB device found, idVendor=046d, idProduct=c534
-[    2.617405] axp20_ldo3: 700 <--> 3500 mV at 2800 mV 
-[    2.633047] axp20_ldo4: 1250 <--> 3300 mV at 2800 mV 
-[    2.642090] axp20_buck2: 700 <--> 2275 mV at 1450 mV 
-[    2.652954] somebody is trying to set dcdc3 range to (1300000, 1300000) uV
-[    2.664602] but we keep dcdc3 = 1250000 uV from the bootloader
-[    2.674426] axp20_buck3: 700 <--> 3500 mV at 1250 mV 
-[    2.683643] axp20_ldoio0: 1800 <--> 3300 mV at 2800 mV 
-[    2.697799] input: axp20-supplyer as /devices/platform/sunxi-i2c.0/i2c-0/0-0034/axp20-supplyer.28/input/input1
-[    2.714014] usb 2-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
-[    2.726403] axp20_ldo2: Failed to create debugfs directory
-[    2.737115] device-mapper: uevent: version 1.0.3
-[    2.749626] device-mapper: ioctl: 4.22.0-ioctl (2011-10-19) initialised: dm-devel@redhat.com
-[    2.761407] cpuidle: using governor ladder
-[    2.768422] cpuidle: using governor menu
-[    2.774679] [mmc-msg] sw_mci_init
-[    2.783760] [mmc-msg] MMC host used card: 0x1, boot card: 0x0, io_card 0
-[    2.795748] [mmc-msg] sdc0 set round clock 400000, src 24000000
-[    2.810022] [mmc-msg] sdc0 set ios: clk 0Hz bm OD pm OFF vdd 3.3V width 1 timing LEGACY(SDR12) dt B
-[    2.827285] [mmc-msg] sdc0 Probe: base:0xf0154000 irq:64 sg_cpu:f0156000(4fc00000) ret 0.
-[    2.840071] [mmc_pm]: failed to fetch sdio card configuration!
-[    2.842529] sunxi_leds driver init
-[    2.850051] Registered led device: green:ph24:led1
-[    2.855092] ledtrig-cpu: registered to indicate activity on CPUs
-[    2.876920] input: HID 046d:c534 as /devices/platform/sw-ohci.1/usb2/2-1/2-1:1.0/input/input2
-[    2.896138] generic-usb 0003:046D:C534.0001: input,hidraw0: USB HID v1.00 Keyboard [HID 046d:c534] on usb-sw-ohci-1/input0
-[    2.925040] input: HID 046d:c534 as /devices/platform/sw-ohci.1/usb2/2-1/2-1:1.1/input/input3
-[    2.944172] generic-usb 0003:046D:C534.0002: input,hidraw1: USB HID v1.11 Mouse [HID 046d:c534] on usb-sw-ohci-1/input1
-[    2.959671] usbcore: registered new interface driver usbhid
-[    2.968075] usbhid: USB HID core driver
-[    2.974698] ashmem: initialized
-[    2.981534] logger: created 256K log 'log_main'
-[    2.989896] logger: created 256K log 'log_events'
-[    2.998320] logger: created 256K log 'log_radio'
-[    3.006733] logger: created 256K log 'log_system'
-[    3.017713] IPv4 over IPv4 tunneling driver
-[    3.024763] TCP: bic registered
-[    3.030230] TCP: cubic registered
-[    3.036090] TCP: westwood registered
-[    3.042301] TCP: highspeed registered
-[    3.048266] TCP: hybla registered
-[    3.053765] TCP: htcp registered
-[    3.059282] TCP: vegas registered
-[    3.064782] TCP: veno registered
-[    3.070623] TCP: scalable registered
-[    3.076210] TCP: lp registered
-[    3.081467] TCP: yeah registered
-[    3.087239] TCP: illinois registered
-[    3.094038] Initializing XFRM netlink socket
-[    3.102429] NET: Registered protocol family 10
-[    3.111459] NET: Registered protocol family 17
-[    3.119435] NET: Registered protocol family 15
-[    3.128557] [mmc_pm]: No sdio card, please check your config !!
-[    3.132257] Registering the dns_resolver key type
-[    3.139194] VFP support v0.3: implementor 41 architecture 2 part 30 variant 7 rev 4
-[    3.155458] Registering SWP/SWPB emulation handler
-[    3.164897] axp20_buck2: Failed to create debugfs directory
-[    3.176669] [cpu_freq] INF:-------------------V-F Table-------------------
-[    3.188621] [cpu_freq] INF:	voltage = 1450mv 	frequency = 1008MHz
-[    3.199777] [cpu_freq] INF:	voltage = 1425mv 	frequency =  912MHz
-[    3.210937] [cpu_freq] INF:	voltage = 1350mv 	frequency =  864MHz
-[    3.222096] [cpu_freq] INF:	voltage = 1250mv 	frequency =  720MHz
-[    3.233247] [cpu_freq] INF:	voltage = 1150mv 	frequency =  528MHz
-[    3.244398] [cpu_freq] INF:	voltage = 1100mv 	frequency =  312MHz
-[    3.255557] [cpu_freq] INF:	voltage = 1050mv 	frequency =  144MHz
-[    3.266709] [cpu_freq] INF:	voltage = 1000mv 	frequency =    0MHz
-[    3.278642] [cpu_freq] INF:-----------------------------------------------
-[    3.295266] [cpu_freq] INF:sunxi_cpufreq_initcall, get cpu frequency from sysconfig, max freq: 912MHz, min freq: 720MHz
-[    3.309983] registered taskstats version 1
-[    3.319838] [DISP] Unsupported mode: 1680x1050p60, ignoring
-[    3.329013] I2C: i2c-4: HDMI I2C adapter
-[    3.355470] ParseEDID
-[    3.372443] EDID version: 1.3
-[    3.381708] PCLK=146250000 X 1680 1784 1960 2240 Y 1050 1053 1059 1089 fr 59 NP
-[    3.392613] Patching 146250000 pclk to 146000000
-[    3.401078] Using above mode as preferred EDID mode
-[    3.422762] Reserved SVD code 90
-[    3.428120] Reserved SVD code 0
-[    3.433358] Reserved SVD code 0
-[    3.442355] disp_clk: Could not find a matching pll-freq for 83650000 pclk
-[    3.455074] disp_clk: Could not find a matching pll-freq for 74600000 pclk
-[    3.467876] disp_clk: Could not find a matching pll-freq for 146850000 pclk
-[    3.480684] disp_clk: Could not find a matching pll-freq for 78800000 pclk
-[    3.493406] disp_clk: Could not find a matching pll-freq for 26150000 pclk
-[    3.506209] disp_clk: Could not find a matching pll-freq for 146250000 pclk
-[    3.516768] Parse_AudioData_Block: max channel=2
-[    3.525318] Parse_AudioData_Block: SampleRate code=7
-[    3.533953] Parse_AudioData_Block: WordLen code=7
-[    3.542155] Find HDMI Vendor Specific DataBlock
-[    3.551137] Parse_VideoData_Block: VIC 16 (native) support
-[    3.560987] Parse_VideoData_Block: VIC 4 (native) support
-[    3.569971] Parse_VideoData_Block: VIC 2 support
-[    3.580087] PCLK=27000000 X 720 736 798 858 Y 480 489 495 525 fr 59 NN
-[    3.592411] asoc: sndhdmi <-> sunxi-hdmiaudio.0 mapping ok
-[    3.601910] waited 0 ms for EDID info
-[    3.612145] disp clks: lcd 146000000 pre_scale 1 hdmi 146000000 pll 219000000 2x 1
-[    3.803154] [mmc-msg] mmc 0 detect change, present 1
-[    4.312172] [mmc-msg] sdc0 set ios: clk 0Hz bm PP pm UP vdd 3.3V width 1 timing LEGACY(SDR12) dt B
-[    4.323602] [mmc-msg] sdc0 power on
-[    4.352584] [mmc-msg] sdc0 set ios: clk 400000Hz bm PP pm ON vdd 3.3V width 1 timing LEGACY(SDR12) dt B
-[    4.366895] [mmc-msg] sdc0 set round clock 400000, src 24000000
-[    4.449897] [mmc-err] smc 0 err, cmd 52,  RTO
-[    4.458414] [mmc-err] smc 0 err, cmd 52,  RTO
-[    4.471138] [mmc-msg] sdc0 set ios: clk 400000Hz bm PP pm ON vdd 3.3V width 1 timing LEGACY(SDR12) dt B
-[    4.491280] [mmc-msg] sdc0 set ios: clk 400000Hz bm PP pm ON vdd 3.3V width 1 timing LEGACY(SDR12) dt B
-[    4.506068] [mmc-err] smc 0 err, cmd 5,  RTO
-[    4.514402] [mmc-err] smc 0 err, cmd 5,  RTO
-[    4.522731] [mmc-err] smc 0 err, cmd 5,  RTO
-[    4.531064] [mmc-err] smc 0 err, cmd 5,  RTO
-[    4.544339] [mmc-msg] sdc0 set ios: clk 400000Hz bm PP pm ON vdd 3.3V width 1 timing LEGACY(SDR12) dt B
-[    4.581336] [mmc-msg] sdc0 set ios: clk 400000Hz bm PP pm ON vdd 3.3V width 1 timing LEGACY(SDR12) dt B
-[    4.601472] [mmc-msg] sdc0 set ios: clk 400000Hz bm PP pm ON vdd 3.3V width 1 timing LEGACY(SDR12) dt B
-[    4.644417] [mmc-msg] sdc0 set ios: clk 400000Hz bm PP pm ON vdd 3.3V width 1 timing SD-HS(SDR25) dt B
-[    4.662174] [mmc-msg] sdc0 set ios: clk 50000000Hz bm PP pm ON vdd 3.3V width 1 timing SD-HS(SDR25) dt B
-[    4.676825] [mmc-msg] sdc0 set round clock 42857143, src 600000000
-[    4.732303] Console: switching to colour frame buffer device 210x65
-[    4.746637] [mmc-msg] sdc0 set ios: clk 50000000Hz bm PP pm ON vdd 3.3V width 4 timing SD-HS(SDR25) dt B
-[    4.751120] mmc0: new high speed SDHC card at address 0001
-[    4.755151] mmcblk0: mmc0:0001 00000 29.8 GiB 
-[    4.758442]  mmcblk0: p1 p2
-[    4.799336] axp20_buck3: incomplete constraints, leaving on
-[    4.809872] axp20_buck2: incomplete constraints, leaving on
-[    4.820292] axp20_ldo4: incomplete constraints, leaving on
-[    4.830623] axp20_ldo3: incomplete constraints, leaving on
-[    4.840945] axp20_ldo2: incomplete constraints, leaving on
-[    4.851270] axp20_ldo1: incomplete constraints, leaving on
-[    4.859891] console [netcon0] enabled
-[    4.867142] netconsole: network logging started
-[    4.876000] otg_wakelock_init: No USB transceiver found
-[    4.888907] sunxi-rtc sunxi-rtc: setting system clock to 2010-01-01 00:00:00 UTC (1262304000)
-[    4.899761] ALSA device list:
-[    4.905862]   #0: sunxi-CODEC  Audio Codec
-[    4.912193]   #1: sunxi-sndhdmi
-[    4.921481] md: Waiting for all devices to be available before autodetect
-[    4.933117] md: If you don't use raid, use raid=noautodetect
-[    4.942761] md: Autodetecting RAID arrays.
-[    4.950431] md: Scanned 0 and added 0 devices.
-[    4.956758] md: autorun ...
-[    4.961897] md: ... autorun DONE.
-[    4.990745] EXT4-fs (mmcblk0p2): warning: mounting unchecked fs, running e2fsck is recommended
-[    5.030210] EXT4-fs (mmcblk0p2): mounted filesystem without journal. Opts: (null)
-[    5.043044] VFS: Mounted root (ext4 filesystem) on device 179:2.
-[    5.060343] devtmpfs: mounted
-[    5.066512] Freeing init memory: 348K
-[    5.953740] systemd-udevd[157]: starting version 215
-[   17.769392] EXT4-fs (mmcblk0p2): re-mounted. Opts: (null)
-[   18.781003] Adding 524284k swap on /swapfile1.  Priority:-1 extents:3 across:622588k SS
-[   19.446987] 8021q: 802.1Q VLAN Support v1.8
-[   21.139631] GMAC gpio_power_hd:gpio_direction_output
-[   21.403924] eth0: device MAC address 02:93:09:81:b4:02
-[   21.434701] sunxi_gmac: probed
-[   21.453663] eth0: PHY ID 001cc915 at 0 IRQ 0 (sunxi_gmac-0:00) active
-[   21.475372] eth0: PHY ID 001cc915 at 1 IRQ 0 (sunxi_gmac-0:01)
-[   26.487464] PHY: sunxi_gmac-0:00 - Link is Up - 1000/Full
-[   40.341970] openvswitch: Open vSwitch switching datapath
-[   42.853134] EXT4-fs (mmcblk0p2): re-mounted. Opts: (null)
-[   67.328799] VT-GPIO_TEST: Initializing the Virtual Time GPIO_TEST LKM
-[   67.340027] VT-GPIO_TEST: Input signal is mapped to IRQ: 181
-[   67.344701] VT-GPIO_TEST: Input signal is mapped to IRQ: 182
-[   67.361306] VT-GPIO_TEST: The interrupt rising request result is 0
-[   67.372805] VT-GPIO_TEST: The interrupt rising request result is 0
-[   76.368574] VT-GPIO_TEST: Dilating 1501
-[   76.377533] VT-GPIO_TEST: Dilating 1502
-[   76.388215] VT-GPIO_TEST: Dilating 1503
-[   76.395565] VT-GPIO_TEST: Dilating 1504
-[   76.402866] VT-GPIO_TEST: Dilating 1505
-[   76.414626] VT-GPIO_TEST: Dilating 1506
-[   76.421894] VT-GPIO_TEST: Dilating 1507
-[   76.428984] VT-GPIO_TEST: Dilating 1508
-[   76.436511] VT-GPIO_TEST: Dilating 1509
-[   76.443773] VT-GPIO_TEST: Dilating 1510
-[   76.450992] VT-GPIO_TEST: Dilating 1511
-[   76.458070] VT-GPIO_TEST: Dilating 1512
-[   76.465248] VT-GPIO_TEST: Dilating 1513
-[   76.472559] VT-GPIO_TEST: Dilating 1514
-[   76.479662] VT-GPIO_TEST: Dilating 1515
-[   76.486903] VT-GPIO_TEST: Dilating 1516
-[   78.503409] VT-GPIO_BENCHMARK: Pause ; 0 ; 854519 
-[   79.518950] VT-GPIO_BENCHMARK: Resume ; 0 ; 700322 
-[  116.450275] VT-GPIO_TEST: Dilating 1547
-[  116.548870] VT-GPIO_TEST: Dilating 1548
-[  116.602141] VT-GPIO_TEST: Dilating 1549
-[  116.660906] VT-GPIO_TEST: Dilating 1550
-[  116.714750] VT-GPIO_TEST: Dilating 1551
-[  116.767883] VT-GPIO_TEST: Dilating 1552
-[  116.821111] VT-GPIO_TEST: Dilating 1553
-[  116.874598] VT-GPIO_TEST: Dilating 1554
-[  116.927736] VT-GPIO_TEST: Dilating 1555
-[  116.985912] VT-GPIO_TEST: Dilating 1556
-[  117.039049] VT-GPIO_TEST: Dilating 1557
-[  117.093752] VT-GPIO_TEST: Dilating 1558
-[  117.146867] VT-GPIO_TEST: Dilating 1559
-[  117.152592] VT-GPIO_TEST: Dilating 1560
-[  117.158854] VT-GPIO_TEST: Dilating 1561
-[  117.165072] VT-GPIO_TEST: Dilating 1562
 [  119.431637] VT-GPIO_BENCHMARK: Pause ; 0 ; 16966469 
 [  120.605710] VT-GPIO_BENCHMARK: Resume ; 0 ; 13121261 
 [  121.766769] VT-GPIO_BENCHMARK: Pause ; 0 ; 13299621 
@@ -471,22 +30,6 @@
 [  154.262650] VT-GPIO_BENCHMARK: Resume ; 0 ; 13050140 
 [  155.518882] VT-GPIO_BENCHMARK: Pause ; 0 ; 12403439 
 [  156.763578] VT-GPIO_BENCHMARK: Resume ; 0 ; 13244751 
-[  170.316054] VT-GPIO_TEST: Dilating 1604
-[  170.343476] VT-GPIO_TEST: Dilating 1605
-[  170.361046] VT-GPIO_TEST: Dilating 1606
-[  170.378497] VT-GPIO_TEST: Dilating 1607
-[  170.395738] VT-GPIO_TEST: Dilating 1608
-[  170.412904] VT-GPIO_TEST: Dilating 1609
-[  170.429873] VT-GPIO_TEST: Dilating 1610
-[  170.446747] VT-GPIO_TEST: Dilating 1611
-[  170.463535] VT-GPIO_TEST: Dilating 1612
-[  170.480168] VT-GPIO_TEST: Dilating 1613
-[  170.496672] VT-GPIO_TEST: Dilating 1614
-[  170.513127] VT-GPIO_TEST: Dilating 1615
-[  170.529416] VT-GPIO_TEST: Dilating 1616
-[  170.550003] VT-GPIO_TEST: Dilating 1617
-[  170.565604] VT-GPIO_TEST: Dilating 1618
-[  170.581115] VT-GPIO_TEST: Dilating 1619
 [  172.691877] VT-GPIO_BENCHMARK: Pause ; 0 ; 17629045 
 [  173.870587] VT-GPIO_BENCHMARK: Resume ; 0 ; 12983854 
 [  175.099116] VT-GPIO_BENCHMARK: Pause ; 0 ; 12921275 
@@ -519,22 +62,6 @@
 [  207.444971] VT-GPIO_BENCHMARK: Resume ; 0 ; 13097303 
 [  208.697785] VT-GPIO_BENCHMARK: Pause ; 0 ; 12446352 
 [  209.943308] VT-GPIO_BENCHMARK: Resume ; 0 ; 13231377 
-[  214.547372] VT-GPIO_TEST: Dilating 1661
-[  214.574934] VT-GPIO_TEST: Dilating 1662
-[  214.592462] VT-GPIO_TEST: Dilating 1663
-[  214.609801] VT-GPIO_TEST: Dilating 1664
-[  214.627077] VT-GPIO_TEST: Dilating 1665
-[  214.644214] VT-GPIO_TEST: Dilating 1666
-[  214.661264] VT-GPIO_TEST: Dilating 1667
-[  214.678149] VT-GPIO_TEST: Dilating 1668
-[  214.694811] VT-GPIO_TEST: Dilating 1669
-[  214.711101] VT-GPIO_TEST: Dilating 1670
-[  214.727187] VT-GPIO_TEST: Dilating 1671
-[  214.743167] VT-GPIO_TEST: Dilating 1672
-[  214.759059] VT-GPIO_TEST: Dilating 1673
-[  214.779313] VT-GPIO_TEST: Dilating 1674
-[  214.794904] VT-GPIO_TEST: Dilating 1675
-[  214.810460] VT-GPIO_TEST: Dilating 1676
 [  216.920427] VT-GPIO_BENCHMARK: Pause ; 0 ; 17622795 
 [  218.095488] VT-GPIO_BENCHMARK: Resume ; 0 ; 13204296 
 [  219.253862] VT-GPIO_BENCHMARK: Pause ; 0 ; 13303163 
@@ -567,22 +94,6 @@
 [  251.511856] VT-GPIO_BENCHMARK: Resume ; 0 ; 12933981 
 [  252.767450] VT-GPIO_BENCHMARK: Pause ; 0 ; 12288906 
 [  254.006970] VT-GPIO_BENCHMARK: Resume ; 0 ; 13138926 
-[  258.984970] VT-GPIO_TEST: Dilating 1718
-[  259.012365] VT-GPIO_TEST: Dilating 1719
-[  259.029954] VT-GPIO_TEST: Dilating 1720
-[  259.047425] VT-GPIO_TEST: Dilating 1721
-[  259.064869] VT-GPIO_TEST: Dilating 1722
-[  259.082083] VT-GPIO_TEST: Dilating 1723
-[  259.099127] VT-GPIO_TEST: Dilating 1724
-[  259.116037] VT-GPIO_TEST: Dilating 1725
-[  259.132802] VT-GPIO_TEST: Dilating 1726
-[  259.149433] VT-GPIO_TEST: Dilating 1727
-[  259.166005] VT-GPIO_TEST: Dilating 1728
-[  259.182414] VT-GPIO_TEST: Dilating 1729
-[  259.198780] VT-GPIO_TEST: Dilating 1730
-[  259.219107] VT-GPIO_TEST: Dilating 1731
-[  259.234710] VT-GPIO_TEST: Dilating 1732
-[  259.250226] VT-GPIO_TEST: Dilating 1733
 [  261.359308] VT-GPIO_BENCHMARK: Pause ; 0 ; 17408310 
 [  262.527697] VT-GPIO_BENCHMARK: Resume ; 0 ; 13087430 
 [  263.691670] VT-GPIO_BENCHMARK: Pause ; 0 ; 12240993 
@@ -615,22 +126,6 @@
 [  296.028896] VT-GPIO_BENCHMARK: Resume ; 0 ; 12998684 
 [  297.282517] VT-GPIO_BENCHMARK: Pause ; 0 ; 13489481 
 [  298.454019] VT-GPIO_BENCHMARK: Resume ; 0 ; 12989769 
-[  305.344528] VT-GPIO_TEST: Dilating 1775
-[  305.371850] VT-GPIO_TEST: Dilating 1776
-[  305.389256] VT-GPIO_TEST: Dilating 1777
-[  305.406345] VT-GPIO_TEST: Dilating 1778
-[  305.423355] VT-GPIO_TEST: Dilating 1779
-[  305.440387] VT-GPIO_TEST: Dilating 1780
-[  305.457233] VT-GPIO_TEST: Dilating 1781
-[  305.473816] VT-GPIO_TEST: Dilating 1782
-[  305.490461] VT-GPIO_TEST: Dilating 1783
-[  305.506811] VT-GPIO_TEST: Dilating 1784
-[  305.523095] VT-GPIO_TEST: Dilating 1785
-[  305.539273] VT-GPIO_TEST: Dilating 1786
-[  305.555291] VT-GPIO_TEST: Dilating 1787
-[  305.571335] VT-GPIO_TEST: Dilating 1788
-[  305.587116] VT-GPIO_TEST: Dilating 1789
-[  305.602800] VT-GPIO_TEST: Dilating 1790
 [  307.696219] VT-GPIO_BENCHMARK: Pause ; 0 ; 18013016 
 [  308.853402] VT-GPIO_BENCHMARK: Resume ; 0 ; 12953647 
 [  310.082476] VT-GPIO_BENCHMARK: Pause ; 0 ; 12340986 
@@ -663,22 +158,6 @@
 [  342.408304] VT-GPIO_BENCHMARK: Resume ; 0 ; 13195254 
 [  343.587352] VT-GPIO_BENCHMARK: Pause ; 0 ; 12371109 
 [  344.828153] VT-GPIO_BENCHMARK: Resume ; 0 ; 12993852 
-[  350.973256] VT-GPIO_TEST: Dilating 1832
-[  351.001097] VT-GPIO_TEST: Dilating 1833
-[  351.018729] VT-GPIO_TEST: Dilating 1835
-[  351.036325] VT-GPIO_TEST: Dilating 1836
-[  351.053718] VT-GPIO_TEST: Dilating 1837
-[  351.071059] VT-GPIO_TEST: Dilating 1838
-[  351.088180] VT-GPIO_TEST: Dilating 1839
-[  351.105265] VT-GPIO_TEST: Dilating 1840
-[  351.122180] VT-GPIO_TEST: Dilating 1841
-[  351.138925] VT-GPIO_TEST: Dilating 1842
-[  351.155590] VT-GPIO_TEST: Dilating 1843
-[  351.172115] VT-GPIO_TEST: Dilating 1844
-[  351.188501] VT-GPIO_TEST: Dilating 1845
-[  351.208986] VT-GPIO_TEST: Dilating 1846
-[  351.224768] VT-GPIO_TEST: Dilating 1847
-[  351.240440] VT-GPIO_TEST: Dilating 1848
 [  353.353373] VT-GPIO_BENCHMARK: Pause ; 0 ; 17526344 
 [  354.525130] VT-GPIO_BENCHMARK: Resume ; 0 ; 13212463 
 [  355.732177] VT-GPIO_BENCHMARK: Pause ; 0 ; 13313204 
@@ -711,22 +190,6 @@
 [  388.061893] VT-GPIO_BENCHMARK: Resume ; 0 ; 13181547 
 [  389.232930] VT-GPIO_BENCHMARK: Pause ; 0 ; 13319494 
 [  390.403671] VT-GPIO_BENCHMARK: Resume ; 0 ; 13075096 
-[  401.921233] VT-GPIO_TEST: Dilating 1890
-[  401.948466] VT-GPIO_TEST: Dilating 1891
-[  401.951999] VT-GPIO_TEST: Dilating 1892
-[  401.963921] VT-GPIO_TEST: Dilating 1893
-[  401.967454] VT-GPIO_TEST: Dilating 1894
-[  401.970826] VT-GPIO_TEST: Dilating 1895
-[  401.977983] VT-GPIO_TEST: Dilating 1896
-[  401.981485] VT-GPIO_TEST: Dilating 1897
-[  401.984940] VT-GPIO_TEST: Dilating 1898
-[  401.992093] VT-GPIO_TEST: Dilating 1899
-[  401.995618] VT-GPIO_TEST: Dilating 1900
-[  401.998983] VT-GPIO_TEST: Dilating 1901
-[  402.006128] VT-GPIO_TEST: Dilating 1902
-[  402.009620] VT-GPIO_TEST: Dilating 1903
-[  402.012958] VT-GPIO_TEST: Dilating 1904
-[  402.020240] VT-GPIO_TEST: Dilating 1905
 [  404.090448] VT-GPIO_BENCHMARK: Pause ; 0 ; 17437184 
 [  405.262072] VT-GPIO_BENCHMARK: Resume ; 0 ; 13006352 
 [  406.484417] VT-GPIO_BENCHMARK: Pause ; 0 ; 12398064 
@@ -740,8 +203,6 @@
 [  416.088251] VT-GPIO_BENCHMARK: Pause ; 0 ; 12419064 
 [  417.311428] VT-GPIO_BENCHMARK: Resume ; 0 ; 13175256 
 [  418.477267] VT-GPIO_BENCHMARK: Pause ; 0 ; 13262790 
-[  419.639729] VT-GPIO_BENCHMARK: Resume ; 0 ; 18446744071722586590 
-[  420.880047] VT-GPIO_BENCHMARK: Pause ; 0 ; 12414231 
 [  422.096885] VT-GPIO_BENCHMARK: Resume ; 0 ; 13286913 
 [  423.264194] VT-GPIO_BENCHMARK: Pause ; 0 ; 12353235 
 [  424.487746] VT-GPIO_BENCHMARK: Resume ; 0 ; 13256625 
@@ -759,22 +220,6 @@
 [  438.873312] VT-GPIO_BENCHMARK: Resume ; 0 ; 13047140 
 [  440.127476] VT-GPIO_BENCHMARK: Pause ; 0 ; 12341069 
 [  441.366209] VT-GPIO_BENCHMARK: Resume ; 0 ; 13227377 
-[  450.038802] VT-GPIO_TEST: Dilating 1947
-[  450.066216] VT-GPIO_TEST: Dilating 1948
-[  450.087904] VT-GPIO_TEST: Dilating 1949
-[  450.104875] VT-GPIO_TEST: Dilating 1950
-[  450.121697] VT-GPIO_TEST: Dilating 1951
-[  450.138499] VT-GPIO_TEST: Dilating 1952
-[  450.155094] VT-GPIO_TEST: Dilating 1953
-[  450.171534] VT-GPIO_TEST: Dilating 1954
-[  450.187893] VT-GPIO_TEST: Dilating 1955
-[  450.204120] VT-GPIO_TEST: Dilating 1956
-[  450.220285] VT-GPIO_TEST: Dilating 1957
-[  450.236242] VT-GPIO_TEST: Dilating 1958
-[  450.239841] VT-GPIO_TEST: Dilating 1959
-[  450.243205] VT-GPIO_TEST: Dilating 1960
-[  450.250379] VT-GPIO_TEST: Dilating 1961
-[  450.253899] VT-GPIO_TEST: Dilating 1962
 [  452.352838] VT-GPIO_BENCHMARK: Pause ; 0 ; 17505637 
 [  453.523317] VT-GPIO_BENCHMARK: Resume ; 0 ; 12965063 
 [  454.750773] VT-GPIO_BENCHMARK: Pause ; 0 ; 12401398 
@@ -782,8 +227,6 @@
 [  457.126682] VT-GPIO_BENCHMARK: Pause ; 0 ; 13326660 
 [  458.322763] VT-GPIO_BENCHMARK: Resume ; 0 ; 13247793 
 [  459.485379] VT-GPIO_BENCHMARK: Pause ; 0 ; 13339659 
-[  460.643499] VT-GPIO_BENCHMARK: Resume ; 0 ; 18446744071722592048 
-[  461.876310] VT-GPIO_BENCHMARK: Pause ; 0 ; 12379399 
 [  463.092725] VT-GPIO_BENCHMARK: Resume ; 0 ; 13253084 
 [  464.258174] VT-GPIO_BENCHMARK: Pause ; 0 ; 13340159 
 [  465.420707] VT-GPIO_BENCHMARK: Resume ; 0 ; 13032308 
@@ -793,8 +236,6 @@
 [  470.280564] VT-GPIO_BENCHMARK: Resume ; 0 ; 13250792 
 [  471.446195] VT-GPIO_BENCHMARK: Pause ; 0 ; 12416563 
 [  472.678346] VT-GPIO_BENCHMARK: Resume ; 0 ; 13284248 
-[  473.851195] VT-GPIO_BENCHMARK: Pause ; 0 ; 18446744071722870944 
-[  475.015519] VT-GPIO_BENCHMARK: Resume ; 0 ; 12974020 
 [  476.257412] VT-GPIO_BENCHMARK: Pause ; 0 ; 12292030 
 [  477.491358] VT-GPIO_BENCHMARK: Resume ; 0 ; 13192337 
 [  478.665530] VT-GPIO_BENCHMARK: Pause ; 0 ; 13313744 
@@ -805,5 +246,3 @@
 [  484.799908] VT-GPIO_BENCHMARK: Resume ; 0 ; 13210961 
 [  485.970521] VT-GPIO_BENCHMARK: Pause ; 0 ; 13361116 
 [  487.140953] VT-GPIO_BENCHMARK: Resume ; 0 ; 13043224 
-[  488.398419] VT-GPIO_BENCHMARK: Pause ; 0 ; 12378440 
-[  489.643699] VT-GPIO_BENCHMARK: Resume ; 0 ; 18446744071722805992 
