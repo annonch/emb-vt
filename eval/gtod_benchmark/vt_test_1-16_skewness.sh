@@ -56,9 +56,9 @@ do
 	do
 	    #
 	    # removes ns\n and replaces with , save to file
-	    cat /proc/${j} | tr 'ns\n' ',' >> skew_${i}.log
+	    cat /proc/${j}/fpt | tr 'ns\n' ',' >> /home/emb-vt/eval/skew/skew_${i}.log
 	done
-	echo "\n" >> skew.log
+	echo "\n" >> /home/emb-vt/eval/skew/skew_${i}.log
 	sleep 1
     done
     wait ${pids[0]}
@@ -74,7 +74,7 @@ do
     kill -9 ${pids[@]}
     #
     # save dmesg
-    dmesg > overhead_${i}.log
+    dmesg > /home/emb-vt/eval/overhead/overhead_${i}.log
 done
 #
 # Cleanup
