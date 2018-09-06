@@ -3,8 +3,31 @@
 # Author: Christopher Hannon
 # Date: 9-6-18
 #
-for i in 2 4 8 16
+###############################
+#
+# clear PIDS
+#
+for x in `seq 1 16`;
 do
+    xx=$x
+    while [[ ${#xx} -lt 2 ]] ; do
+	xx="0${xx}"
+    done
+    # 0 is empty pid    
+    echo '0' > /sys/vt/VT7/pid_${xx}
+done
+rm /home/emb-vt/eval/skew/*.log
+#
+# main
+#
+for i in 2 #4 8 16
+do
+    # rebuild kmodule just in case
+    rmmod vtgpio_test
+    cd /home/emb-vt/src
+    make
+    insmod vtgpio_test.ko
+    cd /home/emb-vt/eval/gtod_benchmark
     # clear dmesg
     dmesg --clear
     ########################
@@ -18,6 +41,7 @@ do
     /home/emb-vt/eval/gtod_benchmark/start_paused.sh /home/emb-vt/eval/gtod_benchmark/gtod_loop &
     pids[0]=$!
     echo $! > /sys/vt/VT7/pid_01
+    echo $!
     #
     # z = upperbound
     z=$(($i-1))
@@ -26,17 +50,18 @@ do
     for j in `seq 1 $z`; do
 	#
 	# get pid variable to be double digits (+1)
-	jj=$j
+	jj=$(($j+1))
 	# make jj 2 digits for the pid_02-16 variable
 	while [[ ${#jj} -lt 2 ]] ; do
 	    jj="0${jj}"
 	done
 	#
 	# add sleeping procs to VT
-	sleep 150 &
+	sleep 2500 &
 	pids[j]=$!
 	pid_path="/sys/vt/VT7/pid_${jj}"
-	echo $! > pid_path
+	echo $! > ${pid_path}
+	echo $!
     done
     ######################
     ### run experiment ###
@@ -52,13 +77,13 @@ do
 	echo "freeze" > /sys/vt/VT7/mode
 	sleep 1
 	echo "unfreeze" > /sys/vt/VT7/mode
-	for j in "${pids}"
+	for q in "${pids[@]}"
 	do
 	    #
 	    # removes ns\n and replaces with , save to file
-	    cat /proc/${j}/fpt | tr 'ns\n' ',' >> /home/emb-vt/eval/skew/skew_${i}.log
+	    cat /proc/${q}/fpt | tr 'ns\n' ' , ' >> /home/emb-vt/eval/skew/skew_${i}.log
 	done
-	echo "\n" >> /home/emb-vt/eval/skew/skew_${i}.log
+	echo ' ' >> /home/emb-vt/eval/skew/skew_${i}.log
 	sleep 1
     done
     wait ${pids[0]}
@@ -85,8 +110,11 @@ do
     while [[ ${#xx} -lt 2 ]] ; do
 	xx="0${xx}"
     done
-    echo " " > /sys/vt/VT7/pid_${xx}
+    
+    echo "0" > /sys/vt/VT7/pid_${xx}
 done
-echo "------------------------------------------------------------\nmake sure to save the log files into a new directory so that rerunning this script does not append to old files."
-echo "thank you and goodbye\n-------------------------------------------------------------\n"
+echo "------------------------------------------------------------------------------------------------------------------"
+echo "make sure to save the log files into a new directory so that rerunning this script does not append to old files."
+echo "thank you and goodbye"
+echo "------------------------------------------------------------------------------------------------------------------"
 

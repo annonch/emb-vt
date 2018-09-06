@@ -53,7 +53,7 @@ long double gt(){
   time_t curtime, starttime;
   suseconds_t ms, startms;
   long double res;
-  volatile int x;
+  volatile int x,y;
   long int misc_total;
   
   
@@ -65,8 +65,10 @@ long double gt(){
   startms=tv[0].tv_usec;
 
   //nanosleep(&req, NULL);
-  for(x=0;x<NUM_RUNS;x++) {
-    gettimeofday(&tv[x], NULL);
+  for(y=0;y<10;y++){
+    for(x=0;x<NUM_RUNS;x++) {
+      gettimeofday(&tv[x], NULL);
+    }
   }
   
   write(marker_fd, "After GTOD\n", 11);
