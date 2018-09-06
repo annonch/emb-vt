@@ -23,7 +23,7 @@ do
     z=$(($i-1))
     #
     # start sleeping procs
-    for j in seq `1 $z`; do
+    for j in `seq 1 $z`; do
 	#
 	# get pid variable to be double digits (+1)
 	jj=$j
