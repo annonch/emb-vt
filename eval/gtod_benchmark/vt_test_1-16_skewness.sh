@@ -12,7 +12,8 @@
 #
 # main
 #
-for i in $1 #2 4 8 16
+#for i in $1 #2 4 8 16
+for i in 2 4 8 16
 do
     sleep 2
     # rebuild kmodule just in case
@@ -69,7 +70,7 @@ do
     while kill -0 ${pids[0]} >/dev/null 2>&1
     do
 	echo "freeze" > /sys/vt/VT7/mode
-	sleep 1
+	sleep .3
 	echo "unfreeze" > /sys/vt/VT7/mode
 	for q in "${pids[@]}"
 	do
@@ -78,7 +79,7 @@ do
 	    cat /proc/${q}/fpt | tr 'ns\n' ' , ' >> /home/emb-vt/eval/skew/skew_${i}.log
 	done
 	echo ' ' >> /home/emb-vt/eval/skew/skew_${i}.log
-	sleep 1
+	sleep .3
     done
     wait ${pids[0]}
     #
