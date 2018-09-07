@@ -32,6 +32,9 @@
 #define BENCHMARK
 #endif
 
+/* pause/resume scheduling algo */
+#define ROUND_ROBIN
+
 /* value to denote time logging feature */
 
 /*
@@ -72,6 +75,7 @@ static unsigned int num_ints = 0;
 static unsigned int irqNumber;
 static unsigned int irqNumber2;
 
+
 /* irq handler functions */
 static irq_handler_t vtgpio_irq_handler(unsigned int irq, void *dev_id, struct pt_regs *regs);
 static irq_handler_t vtgpio_irq_handler_fall(unsigned int irq, void *dev_id, struct pt_regs *regs);
@@ -98,6 +102,7 @@ static int all_pids[MAX_NUM_PIDS] = {0};
 enum IO{ RESUME,FREEZE,DILATE };
 
 static int sequential_io(enum IO io);
+static int sequential_io_round_robin(enum IO io);
 
 /* PID variables for tracking processes in VT */
 static int pid_01 = 0;
@@ -116,6 +121,10 @@ static int pid_13 = 0;
 static int pid_14 = 0;
 static int pid_15 = 0;
 static int pid_16 = 0;
+
+/* variable to ensure round robin pause/resume ops */
+unsigned int round_robin = 0;
+
 
 /* default time dilation factor for clocks (x1000) see various references for more details */
 static int tdf = 1000;
@@ -158,8 +167,12 @@ void pause(void) {
   /* kickoff kthreads to resume processes */
 
   num_ints ++;
+#ifndef ROUND_ROBIN
   sequential_io(FREEZE);
-
+#endif
+#ifdef ROUND_ROBIN
+  sequential_io_round_robin(FREEZE);
+#endif
 #ifdef BENCHMARK
   getnstimeofday(&seconds_end);
 
@@ -225,9 +238,12 @@ void resume(void) {
 #endif
   
   num_ints ++;
-
+#ifndef ROUND_ROBIN
   sequential_io(RESUME);
-
+#endif
+#ifdef ROUND_ROBIN
+  sequential_io_round_robin(RESUME);
+#endif  
 #ifdef BENCHMARK
   getnstimeofday(&seconds_end);
 
@@ -327,6 +343,51 @@ static int sequential_io(enum IO io) {
 	freeze_proc(all_pids[i]);
       else
 	break;
+    }
+    break;
+  case RESUME:
+    for(i=0;i<MAX_NUM_PIDS;i++){
+      if(all_pids[i])
+	resume_proc(all_pids[i]);
+      else
+	break;
+    }
+    break;
+  }
+  return 0;
+}
+
+static int sequential_io_round_robin(enum IO io) {
+  /* Because of the break in the for loop,
+   *  pids should be added to the next available
+   */
+
+  int i;
+  switch(io){
+  case DILATE:
+    for(i=round_robin;i<MAX_NUM_PIDS;i++){
+      if(all_pids[i])
+	dilate_proc(all_pids[i]);
+      else
+	break;
+    }
+    break;
+  case FREEZE:
+    for(i=round_robin;i<MAX_NUM_PIDS;i++){
+      if(all_pids[i])
+	freeze_proc(all_pids[i]);
+      else
+	break;
+    }
+    for(i=0;i<round_robin;i++){
+      freeze_proc(all_pids[i]);
+    }
+    round_robin += 1;
+    if (round_robin == MAX_NUM_PIDS) {
+      round_robin = 0;
+    }
+    if (!all_pids[i]){
+      round_robin = 0;
     }
     break;
   case RESUME:
