@@ -17,29 +17,75 @@ import argparse
 
 
 
-#############################################################################################
-# 
-# 1) read in files
-#
-# 2) split RESUME and PAUSE / UNFREEZE and FREEZE
-# 
-# 3) cdfs for each 2x5
-#
-# 4) time x # processes with confidence intervals
-#
-#############################################################################################
+def start(case1 = True):
+    runs = [2,4,8,16]
+    nums = -1
+    files = ['skew_2.log','skew_4.log','skew_8.log','skew_16.log']
 
-
-def start():
-    num = 1
-    rank = 0
-    pause = []
-    resume = []
-    #files = ['1Host.csv','2Host.csv','4Host.csv','8Host.csv','16Host.csv']
-    files = ['1Host.csv','overhead_2.log','overhead_4.log','overhead_8.log','overhead_16.log']
     for file in files:
-        rawF = np.genfromtxt(file, delimiter=';', usecols=2 )
-        #rawF = np.genfromtxt(file, delimiter=',', usecols=2 )
+        nums+=1
+        rawF = np.genfromtxt(file, delimiter=',')#, usecols={0,1} )
+        print(rawF)
+        print len(rawF)
+        
+        for y in reversed(range(runs[nums])):
+            print rawF[:,y]
+            if case1:
+                rawF[:,y] = (rawF[:,y] - rawF[:,0])/1000000
+            else:
+                rawF[:,y] = (rawF[:,y] - rawF[:,0])/1000
+            #print rawF[:,y]
+        #print(rawF)
+        #print len((rawF[:,1]))
+        #print len(range(len(rawF[:,0])))
+
+        #rawFT = rawF.transpose()
+        colors=['b','r','g','c','m','y','k','coral','steelblue','tan','olive','orchid',
+                'darksalmon', 'lightslategrey','steelblue']
+
+        plt.subplot(2,2,nums+1)
+
+        for x in range(1,runs[nums]):
+            l="process %s"%(x+1)
+            if case1:
+                plt.plot(range(len(rawF[:,0])),rawF[:,x],c=colors[x-1],label=l)
+            else:
+                plt.plot(range(len(rawF[:,0])),rawF[:,x]/range(len(rawF[:,0])),c=colors[x-1],label=l)
+            
+        #plt.axis([-1,100,0,15])
+        #plt.axis([-1,100,0,15])
+        plt.legend(fontsize=12,loc='lower left')
+
+        if case1:
+            plt.ylabel('Milliseconds', fontsize=14)
+            plt.title('Cumulative Clock Skewness')
+            plt.xlabel('run (index)', fontsize=14)
+        
+        else:
+            plt.ylabel('Microseconds', fontsize=14)
+            plt.title('Clock Skewness')
+            plt.xlabel('time (index of pause/resume)', fontsize=14)
+        
+        plt.grid(True)
+        
+    plt.show()
+
+        
+
+        
+start(1)
+start(0)
+'''    
+
+
+
+
+
+
+
+
+
+        
         pause.append([])
         resume.append([])
 
@@ -74,8 +120,6 @@ def start():
     #print y_axis_vals_pause
     #print std_pause
 
-    plt.subplot(2,3,1)
-    
     plt.errorbar(x_axis_vals, y_axis_vals_pause,fmt='b', capsize = 5, yerr = std_pause, label = 'pause', linestyle = '--' )
     plt.errorbar(x_axis_vals, y_axis_vals_resume,fmt='r',capsize = 5, yerr = std_resume, label = 'resume')
     plt.axis([0,17,0,15])
@@ -85,7 +129,8 @@ def start():
     plt.ylabel('Milliseconds', fontsize=14)
     plt.grid(True)
     plt.title('Overhead of Pause and Resume')
-    
+    plt.show()
+
     ########
     # cdfs #
     ########
@@ -156,18 +201,16 @@ def plot_err_cdf(data1, data2):
     # plt.show()
     plt.savefig('err_%s_cdf.eps' % topic_name, format='eps')
 
-
 colors=['b','r','g','c','m','y','k','coral','steelblue','tan']
+
 linestyles = ['solid','dotted']
 
 def plot_compare_cdf(pd, pr):
     """draw cdf to compare without/with freeze elapsed time"""
-    label1 = ['1Proc','2Proc','4Proc','8Proc','16Proc']
+    label1 = ['1Host','2Host','4Host','8Host','16Host']
     labell = -1
-    nums_plt = 2
+
     for data1,data2 in zip(pd,pr):
-        plt.subplot(2,3,nums_plt)
-        nums_plt+=1
         #global labell,label1
         labell += 1
         num_bins = 100
@@ -190,7 +233,7 @@ def plot_compare_cdf(pd, pr):
         plt.xlabel('Overhead (Milliseconds)', fontsize=12)
         plt.ylabel('Cumulative Distribution', fontsize=12)
         plt.grid(True)
-    plt.show()
+        plt.show()
     #plt.savefig('cmp_%s_cdf.eps' % topic_name, format='eps')
 
 def plot_variance_cdf(data):
@@ -245,3 +288,6 @@ if __name__ == "__main__":
     label_err = results.label_err
 
     start()
+
+
+'''
