@@ -7,21 +7,14 @@
 #
 # clear PIDS
 #
-for x in `seq 1 16`;
-do
-    xx=$x
-    while [[ ${#xx} -lt 2 ]] ; do
-	xx="0${xx}"
-    done
-    # 0 is empty pid    
-    echo '0' > /sys/vt/VT7/pid_${xx}
-done
-rm /home/emb-vt/eval/skew/*.log
+#
+#rm /home/emb-vt/eval/skew/*.log
 #
 # main
 #
-for i in 2 #4 8 16
+for i in $1 #2 4 8 16
 do
+    sleep 2
     # rebuild kmodule just in case
     rmmod vtgpio_test
     cd /home/emb-vt/src
@@ -29,6 +22,7 @@ do
     insmod vtgpio_test.ko
     cd /home/emb-vt/eval/gtod_benchmark
     # clear dmesg
+    sleep 10
     dmesg --clear
     ########################
     ### setup experiment ###
