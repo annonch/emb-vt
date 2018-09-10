@@ -382,20 +382,24 @@ static int sequential_io_round_robin(enum IO io) {
     for(i=0;i<round_robin;i++){
       freeze_proc(all_pids[i]);
     }
+    
+    break;
+  case RESUME:
+    for(i=round_robin;i<MAX_NUM_PIDS;i++){
+      if(all_pids[i])
+	resume_proc(all_pids[i]);
+      else
+	break;
+    }
+    for(i=0;i<round_robin;i++) {
+        freeze_proc(all_pids[i]);
+    }
     round_robin += 1;
     if (round_robin == MAX_NUM_PIDS) {
       round_robin = 0;
     }
     if (!all_pids[i]){
       round_robin = 0;
-    }
-    break;
-  case RESUME:
-    for(i=0;i<MAX_NUM_PIDS;i++){
-      if(all_pids[i])
-	resume_proc(all_pids[i]);
-      else
-	break;
     }
     break;
   }
