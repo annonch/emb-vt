@@ -1,0 +1,5 @@
+skew_1_data/skew_2_data -- 2 is the good baseline data
+round robin algo for pausing -- 1/2 is for pause rr only
+
+
+to plot go inside a dir and run python ../plot_skew.py

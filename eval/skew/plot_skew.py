@@ -54,14 +54,15 @@ def start(case1 = True):
             
         #plt.axis([-1,100,0,15])
         #plt.axis([-1,100,0,15])
-        plt.legend(fontsize=12,loc='lower left')
-
+        
         if case1:
+            plt.legend(fontsize=8,loc='lower left')
             plt.ylabel('Milliseconds', fontsize=14)
             plt.title('Cumulative Clock Skewness')
             plt.xlabel('run (index)', fontsize=14)
         
         else:
+            plt.legend(fontsize=8,loc='upper right')
             plt.ylabel('Microseconds', fontsize=14)
             plt.title('Clock Skewness')
             plt.xlabel('time (index of pause/resume)', fontsize=14)
