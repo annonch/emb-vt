@@ -23,7 +23,7 @@ do
     insmod vtgpio_test.ko
     cd /home/emb-vt/eval/gtod_benchmark
     # clear dmesg
-    sleep 10
+    sleep 5
     dmesg --clear
     ########################
     ### setup experiment ###
@@ -64,13 +64,14 @@ do
     echo "running experiment ${i}"
     #
     # start all procs
+    sleep 1
     kill -CONT ${pids[*]}
     #
     # start pause/resume loop
     while kill -0 ${pids[0]} >/dev/null 2>&1
     do
 	echo "freeze" > /sys/vt/VT7/mode
-	sleep .3
+	sleep 1
 	echo "unfreeze" > /sys/vt/VT7/mode
 	for q in "${pids[@]}"
 	do
@@ -79,7 +80,7 @@ do
 	    cat /proc/${q}/fpt | tr 'ns\n' ' , ' >> /home/emb-vt/eval/skew/skew_${i}.log
 	done
 	echo ' ' >> /home/emb-vt/eval/skew/skew_${i}.log
-	sleep .3
+	sleep 1
     done
     wait ${pids[0]}
     #

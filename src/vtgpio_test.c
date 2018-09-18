@@ -33,7 +33,7 @@
 #endif
 
 /* pause/resume scheduling algo */
-#define ROUND_ROBIN
+//#define ROUND_ROBIN
 
 /* value to denote time logging feature */
 
