@@ -1,270 +1,528 @@
-[602699.145716] VT-GPIO_TEST: Dilating 18098
-[602699.213315] VT-GPIO_TEST: Dilating 18100
-[602700.297159] VT-GPIO_BENCHMARK: Pause ; 0 ; 396261 
-[602701.318089] VT-GPIO_BENCHMARK: Resume ; 0 ; 317517 
-[602702.548801] VT-GPIO_BENCHMARK: Pause ; 0 ; 1624166 
-[602703.615362] VT-GPIO_BENCHMARK: Resume ; 0 ; 1608167 
-[602705.032252] VT-GPIO_BENCHMARK: Pause ; 0 ; 1631041 
-[602706.103268] VT-GPIO_BENCHMARK: Resume ; 0 ; 1606793 
-[602707.499336] VT-GPIO_BENCHMARK: Pause ; 0 ; 1564962 
-[602708.573814] VT-GPIO_BENCHMARK: Resume ; 0 ; 1703369 
-[602709.918979] VT-GPIO_BENCHMARK: Pause ; 0 ; 1546088 
-[602711.055202] VT-GPIO_BENCHMARK: Resume ; 0 ; 1676287 
-[602712.407811] VT-GPIO_BENCHMARK: Pause ; 0 ; 1555588 
-[602713.540847] VT-GPIO_BENCHMARK: Resume ; 0 ; 1663705 
-[602714.898649] VT-GPIO_BENCHMARK: Pause ; 0 ; 1598293 
-[602715.965991] VT-GPIO_BENCHMARK: Resume ; 0 ; 1621041 
-[602717.375278] VT-GPIO_BENCHMARK: Pause ; 0 ; 1643789 
-[602718.441493] VT-GPIO_BENCHMARK: Resume ; 0 ; 1586918 
-[602719.832555] VT-GPIO_BENCHMARK: Pause ; 0 ; 1542964 
-[602720.962631] VT-GPIO_BENCHMARK: Resume ; 0 ; 1683495 
-[602722.340840] VT-GPIO_BENCHMARK: Pause ; 0 ; 1619833 
-[602723.406709] VT-GPIO_BENCHMARK: Resume ; 0 ; 1615041 
-[602724.810128] VT-GPIO_BENCHMARK: Pause ; 0 ; 1539547 
-[602725.941049] VT-GPIO_BENCHMARK: Resume ; 0 ; 1664537 
-[602727.309709] VT-GPIO_BENCHMARK: Pause ; 0 ; 1613916 
-[602728.376287] VT-GPIO_BENCHMARK: Resume ; 0 ; 1588460 
-[602729.791415] VT-GPIO_BENCHMARK: Pause ; 0 ; 1641915 
-[602730.859792] VT-GPIO_BENCHMARK: Resume ; 0 ; 1612917 
-[602732.272473] VT-GPIO_BENCHMARK: Pause ; 0 ; 1633707 
-[602733.339161] VT-GPIO_BENCHMARK: Resume ; 0 ; 1623415 
-[602734.733147] VT-GPIO_BENCHMARK: Pause ; 0 ; 1551213 
-[602735.804956] VT-GPIO_BENCHMARK: Resume ; 0 ; 1639332 
-[602737.217919] VT-GPIO_BENCHMARK: Pause ; 0 ; 1553463 
-[602738.353061] VT-GPIO_BENCHMARK: Resume ; 0 ; 1696618 
-[602739.723478] VT-GPIO_BENCHMARK: Pause ; 0 ; 1627707 
-[602740.789561] VT-GPIO_BENCHMARK: Resume ; 0 ; 1678495 
-[602742.182995] VT-GPIO_BENCHMARK: Pause ; 0 ; 1538464 
-[602743.312101] VT-GPIO_BENCHMARK: Resume ; 0 ; 1667287 
-[602744.683470] VT-GPIO_BENCHMARK: Pause ; 0 ; 1538089 
-[602745.811387] VT-GPIO_BENCHMARK: Resume ; 0 ; 1694577 
-[602747.192767] VT-GPIO_BENCHMARK: Pause ; 0 ; 1534090 
-[602748.324495] VT-GPIO_BENCHMARK: Resume ; 0 ; 1671038 
-[602749.686988] VT-GPIO_BENCHMARK: Pause ; 0 ; 1570045 
-[602750.815424] VT-GPIO_BENCHMARK: Resume ; 0 ; 1671912 
-[602752.175567] VT-GPIO_BENCHMARK: Pause ; 0 ; 1601502 
-[602753.304106] VT-GPIO_BENCHMARK: Resume ; 0 ; 1706160 
-[602754.678656] VT-GPIO_BENCHMARK: Pause ; 0 ; 1557671 
-[602755.806228] VT-GPIO_BENCHMARK: Resume ; 0 ; 1673205 
-[602757.184049] VT-GPIO_BENCHMARK: Pause ; 0 ; 1649580 
-[602758.250297] VT-GPIO_BENCHMARK: Resume ; 0 ; 1627374 
-[602759.643464] VT-GPIO_BENCHMARK: Pause ; 0 ; 1632332 
-[602760.711117] VT-GPIO_BENCHMARK: Resume ; 0 ; 1611126 
-[602762.125559] VT-GPIO_BENCHMARK: Pause ; 0 ; 1616583 
-[602763.191121] VT-GPIO_BENCHMARK: Resume ; 0 ; 1607625 
-[602764.595655] VT-GPIO_BENCHMARK: Pause ; 0 ; 1555462 
-[602765.722499] VT-GPIO_BENCHMARK: Resume ; 0 ; 1687994 
-[602767.089854] VT-GPIO_BENCHMARK: Pause ; 0 ; 1561879 
-[602768.217258] VT-GPIO_BENCHMARK: Resume ; 0 ; 1683746 
-[602769.606139] VT-GPIO_BENCHMARK: Pause ; 0 ; 1559713 
-[602770.733693] VT-GPIO_BENCHMARK: Resume ; 0 ; 1586127 
-[602772.154315] VT-GPIO_BENCHMARK: Pause ; 0 ; 1554921 
-[602773.281998] VT-GPIO_BENCHMARK: Resume ; 0 ; 1702201 
-[602774.652445] VT-GPIO_BENCHMARK: Pause ; 0 ; 1558004 
-[602775.780179] VT-GPIO_BENCHMARK: Resume ; 0 ; 1684286 
-[602777.155336] VT-GPIO_BENCHMARK: Pause ; 0 ; 1617666 
-[602778.222583] VT-GPIO_BENCHMARK: Resume ; 0 ; 1609834 
-[602779.641723] VT-GPIO_BENCHMARK: Pause ; 0 ; 1658330 
-[602780.767569] VT-GPIO_BENCHMARK: Resume ; 0 ; 1588752 
-[602782.228338] VT-GPIO_BENCHMARK: Pause ; 0 ; 1630666 
-[602783.295336] VT-GPIO_BENCHMARK: Resume ; 0 ; 1631540 
-[602784.708138] VT-GPIO_BENCHMARK: Pause ; 0 ; 1559546 
-[602785.835493] VT-GPIO_BENCHMARK: Resume ; 0 ; 1694077 
-[602787.197444] VT-GPIO_BENCHMARK: Pause ; 0 ; 1625165 
-[602788.263269] VT-GPIO_BENCHMARK: Resume ; 0 ; 1592210 
-[602789.678118] VT-GPIO_BENCHMARK: Pause ; 0 ; 1593336 
-[602790.805184] VT-GPIO_BENCHMARK: Resume ; 0 ; 1594960 
-[602792.218657] VT-GPIO_BENCHMARK: Pause ; 0 ; 1586461 
-[602793.345135] VT-GPIO_BENCHMARK: Resume ; 0 ; 1602668 
-[602794.755039] VT-GPIO_BENCHMARK: Pause ; 0 ; 1535173 
-[602795.880607] VT-GPIO_BENCHMARK: Resume ; 0 ; 1701452 
-[602797.248633] VT-GPIO_BENCHMARK: Pause ; 0 ; 1550339 
-[602798.375322] VT-GPIO_BENCHMARK: Resume ; 0 ; 1725991 
-[602799.727579] VT-GPIO_BENCHMARK: Pause ; 0 ; 1616250 
-[602800.793801] VT-GPIO_BENCHMARK: Resume ; 0 ; 1630540 
-[602802.199688] VT-GPIO_BENCHMARK: Pause ; 0 ; 1554547 
-[602803.327071] VT-GPIO_BENCHMARK: Resume ; 0 ; 1610333 
-[602804.743237] VT-GPIO_BENCHMARK: Pause ; 0 ; 1589418 
-[602805.872043] VT-GPIO_BENCHMARK: Resume ; 0 ; 1695493 
-[602807.237058] VT-GPIO_BENCHMARK: Pause ; 0 ; 1549297 
-[602808.362828] VT-GPIO_BENCHMARK: Resume ; 0 ; 1655164 
-[602809.731392] VT-GPIO_BENCHMARK: Pause ; 0 ; 1578211 
-[602810.800105] VT-GPIO_BENCHMARK: Resume ; 0 ; 1595709 
-[602812.217815] VT-GPIO_BENCHMARK: Pause ; 0 ; 1555004 
-[602813.344639] VT-GPIO_BENCHMARK: Resume ; 0 ; 1694702 
-[602814.739411] VT-GPIO_BENCHMARK: Pause ; 0 ; 1555213 
-[602815.865430] VT-GPIO_BENCHMARK: Resume ; 0 ; 1676912 
-[602817.219638] VT-GPIO_BENCHMARK: Pause ; 0 ; 1624958 
-[602818.286822] VT-GPIO_BENCHMARK: Resume ; 0 ; 1616667 
-[602819.705838] VT-GPIO_BENCHMARK: Pause ; 0 ; 1628624 
-[602820.772727] VT-GPIO_BENCHMARK: Resume ; 0 ; 1632040 
-[602822.163781] VT-GPIO_BENCHMARK: Pause ; 0 ; 1610584 
-[602823.230570] VT-GPIO_BENCHMARK: Resume ; 0 ; 1662788 
-[602824.628198] VT-GPIO_BENCHMARK: Pause ; 0 ; 1561962 
-[602825.755443] VT-GPIO_BENCHMARK: Resume ; 0 ; 1677954 
-[602827.128683] VT-GPIO_BENCHMARK: Pause ; 0 ; 1567253 
-[602828.255854] VT-GPIO_BENCHMARK: Resume ; 0 ; 1674162 
-[602829.640116] VT-GPIO_BENCHMARK: Pause ; 0 ; 1624416 
-[602830.707903] VT-GPIO_BENCHMARK: Resume ; 0 ; 1638456 
-[602832.112297] VT-GPIO_BENCHMARK: Pause ; 0 ; 1614542 
-[602833.184452] VT-GPIO_BENCHMARK: Resume ; 0 ; 1637415 
-[602834.602343] VT-GPIO_BENCHMARK: Pause ; 0 ; 1533840 
-[602835.734224] VT-GPIO_BENCHMARK: Resume ; 0 ; 1674704 
-[602837.121679] VT-GPIO_BENCHMARK: Pause ; 0 ; 1622208 
-[602838.189068] VT-GPIO_BENCHMARK: Resume ; 0 ; 1631874 
-[602839.603699] VT-GPIO_BENCHMARK: Pause ; 0 ; 1627790 
-[602840.671345] VT-GPIO_BENCHMARK: Resume ; 0 ; 1624790 
-[602842.079045] VT-GPIO_BENCHMARK: Pause ; 0 ; 1636832 
-[602843.145833] VT-GPIO_BENCHMARK: Resume ; 0 ; 1603542 
-[602844.544433] VT-GPIO_BENCHMARK: Pause ; 0 ; 1595043 
-[602845.670771] VT-GPIO_BENCHMARK: Resume ; 0 ; 1686786 
-[602847.042184] VT-GPIO_BENCHMARK: Pause ; 0 ; 1632707 
-[602848.110370] VT-GPIO_BENCHMARK: Resume ; 0 ; 1624166 
-[602849.525196] VT-GPIO_BENCHMARK: Pause ; 0 ; 1659205 
-[602850.591645] VT-GPIO_BENCHMARK: Resume ; 0 ; 1615041 
-[602851.991528] VT-GPIO_BENCHMARK: Pause ; 0 ; 1626958 
-[602853.059081] VT-GPIO_BENCHMARK: Resume ; 0 ; 1628707 
-[602854.483136] VT-GPIO_BENCHMARK: Pause ; 0 ; 1587793 
-[602855.610042] VT-GPIO_BENCHMARK: Resume ; 0 ; 1658080 
-[602856.983027] VT-GPIO_BENCHMARK: Pause ; 0 ; 1549421 
-[602858.109653] VT-GPIO_BENCHMARK: Resume ; 0 ; 1614958 
-[602859.513263] VT-GPIO_BENCHMARK: Pause ; 0 ; 1629373 
-[602860.581517] VT-GPIO_BENCHMARK: Resume ; 0 ; 1634915 
-[602861.982694] VT-GPIO_BENCHMARK: Pause ; 0 ; 1627040 
-[602863.050224] VT-GPIO_BENCHMARK: Resume ; 0 ; 1603542 
-[602864.434254] VT-GPIO_BENCHMARK: Pause ; 0 ; 1602667 
-[602865.568131] VT-GPIO_BENCHMARK: Resume ; 0 ; 1598126 
-[602866.984350] VT-GPIO_BENCHMARK: Pause ; 0 ; 1650414 
-[602868.051422] VT-GPIO_BENCHMARK: Resume ; 0 ; 1621416 
-[602869.461179] VT-GPIO_BENCHMARK: Pause ; 0 ; 1650039 
-[602870.527919] VT-GPIO_BENCHMARK: Resume ; 0 ; 1632874 
-[602871.939666] VT-GPIO_BENCHMARK: Pause ; 0 ; 1636665 
-[602873.007455] VT-GPIO_BENCHMARK: Resume ; 0 ; 1622666 
-[602874.413649] VT-GPIO_BENCHMARK: Pause ; 0 ; 1626999 
-[602875.481122] VT-GPIO_BENCHMARK: Resume ; 0 ; 1609583 
-[602876.894846] VT-GPIO_BENCHMARK: Pause ; 0 ; 1579587 
-[602878.023497] VT-GPIO_BENCHMARK: Resume ; 0 ; 1661955 
-[602879.405449] VT-GPIO_BENCHMARK: Pause ; 0 ; 1568254 
-[602880.537219] VT-GPIO_BENCHMARK: Resume ; 0 ; 1599959 
-[602881.935868] VT-GPIO_BENCHMARK: Pause ; 0 ; 1542881 
-[602883.061905] VT-GPIO_BENCHMARK: Resume ; 0 ; 1602542 
-[602884.471992] VT-GPIO_BENCHMARK: Pause ; 0 ; 1651997 
-[602885.539073] VT-GPIO_BENCHMARK: Resume ; 0 ; 1642789 
-[602886.945945] VT-GPIO_BENCHMARK: Pause ; 0 ; 1620666 
-[602888.013062] VT-GPIO_BENCHMARK: Resume ; 0 ; 1612709 
-[602889.430927] VT-GPIO_BENCHMARK: Pause ; 0 ; 1632748 
-[602890.498283] VT-GPIO_BENCHMARK: Resume ; 0 ; 1618167 
-[602891.910937] VT-GPIO_BENCHMARK: Pause ; 0 ; 1639581 
-[602892.978362] VT-GPIO_BENCHMARK: Resume ; 0 ; 1630665 
-[602894.396360] VT-GPIO_BENCHMARK: Pause ; 0 ; 1572587 
-[602895.524625] VT-GPIO_BENCHMARK: Resume ; 0 ; 1704202 
-[602896.905652] VT-GPIO_BENCHMARK: Pause ; 0 ; 1623416 
-[602897.973780] VT-GPIO_BENCHMARK: Resume ; 0 ; 1645997 
-[602899.384395] VT-GPIO_BENCHMARK: Pause ; 0 ; 1645289 
-[602900.452031] VT-GPIO_BENCHMARK: Resume ; 0 ; 1603167 
-[602901.865900] VT-GPIO_BENCHMARK: Pause ; 0 ; 1629249 
-[602902.933743] VT-GPIO_BENCHMARK: Resume ; 0 ; 1607459 
-[602904.343911] VT-GPIO_BENCHMARK: Pause ; 0 ; 1644664 
-[602905.410903] VT-GPIO_BENCHMARK: Resume ; 0 ; 1630457 
-[602906.822706] VT-GPIO_BENCHMARK: Pause ; 0 ; 1631957 
-[602907.890684] VT-GPIO_BENCHMARK: Resume ; 0 ; 1599376 
-[602909.306631] VT-GPIO_BENCHMARK: Pause ; 0 ; 1560213 
-[602910.432882] VT-GPIO_BENCHMARK: Resume ; 0 ; 1698326 
-[602911.794601] VT-GPIO_BENCHMARK: Pause ; 0 ; 1624749 
-[602912.862719] VT-GPIO_BENCHMARK: Resume ; 0 ; 1605917 
-[602914.277900] VT-GPIO_BENCHMARK: Pause ; 0 ; 1624124 
-[602915.345021] VT-GPIO_BENCHMARK: Resume ; 0 ; 1614750 
-[602916.758164] VT-GPIO_BENCHMARK: Pause ; 0 ; 1644664 
-[602917.825457] VT-GPIO_BENCHMARK: Resume ; 0 ; 1623957 
-[602919.232748] VT-GPIO_BENCHMARK: Pause ; 0 ; 1640748 
-[602920.300923] VT-GPIO_BENCHMARK: Resume ; 0 ; 1614042 
-[602921.708396] VT-GPIO_BENCHMARK: Pause ; 0 ; 1585502 
-[602922.833653] VT-GPIO_BENCHMARK: Resume ; 0 ; 1722200 
-[602924.217177] VT-GPIO_BENCHMARK: Pause ; 0 ; 1561837 
-[602925.344178] VT-GPIO_BENCHMARK: Resume ; 0 ; 1695119 
-[602926.708927] VT-GPIO_BENCHMARK: Pause ; 0 ; 1589128 
-[602927.837244] VT-GPIO_BENCHMARK: Resume ; 0 ; 1665871 
-[602929.206628] VT-GPIO_BENCHMARK: Pause ; 0 ; 1555838 
-[602930.334368] VT-GPIO_BENCHMARK: Resume ; 0 ; 1671829 
-[602931.724694] VT-GPIO_BENCHMARK: Pause ; 0 ; 1616083 
-[602932.792396] VT-GPIO_BENCHMARK: Resume ; 0 ; 1616208 
-[602934.223714] VT-GPIO_BENCHMARK: Pause ; 0 ; 1653663 
-[602935.292156] VT-GPIO_BENCHMARK: Resume ; 0 ; 1624082 
-[602936.706158] VT-GPIO_BENCHMARK: Pause ; 0 ; 1624750 
-[602937.773249] VT-GPIO_BENCHMARK: Resume ; 0 ; 1647331 
-[602939.179966] VT-GPIO_BENCHMARK: Pause ; 0 ; 1570296 
-[602940.307256] VT-GPIO_BENCHMARK: Resume ; 0 ; 1602126 
-[602941.710058] VT-GPIO_BENCHMARK: Pause ; 0 ; 1662871 
-[602942.777273] VT-GPIO_BENCHMARK: Resume ; 0 ; 1626582 
-[602944.194453] VT-GPIO_BENCHMARK: Pause ; 0 ; 1634082 
-[602945.262066] VT-GPIO_BENCHMARK: Resume ; 0 ; 1599543 
-[602946.662157] VT-GPIO_BENCHMARK: Pause ; 0 ; 1586585 
-[602947.789177] VT-GPIO_BENCHMARK: Resume ; 0 ; 1684703 
-[602949.159829] VT-GPIO_BENCHMARK: Pause ; 0 ; 1549713 
-[602950.285961] VT-GPIO_BENCHMARK: Resume ; 0 ; 1725157 
-[602951.671282] VT-GPIO_BENCHMARK: Pause ; 0 ; 1538298 
-[602952.798978] VT-GPIO_BENCHMARK: Resume ; 0 ; 1690660 
-[602954.166646] VT-GPIO_BENCHMARK: Pause ; 0 ; 1547631 
-[602955.294013] VT-GPIO_BENCHMARK: Resume ; 0 ; 1658079 
-[602956.659858] VT-GPIO_BENCHMARK: Pause ; 0 ; 1547297 
-[602957.787423] VT-GPIO_BENCHMARK: Resume ; 0 ; 1670496 
-[602959.162647] VT-GPIO_BENCHMARK: Pause ; 0 ; 1543963 
-[602960.293495] VT-GPIO_BENCHMARK: Resume ; 0 ; 1665330 
-[602961.658699] VT-GPIO_BENCHMARK: Pause ; 0 ; 1617291 
-[602962.727655] VT-GPIO_BENCHMARK: Resume ; 0 ; 1609917 
-[602964.143688] VT-GPIO_BENCHMARK: Pause ; 0 ; 1584461 
-[602965.269627] VT-GPIO_BENCHMARK: Resume ; 0 ; 1694535 
-[602966.631168] VT-GPIO_BENCHMARK: Pause ; 0 ; 1649872 
-[602967.698321] VT-GPIO_BENCHMARK: Resume ; 0 ; 1602459 
-[602969.109184] VT-GPIO_BENCHMARK: Pause ; 0 ; 1631957 
-[602970.176104] VT-GPIO_BENCHMARK: Resume ; 0 ; 1610334 
-[602971.592317] VT-GPIO_BENCHMARK: Pause ; 0 ; 1618958 
-[602972.659688] VT-GPIO_BENCHMARK: Resume ; 0 ; 1616792 
-[602974.069029] VT-GPIO_BENCHMARK: Pause ; 0 ; 1630999 
-[602975.137037] VT-GPIO_BENCHMARK: Resume ; 0 ; 1617791 
-[602976.560245] VT-GPIO_BENCHMARK: Pause ; 0 ; 1555087 
-[602977.636636] VT-GPIO_BENCHMARK: Resume ; 0 ; 1699743 
-[602978.992840] VT-GPIO_BENCHMARK: Pause ; 0 ; 1603835 
-[602980.118371] VT-GPIO_BENCHMARK: Resume ; 0 ; 1674620 
-[602981.524572] VT-GPIO_BENCHMARK: Pause ; 0 ; 1579128 
-[602982.652900] VT-GPIO_BENCHMARK: Resume ; 0 ; 1730157 
-[602984.034605] VT-GPIO_BENCHMARK: Pause ; 0 ; 1553713 
-[602985.161218] VT-GPIO_BENCHMARK: Resume ; 0 ; 1709868 
-[602986.561222] VT-GPIO_BENCHMARK: Pause ; 0 ; 1559837 
-[602987.637054] VT-GPIO_BENCHMARK: Resume ; 0 ; 1698868 
-[602988.991891] VT-GPIO_BENCHMARK: Pause ; 0 ; 1549214 
-[602990.118933] VT-GPIO_BENCHMARK: Resume ; 0 ; 1661704 
-[602991.514898] VT-GPIO_BENCHMARK: Pause ; 0 ; 1556337 
-[602992.643336] VT-GPIO_BENCHMARK: Resume ; 0 ; 1665913 
-[602994.034302] VT-GPIO_BENCHMARK: Pause ; 0 ; 1555463 
-[602995.163236] VT-GPIO_BENCHMARK: Resume ; 0 ; 1668413 
-[602996.569932] VT-GPIO_BENCHMARK: Pause ; 0 ; 1627416 
-[602997.640193] VT-GPIO_BENCHMARK: Resume ; 0 ; 1596835 
-[602999.050927] VT-GPIO_BENCHMARK: Pause ; 0 ; 1626083 
-[603000.118244] VT-GPIO_BENCHMARK: Resume ; 0 ; 1625374 
-[603001.535022] VT-GPIO_BENCHMARK: Pause ; 0 ; 1628123 
-[603002.603799] VT-GPIO_BENCHMARK: Resume ; 0 ; 1650747 
-[603004.013582] VT-GPIO_BENCHMARK: Pause ; 0 ; 1647664 
-[603005.081323] VT-GPIO_BENCHMARK: Resume ; 0 ; 1630790 
-[603006.517087] VT-GPIO_BENCHMARK: Pause ; 0 ; 1566170 
-[603007.643258] VT-GPIO_BENCHMARK: Resume ; 0 ; 1668746 
-[603009.021699] VT-GPIO_BENCHMARK: Pause ; 0 ; 1603459 
-[603010.090073] VT-GPIO_BENCHMARK: Resume ; 0 ; 1627416 
-[603011.508146] VT-GPIO_BENCHMARK: Pause ; 0 ; 1642331 
-[603012.575699] VT-GPIO_BENCHMARK: Resume ; 0 ; 1634749 
-[603013.995599] VT-GPIO_BENCHMARK: Pause ; 0 ; 1586378 
-[603015.123555] VT-GPIO_BENCHMARK: Resume ; 0 ; 1674871 
-[603016.485752] VT-GPIO_BENCHMARK: Pause ; 0 ; 1605500 
-[603017.553551] VT-GPIO_BENCHMARK: Resume ; 0 ; 1597126 
-[603018.963217] VT-GPIO_BENCHMARK: Pause ; 0 ; 1625457 
-[603020.031161] VT-GPIO_BENCHMARK: Resume ; 0 ; 1643206 
-[603021.455943] VT-GPIO_BENCHMARK: Pause ; 0 ; 1539048 
-[603022.582891] VT-GPIO_BENCHMARK: Resume ; 0 ; 1599917 
-[603024.001801] VT-GPIO_BENCHMARK: Pause ; 0 ; 1536173 
-[603025.130239] VT-GPIO_BENCHMARK: Resume ; 0 ; 1650622 
-[603026.517607] VT-GPIO_BENCHMARK: Pause ; 0 ; 1548130 
-[603027.645159] VT-GPIO_BENCHMARK: Resume ; 0 ; 1624916 
-[603029.060876] VT-GPIO_BENCHMARK: Pause ; 0 ; 1632707 
-[603030.132802] VT-GPIO_BENCHMARK: Resume ; 0 ; 1607501 
-[603031.543183] VT-GPIO_BENCHMARK: Pause ; 0 ; 1653663 
-[603032.610653] VT-GPIO_BENCHMARK: Resume ; 0 ; 1621666 
+[ 1429.585492] VT-GPIO_TEST: Dilating 2752
+[ 1429.852765] VT-GPIO_TEST: Dilating 2754
+[ 1431.196490] VT-DEBUG: returning from freeze_time with 1537371597317331957n sec and kill status 0 
+[ 1431.205629] VT-DEBUG: returning from freeze_time with 1537371597326479290n sec and kill status 0 
+[ 1431.209919] VT-GPIO_BENCHMARK: Pause ; 0 ; 18143387 VT-DEBUG: returning from unfreeze_time with 1537371598412298842n nsec and kill status 0
+[ 1432.363650] VT-DEBUG: returning from unfreeze_time with 1537371598483941099n nsec and kill status 0
+[ 1432.368064] VT-GPIO_BENCHMARK: Resume ; 0 ; 80718722 VT-DEBUG: returning from freeze_time with 1537371598707172241n sec and kill status 0 
+[ 1433.751638] VT-DEBUG: returning from freeze_time with 1537371598777284922n sec and kill status 0 
+[ 1433.755920] VT-GPIO_BENCHMARK: Pause ; 0 ; 78831802 VT-DEBUG: returning from unfreeze_time with 1537371600867287934n nsec and kill status 0
+[ 1434.817371] VT-DEBUG: returning from unfreeze_time with 1537371600937464234n nsec and kill status 0
+[ 1434.821752] VT-GPIO_BENCHMARK: Resume ; 0 ; 79206560 VT-DEBUG: returning from freeze_time with 1537371599041370159n sec and kill status 0 
+[ 1436.246970] VT-DEBUG: returning from freeze_time with 1537371599112286063n sec and kill status 0 
+[ 1436.251255] VT-GPIO_BENCHMARK: Pause ; 0 ; 79634399 VT-DEBUG: returning from unfreeze_time with 1537371603361407400n nsec and kill status 0
+[ 1437.312521] VT-DEBUG: returning from unfreeze_time with 1537371603432391840n nsec and kill status 0
+[ 1437.316907] VT-GPIO_BENCHMARK: Resume ; 0 ; 80014784 VT-DEBUG: returning from freeze_time with 1537371597203080422n sec and kill status 0 
+[ 1438.731477] VT-DEBUG: returning from freeze_time with 1537371597276538941n sec and kill status 0 
+[ 1438.735768] VT-GPIO_BENCHMARK: Pause ; 0 ; 82194180 VT-DEBUG: returning from unfreeze_time with 1537371605842639371n nsec and kill status 0
+[ 1439.794724] VT-DEBUG: returning from unfreeze_time with 1537371605914378039n nsec and kill status 0
+[ 1439.799107] VT-GPIO_BENCHMARK: Resume ; 0 ; 80781718 VT-DEBUG: returning from freeze_time with 1537371607270413854n sec and kill status 0 
+[ 1441.221777] VT-DEBUG: returning from freeze_time with 1537371607341748219n sec and kill status 0 
+[ 1441.226048] VT-GPIO_BENCHMARK: Pause ; 0 ; 80060028 VT-DEBUG: returning from unfreeze_time with 1537371608423931198n nsec and kill status 0
+[ 1442.379128] VT-DEBUG: returning from unfreeze_time with 1537371608498543283n nsec and kill status 0
+[ 1442.383536] VT-GPIO_BENCHMARK: Resume ; 0 ; 83690383 VT-DEBUG: returning from freeze_time with 1537371592474208048n sec and kill status 0 
+[ 1443.795941] VT-DEBUG: returning from freeze_time with 1537371592547487707n sec and kill status 0 
+[ 1443.800216] VT-GPIO_BENCHMARK: Pause ; 0 ; 81993823 VT-DEBUG: returning from unfreeze_time with 1537371610906575451n nsec and kill status 0
+[ 1444.860763] VT-DEBUG: returning from unfreeze_time with 1537371610979979054n nsec and kill status 0
+[ 1444.865154] VT-GPIO_BENCHMARK: Resume ; 0 ; 82455196 VT-DEBUG: returning from freeze_time with 1537371612331342001n sec and kill status 0 
+[ 1446.284768] VT-DEBUG: returning from freeze_time with 1537371612404302062n sec and kill status 0 
+[ 1446.289037] VT-GPIO_BENCHMARK: Pause ; 0 ; 81663642 VT-DEBUG: returning from unfreeze_time with 1537371613486675367n nsec and kill status 0
+[ 1447.444086] VT-DEBUG: returning from unfreeze_time with 1537371613563067300n nsec and kill status 0
+[ 1447.448493] VT-GPIO_BENCHMARK: Resume ; 0 ; 85471522 VT-DEBUG: returning from freeze_time with 1537371614871945842n sec and kill status 0 
+[ 1448.826293] VT-DEBUG: returning from freeze_time with 1537371614945608467n sec and kill status 0 
+[ 1448.830561] VT-GPIO_BENCHMARK: Pause ; 0 ; 82361790 VT-DEBUG: returning from unfreeze_time with 1537371616028188428n nsec and kill status 0
+[ 1449.986213] VT-DEBUG: returning from unfreeze_time with 1537371616105006616n nsec and kill status 0
+[ 1449.990620] VT-GPIO_BENCHMARK: Resume ; 0 ; 85855031 VT-DEBUG: returning from freeze_time with 1537371617411386215n sec and kill status 0 
+[ 1451.366761] VT-DEBUG: returning from freeze_time with 1537371617485855396n sec and kill status 0 
+[ 1451.371031] VT-GPIO_BENCHMARK: Pause ; 0 ; 83200635 VT-DEBUG: returning from unfreeze_time with 1537371618568222339n nsec and kill status 0
+[ 1452.525285] VT-DEBUG: returning from unfreeze_time with 1537371618643828129n nsec and kill status 0
+[ 1452.529669] VT-GPIO_BENCHMARK: Resume ; 0 ; 84664464 VT-DEBUG: returning from freeze_time with 1537371620003560580n sec and kill status 0 
+[ 1453.959882] VT-DEBUG: returning from freeze_time with 1537371620078752742n sec and kill status 0 
+[ 1453.964152] VT-GPIO_BENCHMARK: Pause ; 0 ; 83887784 VT-DEBUG: returning from unfreeze_time with 1537371621166889109n nsec and kill status 0
+[ 1455.127246] VT-DEBUG: returning from unfreeze_time with 1537371621245579885n nsec and kill status 0
+[ 1455.131656] VT-GPIO_BENCHMARK: Resume ; 0 ; 87767199 VT-DEBUG: returning from freeze_time with 1537371582118137259n sec and kill status 0 
+[ 1456.510832] VT-DEBUG: returning from freeze_time with 1537371582197172464n sec and kill status 0 
+[ 1456.515132] VT-GPIO_BENCHMARK: Pause ; 0 ; 87788698 VT-DEBUG: returning from unfreeze_time with 1537371623615910461n nsec and kill status 0
+[ 1457.575024] VT-DEBUG: returning from unfreeze_time with 1537371623693138029n nsec and kill status 0
+[ 1457.579409] VT-GPIO_BENCHMARK: Resume ; 0 ; 86254620 VT-DEBUG: returning from freeze_time with 1537371625067118637n sec and kill status 0 
+[ 1459.025489] VT-DEBUG: returning from freeze_time with 1537371625143922078n sec and kill status 0 
+[ 1459.029754] VT-GPIO_BENCHMARK: Pause ; 0 ; 85521270 VT-DEBUG: returning from unfreeze_time with 1537371626227367194n nsec and kill status 0
+[ 1460.190305] VT-DEBUG: returning from unfreeze_time with 1537371626308201576n nsec and kill status 0
+[ 1460.194626] VT-GPIO_BENCHMARK: Resume ; 0 ; 89821730 VT-DEBUG: returning from freeze_time with 1537371544499780985n sec and kill status 0 
+[ 1461.552578] VT-DEBUG: returning from freeze_time with 1537371544580460006n sec and kill status 0 
+[ 1461.556873] VT-GPIO_BENCHMARK: Pause ; 0 ; 89411350 VT-DEBUG: returning from unfreeze_time with 1537371628654311608n nsec and kill status 0
+[ 1462.615374] VT-DEBUG: returning from unfreeze_time with 1537371628733048297n nsec and kill status 0
+[ 1462.619760] VT-GPIO_BENCHMARK: Resume ; 0 ; 87789073 VT-DEBUG: returning from freeze_time with 1537371462846800119n sec and kill status 0 
+[ 1464.053174] VT-DEBUG: returning from freeze_time with 1537371462926312285n sec and kill status 0 
+[ 1464.057453] VT-GPIO_BENCHMARK: Pause ; 0 ; 88230912 VT-DEBUG: returning from unfreeze_time with 1537371631157176007n nsec and kill status 0
+[ 1465.119239] VT-DEBUG: returning from unfreeze_time with 1537371631236701002n nsec and kill status 0
+[ 1465.123621] VT-GPIO_BENCHMARK: Resume ; 0 ; 88551673 VT-DEBUG: returning from freeze_time with 1537371632582838790n sec and kill status 0 
+[ 1466.544252] VT-DEBUG: returning from freeze_time with 1537371632662032187n sec and kill status 0 
+[ 1466.548556] VT-GPIO_BENCHMARK: Pause ; 0 ; 87927435 VT-DEBUG: returning from unfreeze_time with 1537371633750412356n nsec and kill status 0
+[ 1467.716446] VT-DEBUG: returning from unfreeze_time with 1537371633833649781n nsec and kill status 0
+[ 1467.720868] VT-GPIO_BENCHMARK: Resume ; 0 ; 92366177 VT-DEBUG: returning from freeze_time with 1537371298381392988n sec and kill status 0 
+[ 1469.069134] VT-DEBUG: returning from freeze_time with 1537371298463885523n sec and kill status 0 
+[ 1469.073434] VT-GPIO_BENCHMARK: Pause ; 0 ; 91229573 VT-DEBUG: returning from unfreeze_time with 1537371636169185012n nsec and kill status 0
+[ 1470.132252] VT-DEBUG: returning from unfreeze_time with 1537371636249275544n nsec and kill status 0
+[ 1470.136638] VT-GPIO_BENCHMARK: Resume ; 0 ; 89134916 VT-DEBUG: returning from freeze_time with 1537370963099144041n sec and kill status 0 
+[ 1471.574788] VT-DEBUG: returning from freeze_time with 1537370963181530085n sec and kill status 0 
+[ 1471.579085] VT-GPIO_BENCHMARK: Pause ; 0 ; 91123663 VT-DEBUG: returning from unfreeze_time with 1537371638677038228n nsec and kill status 0
+[ 1472.640320] VT-DEBUG: returning from unfreeze_time with 1537371638757132462n nsec and kill status 0
+[ 1472.644704] VT-GPIO_BENCHMARK: Resume ; 0 ; 89123328 VT-DEBUG: returning from freeze_time with 1537371640132235352n sec and kill status 0 
+[ 1474.094670] VT-DEBUG: returning from freeze_time with 1537371640211800846n sec and kill status 0 
+[ 1474.098941] VT-GPIO_BENCHMARK: Pause ; 0 ; 88263825 VT-DEBUG: returning from unfreeze_time with 1537371641294485770n nsec and kill status 0
+[ 1475.261127] VT-DEBUG: returning from unfreeze_time with 1537371641377705157n nsec and kill status 0
+[ 1475.265454] VT-GPIO_BENCHMARK: Resume ; 0 ; 92222276 VT-DEBUG: returning from freeze_time with 1537371642683055580n sec and kill status 0 
+[ 1476.646259] VT-DEBUG: returning from freeze_time with 1537371642763164734n sec and kill status 0 
+[ 1476.650540] VT-GPIO_BENCHMARK: Pause ; 0 ; 88838567 VT-DEBUG: returning from unfreeze_time with 1537371643845920784n nsec and kill status 0
+[ 1477.813705] VT-DEBUG: returning from unfreeze_time with 1537371643930068174n nsec and kill status 0
+[ 1477.818128] VT-GPIO_BENCHMARK: Resume ; 0 ; 93240979 VT-DEBUG: returning from freeze_time with 1537371645211315563n sec and kill status 0 
+[ 1479.175158] VT-DEBUG: returning from freeze_time with 1537371645291847389n sec and kill status 0 
+[ 1479.179427] VT-GPIO_BENCHMARK: Pause ; 0 ; 89229700 VT-DEBUG: returning from unfreeze_time with 1537371646374497579n nsec and kill status 0
+[ 1480.342191] VT-DEBUG: returning from unfreeze_time with 1537371646458325789n nsec and kill status 0
+[ 1480.346605] VT-GPIO_BENCHMARK: Resume ; 0 ; 92932508 VT-DEBUG: returning from freeze_time with 1537370294182580624n sec and kill status 0 
+[ 1481.726623] VT-DEBUG: returning from freeze_time with 1537370294266293599n sec and kill status 0 
+[ 1481.730922] VT-GPIO_BENCHMARK: Pause ; 0 ; 92452010 VT-DEBUG: returning from unfreeze_time with 1537371648824685578n nsec and kill status 0
+[ 1482.793532] VT-DEBUG: returning from unfreeze_time with 1537371648909460374n nsec and kill status 0
+[ 1482.797956] VT-GPIO_BENCHMARK: Resume ; 0 ; 93871552 VT-DEBUG: returning from freeze_time with 1537371650190614907n sec and kill status 0 
+[ 1484.155308] VT-DEBUG: returning from freeze_time with 1537371650271568324n sec and kill status 0 
+[ 1484.159573] VT-GPIO_BENCHMARK: Pause ; 0 ; 89659665 VT-DEBUG: returning from unfreeze_time with 1537371651356417831n nsec and kill status 0
+[ 1485.325912] VT-DEBUG: returning from unfreeze_time with 1537371651441621299n nsec and kill status 0
+[ 1485.330348] VT-GPIO_BENCHMARK: Resume ; 0 ; 94290599 VT-DEBUG: returning from freeze_time with 1537371652730645533n sec and kill status 0 
+[ 1486.696018] VT-DEBUG: returning from freeze_time with 1537371652812058619n sec and kill status 0 
+[ 1486.700222] VT-GPIO_BENCHMARK: Pause ; 0 ; 90058007 VT-DEBUG: returning from unfreeze_time with 1537371653891871316n nsec and kill status 0
+[ 1487.861273] VT-DEBUG: returning from unfreeze_time with 1537371653976757437n nsec and kill status 0
+[ 1487.865685] VT-GPIO_BENCHMARK: Resume ; 0 ; 93992626 VT-DEBUG: returning from freeze_time with 1537371655294525400n sec and kill status 0 
+[ 1489.260251] VT-DEBUG: returning from freeze_time with 1537371655376068437n sec and kill status 0 
+[ 1489.264517] VT-GPIO_BENCHMARK: Pause ; 0 ; 90245993 VT-DEBUG: returning from unfreeze_time with 1537371656459997156n nsec and kill status 0
+[ 1490.427266] VT-DEBUG: returning from unfreeze_time with 1537371656542535437n nsec and kill status 0
+[ 1490.431652] VT-GPIO_BENCHMARK: Resume ; 0 ; 91576333 VT-DEBUG: returning from freeze_time with 1537368946195412208n sec and kill status 0 
+[ 1491.874167] VT-DEBUG: returning from freeze_time with 1537368946278358995n sec and kill status 0 
+[ 1491.878444] VT-GPIO_BENCHMARK: Pause ; 0 ; 91656910 VT-DEBUG: returning from unfreeze_time with 1537371658977719281n nsec and kill status 0
+[ 1492.945042] VT-DEBUG: returning from unfreeze_time with 1537371659060098493n nsec and kill status 0
+[ 1492.950470] VT-GPIO_BENCHMARK: Resume ; 0 ; 18446744071800966005 VT-DEBUG: returning from freeze_time with 1537366235916593329n sec and kill status 0 
+[ 1494.380145] VT-DEBUG: returning from freeze_time with 1537366236001813374n sec and kill status 0 
+[ 1494.385479] VT-GPIO_BENCHMARK: Pause ; 0 ; 18446744071803519071 VT-DEBUG: returning from unfreeze_time with 1537371661476047469n nsec and kill status 0
+[ 1495.444289] VT-DEBUG: returning from unfreeze_time with 1537371661559125619n nsec and kill status 0
+[ 1495.448675] VT-GPIO_BENCHMARK: Resume ; 0 ; 92112661 VT-DEBUG: returning from freeze_time with 1537371662931372228n sec and kill status 0 
+[ 1496.898917] VT-DEBUG: returning from freeze_time with 1537371663014074123n sec and kill status 0 
+[ 1496.904226] VT-GPIO_BENCHMARK: Pause ; 0 ; 18446744071800952634 VT-DEBUG: returning from unfreeze_time with 1537371664101712537n nsec and kill status 0
+[ 1498.070845] VT-DEBUG: returning from unfreeze_time with 1537371664185478340n nsec and kill status 0
+[ 1498.075232] VT-GPIO_BENCHMARK: Resume ; 0 ; 92781732 VT-DEBUG: returning from freeze_time with 1537360814306956857n sec and kill status 0 
+[ 1499.502060] VT-DEBUG: returning from freeze_time with 1537360814393491337n sec and kill status 0 
+[ 1499.506355] VT-GPIO_BENCHMARK: Pause ; 0 ; 95267185 VT-DEBUG: returning from unfreeze_time with 1537371666596826692n nsec and kill status 0
+[ 1500.566773] VT-DEBUG: returning from unfreeze_time with 1537371666681170567n nsec and kill status 0
+[ 1500.571158] VT-GPIO_BENCHMARK: Resume ; 0 ; 93392551 VT-DEBUG: returning from freeze_time with 1537349964528926196n sec and kill status 0 
+[ 1502.012632] VT-DEBUG: returning from freeze_time with 1537349964613978258n sec and kill status 0 
+[ 1502.016906] VT-GPIO_BENCHMARK: Pause ; 0 ; 93769184 VT-DEBUG: returning from unfreeze_time with 1537371669109888182n nsec and kill status 0
+[ 1503.080512] VT-DEBUG: returning from unfreeze_time with 1537371669194707686n nsec and kill status 0
+[ 1503.084900] VT-GPIO_BENCHMARK: Resume ; 0 ; 93837641 VT-DEBUG: returning from freeze_time with 1537371670561807797n sec and kill status 0 
+[ 1504.531727] VT-DEBUG: returning from freeze_time with 1537371670646226125n sec and kill status 0 
+[ 1504.535999] VT-GPIO_BENCHMARK: Pause ; 0 ; 93130660 VT-DEBUG: returning from unfreeze_time with 1537371671729958102n nsec and kill status 0
+[ 1505.701332] VT-DEBUG: returning from unfreeze_time with 1537371671815304728n nsec and kill status 0
+[ 1505.705716] VT-GPIO_BENCHMARK: Resume ; 0 ; 94361804 VT-DEBUG: returning from freeze_time with 1537371673171159566n sec and kill status 0 
+[ 1507.141916] VT-DEBUG: returning from freeze_time with 1537371673256186218n sec and kill status 0 
+[ 1507.146187] VT-GPIO_BENCHMARK: Pause ; 0 ; 93728527 VT-DEBUG: returning from unfreeze_time with 1537371674341978147n nsec and kill status 0
+[ 1508.314107] VT-DEBUG: returning from unfreeze_time with 1537371674427840603n nsec and kill status 0
+[ 1508.318492] VT-GPIO_BENCHMARK: Resume ; 0 ; 94892676 VT-DEBUG: returning from freeze_time with 1537328265359801434n sec and kill status 0 
+[ 1509.767660] VT-DEBUG: returning from freeze_time with 1537328265448401612n sec and kill status 0 
+[ 1509.771952] VT-GPIO_BENCHMARK: Pause ; 0 ; 97329632 VT-DEBUG: returning from unfreeze_time with 1537371676863932277n nsec and kill status 0
+[ 1510.836861] VT-DEBUG: returning from unfreeze_time with 1537371676950372599n nsec and kill status 0
+[ 1510.841252] VT-GPIO_BENCHMARK: Resume ; 0 ; 95476875 VT-DEBUG: returning from freeze_time with 1537371678319840275n sec and kill status 0 
+[ 1512.291884] VT-DEBUG: returning from freeze_time with 1537371678405713314n sec and kill status 0 
+[ 1512.296151] VT-GPIO_BENCHMARK: Pause ; 0 ; 94568205 VT-DEBUG: returning from unfreeze_time with 1537371679489727071n nsec and kill status 0
+[ 1513.463279] VT-DEBUG: returning from unfreeze_time with 1537371679576574275n nsec and kill status 0
+[ 1513.467662] VT-GPIO_BENCHMARK: Resume ; 0 ; 95881674 VT-DEBUG: returning from freeze_time with 1537371680941474975n sec and kill status 0 
+[ 1514.914321] VT-DEBUG: returning from freeze_time with 1537371681027921841n sec and kill status 0 
+[ 1514.919627] VT-GPIO_BENCHMARK: Pause ; 0 ; 18446744071804696855 VT-DEBUG: returning from unfreeze_time with 1537371682117351051n nsec and kill status 0
+[ 1516.094029] VT-DEBUG: returning from unfreeze_time with 1537371682207074384n nsec and kill status 0
+[ 1516.098441] VT-GPIO_BENCHMARK: Resume ; 0 ; 98821089 VT-DEBUG: returning from freeze_time with 1537371683512409445n sec and kill status 0 
+[ 1517.485310] VT-DEBUG: returning from freeze_time with 1537371683598689739n sec and kill status 0 
+[ 1517.489579] VT-GPIO_BENCHMARK: Pause ; 0 ; 94979211 VT-DEBUG: returning from unfreeze_time with 1537371684681405327n nsec and kill status 0
+[ 1518.658314] VT-DEBUG: returning from unfreeze_time with 1537371684771149115n nsec and kill status 0
+[ 1518.662714] VT-GPIO_BENCHMARK: Resume ; 0 ; 98826712 
+[ 1519.945108] VT-GPIO_ERROR: can not open /proc/2752/freeze
+[ 1520.095689] VT-GPIO_ERROR: can not open /proc/2754/freeze
+[ 1520.174504] VT-GPIO_BENCHMARK: Pause ; 0 ; 230329970 VT-DEBUG: returning from unfreeze_time with 1537284861675433537n nsec and kill status 0
+[ 1521.104876] VT-DEBUG: returning from unfreeze_time with 90001385n nsec and kill status 0
+[ 1521.111971] VT-GPIO_BENCHMARK: Resume ; 18446744072172266754 ; 18446744072132065361 VT-DEBUG: returning from freeze_time with 1373626672n sec and kill status 0 
+[ 1522.474150] VT-DEBUG: returning from freeze_time with 1459263526n sec and kill status 0 
+[ 1522.478410] VT-GPIO_BENCHMARK: Pause ; 0 ; 93557753 VT-DEBUG: returning from unfreeze_time with 1537371689568805453n nsec and kill status 0
+[ 1523.543329] VT-DEBUG: returning from unfreeze_time with 1537371689655740237n nsec and kill status 0
+[ 1523.547721] VT-GPIO_BENCHMARK: Resume ; 0 ; 95972752 VT-DEBUG: returning from freeze_time with 16909372389407975658n sec and kill status 0 
+[ 1524.997142] VT-DEBUG: returning from freeze_time with 16909372389495547556n sec and kill status 0 
+[ 1525.001428] VT-GPIO_BENCHMARK: Pause ; 0 ; 96377970 VT-DEBUG: returning from unfreeze_time with 1537371692089940132n nsec and kill status 0
+[ 1526.068067] VT-DEBUG: returning from unfreeze_time with 1537371692180244235n nsec and kill status 0
+[ 1526.072485] VT-GPIO_BENCHMARK: Resume ; 0 ; 99389234 VT-DEBUG: returning from freeze_time with 1537371693462618587n sec and kill status 0 
+[ 1527.436413] VT-DEBUG: returning from freeze_time with 1537371693548931440n sec and kill status 0 
+[ 1527.440689] VT-GPIO_BENCHMARK: Pause ; 0 ; 95019466 VT-DEBUG: returning from unfreeze_time with 1537371694632404929n nsec and kill status 0
+[ 1528.607603] VT-DEBUG: returning from unfreeze_time with 1537371694719572126n nsec and kill status 0
+[ 1528.611991] VT-GPIO_BENCHMARK: Resume ; 0 ; 96208405 VT-DEBUG: returning from freeze_time with 18129596312896728398n sec and kill status 0 
+[ 1530.047845] VT-DEBUG: returning from freeze_time with 18129596312984504037n sec and kill status 0 
+[ 1530.052121] VT-GPIO_BENCHMARK: Pause ; 0 ; 96584285 VT-DEBUG: returning from unfreeze_time with 1537371697138557461n nsec and kill status 0
+[ 1531.113906] VT-DEBUG: returning from unfreeze_time with 1537371697225662166n nsec and kill status 0
+[ 1531.118297] VT-GPIO_BENCHMARK: Resume ; 0 ; 96139663 VT-DEBUG: returning from freeze_time with 1537371698603810116n sec and kill status 0 
+[ 1532.578128] VT-DEBUG: returning from freeze_time with 1537371698690196715n sec and kill status 0 
+[ 1532.582398] VT-GPIO_BENCHMARK: Pause ; 0 ; 95102045 VT-DEBUG: returning from unfreeze_time with 1537371699779273538n nsec and kill status 0
+[ 1533.754884] VT-DEBUG: returning from unfreeze_time with 1537371699866424989n nsec and kill status 0
+[ 1533.759269] VT-GPIO_BENCHMARK: Resume ; 0 ; 96181617 VT-DEBUG: returning from freeze_time with 2123300081221218064n sec and kill status 0 
+[ 1535.211030] VT-DEBUG: returning from freeze_time with 2123300081310929543n sec and kill status 0 
+[ 1535.215325] VT-GPIO_BENCHMARK: Pause ; 0 ; 98448632 VT-DEBUG: returning from unfreeze_time with 1537371702299711145n nsec and kill status 0
+[ 1536.275666] VT-DEBUG: returning from unfreeze_time with 1537371702386971963n nsec and kill status 0
+[ 1536.280052] VT-GPIO_BENCHMARK: Resume ; 0 ; 96286111 VT-DEBUG: returning from freeze_time with 1537371703754231116n sec and kill status 0 
+[ 1537.729097] VT-DEBUG: returning from freeze_time with 1537371703840717583n sec and kill status 0 
+[ 1537.733370] VT-GPIO_BENCHMARK: Pause ; 0 ; 95200330 VT-DEBUG: returning from unfreeze_time with 1537371704923311173n nsec and kill status 0
+[ 1538.899470] VT-DEBUG: returning from unfreeze_time with 1537371705010543578n nsec and kill status 0
+[ 1538.904893] VT-GPIO_BENCHMARK: Resume ; 0 ; 18446744071805827438 VT-DEBUG: returning from freeze_time with 16861005241838129476n sec and kill status 0 
+[ 1540.366757] VT-DEBUG: returning from freeze_time with 16861005241928094675n sec and kill status 0 
+[ 1540.371051] VT-GPIO_BENCHMARK: Pause ; 0 ; 98786594 VT-DEBUG: returning from unfreeze_time with 1537371707454381550n nsec and kill status 0
+[ 1541.430841] VT-DEBUG: returning from unfreeze_time with 1537371707541691282n nsec and kill status 0
+[ 1541.435227] VT-GPIO_BENCHMARK: Resume ; 0 ; 96350192 VT-DEBUG: returning from freeze_time with 1537371708912261144n sec and kill status 0 
+[ 1542.887598] VT-DEBUG: returning from freeze_time with 1537371708998762947n sec and kill status 0 
+[ 1542.892908] VT-GPIO_BENCHMARK: Pause ; 0 ; 18446744071804756950 VT-DEBUG: returning from unfreeze_time with 1537371710086075279n nsec and kill status 0
+[ 1544.066083] VT-DEBUG: returning from unfreeze_time with 1537371710176713430n nsec and kill status 0
+[ 1544.070498] VT-GPIO_BENCHMARK: Resume ; 0 ; 99701025 VT-DEBUG: returning from freeze_time with 18032862002422773584n sec and kill status 0 
+[ 1545.449475] VT-DEBUG: returning from freeze_time with 18032862002510752469n sec and kill status 0 
+[ 1545.453752] VT-GPIO_BENCHMARK: Pause ; 0 ; 96783281 VT-DEBUG: returning from unfreeze_time with 1537371712538665013n nsec and kill status 0
+[ 1546.515617] VT-DEBUG: returning from unfreeze_time with 1537371712626024910n nsec and kill status 0
+[ 1546.520008] VT-GPIO_BENCHMARK: Resume ; 0 ; 96393315 VT-DEBUG: returning from freeze_time with 17348483110803569007n sec and kill status 0 
+[ 1547.948489] VT-DEBUG: returning from freeze_time with 17348483110893655043n sec and kill status 0 
+[ 1547.952788] VT-GPIO_BENCHMARK: Pause ; 0 ; 98908180 VT-DEBUG: returning from unfreeze_time with 1537371715035601441n nsec and kill status 0
+[ 1549.012872] VT-DEBUG: returning from unfreeze_time with 1537371715123054911n nsec and kill status 0
+[ 1549.017260] VT-GPIO_BENCHMARK: Resume ; 0 ; 96499386 VT-DEBUG: returning from freeze_time with 561073657655290439n sec and kill status 0 
+[ 1550.448949] VT-DEBUG: returning from freeze_time with 561073657742932938n sec and kill status 0 
+[ 1550.453227] VT-GPIO_BENCHMARK: Pause ; 0 ; 96274661 VT-DEBUG: returning from unfreeze_time with 1537371717538152162n nsec and kill status 0
+[ 1551.515657] VT-DEBUG: returning from unfreeze_time with 1537371717625642258n nsec and kill status 0
+[ 1551.520047] VT-GPIO_BENCHMARK: Resume ; 0 ; 96511266 VT-DEBUG: returning from freeze_time with 18031519674003047952n sec and kill status 0 
+[ 1552.972842] VT-DEBUG: returning from freeze_time with 18031519674093123784n sec and kill status 0 
+[ 1552.977144] VT-GPIO_BENCHMARK: Pause ; 0 ; 98899144 VT-DEBUG: returning from unfreeze_time with 1537371720063944259n nsec and kill status 0
+[ 1554.041764] VT-DEBUG: returning from unfreeze_time with 1537371720151508725n nsec and kill status 0
+[ 1554.046152] VT-GPIO_BENCHMARK: Resume ; 0 ; 96618425 VT-DEBUG: returning from freeze_time with 1927146779041170701n sec and kill status 0 
+[ 1555.488981] VT-DEBUG: returning from freeze_time with 1927146779129131302n sec and kill status 0 
+[ 1555.493259] VT-GPIO_BENCHMARK: Pause ; 0 ; 96681463 VT-DEBUG: returning from unfreeze_time with 1537371722577401927n nsec and kill status 0
+[ 1556.555598] VT-DEBUG: returning from unfreeze_time with 1537371722665127673n nsec and kill status 0
+[ 1556.559983] VT-GPIO_BENCHMARK: Resume ; 0 ; 96756081 VT-DEBUG: returning from freeze_time with 16468698615743114328n sec and kill status 0 
+[ 1558.020362] VT-DEBUG: returning from freeze_time with 16468698615833521956n sec and kill status 0 
+[ 1558.024660] VT-GPIO_BENCHMARK: Pause ; 0 ; 99248687 VT-DEBUG: returning from unfreeze_time with 1537371725107547045n nsec and kill status 0
+[ 1559.085885] VT-DEBUG: returning from unfreeze_time with 1537371725195194007n nsec and kill status 0
+[ 1559.090270] VT-GPIO_BENCHMARK: Resume ; 0 ; 96680214 VT-DEBUG: returning from freeze_time with 17248248731188136899n sec and kill status 0 
+[ 1560.457986] VT-DEBUG: returning from freeze_time with 17248248731196949669n sec and kill status 0 
+[ 1560.462238] VT-GPIO_BENCHMARK: Pause ; 0 ; 17576170 VT-DEBUG: returning from unfreeze_time with 1537371727640835881n nsec and kill status 0
+[ 1561.622697] VT-DEBUG: returning from unfreeze_time with 1537371727731848257n nsec and kill status 0
+[ 1561.627194] VT-GPIO_BENCHMARK: Resume ; 0 ; 100027546 VT-DEBUG: returning from freeze_time with 360604885769222108n sec and kill status 0 
+[ 1562.990180] VT-DEBUG: returning from freeze_time with 360604885857290370n sec and kill status 0 
+[ 1562.994461] VT-GPIO_BENCHMARK: Pause ; 0 ; 96713339 VT-DEBUG: returning from unfreeze_time with 1537371730078942194n nsec and kill status 0
+[ 1564.057796] VT-DEBUG: returning from unfreeze_time with 1537371730166670526n nsec and kill status 0
+[ 1564.062182] VT-GPIO_BENCHMARK: Resume ; 0 ; 96755002 VT-DEBUG: returning from freeze_time with 1537371731542038470n sec and kill status 0 
+[ 1565.519762] VT-DEBUG: returning from freeze_time with 1537371731628948742n sec and kill status 0 
+[ 1565.524029] VT-GPIO_BENCHMARK: Pause ; 0 ; 95628846 VT-DEBUG: returning from unfreeze_time with 1537371732712752684n nsec and kill status 0
+[ 1566.694423] VT-DEBUG: returning from unfreeze_time with 1537371732803058832n nsec and kill status 0
+[ 1566.698827] VT-GPIO_BENCHMARK: Resume ; 0 ; 99391562 VT-DEBUG: returning from freeze_time with 17630582119108442510n sec and kill status 0 
+[ 1568.101066] VT-DEBUG: returning from freeze_time with 17630582119196675217n sec and kill status 0 
+[ 1568.105351] VT-GPIO_BENCHMARK: Pause ; 0 ; 97050562 VT-DEBUG: returning from unfreeze_time with 1537371735188681464n nsec and kill status 0
+[ 1569.167831] VT-DEBUG: returning from unfreeze_time with 1537371735276254562n nsec and kill status 0
+[ 1569.172222] VT-GPIO_BENCHMARK: Resume ; 0 ; 96601350 VT-DEBUG: returning from freeze_time with 1125271654130008399n sec and kill status 0 
+[ 1570.621798] VT-DEBUG: returning from freeze_time with 1125271654217930843n sec and kill status 0 
+[ 1570.626081] VT-GPIO_BENCHMARK: Pause ; 0 ; 96642681 VT-DEBUG: returning from unfreeze_time with 1537371737709407445n nsec and kill status 0
+[ 1571.688824] VT-DEBUG: returning from unfreeze_time with 1537371737797025747n nsec and kill status 0
+[ 1571.693203] VT-GPIO_BENCHMARK: Resume ; 0 ; 96654596 VT-DEBUG: returning from freeze_time with 1537371739153213044n sec and kill status 0 
+[ 1573.131557] VT-DEBUG: returning from freeze_time with 1537371739240077871n sec and kill status 0 
+[ 1573.135823] VT-GPIO_BENCHMARK: Pause ; 0 ; 95560651 VT-DEBUG: returning from unfreeze_time with 1537371740330130263n nsec and kill status 0
+[ 1574.309827] VT-DEBUG: returning from unfreeze_time with 1537371740417794938n nsec and kill status 0
+[ 1574.314210] VT-GPIO_BENCHMARK: Resume ; 0 ; 96695676 VT-DEBUG: returning from freeze_time with 1537371741802829273n sec and kill status 0 
+[ 1575.781363] VT-DEBUG: returning from freeze_time with 1537371741889651692n sec and kill status 0 
+[ 1575.785634] VT-GPIO_BENCHMARK: Pause ; 0 ; 95522992 VT-DEBUG: returning from unfreeze_time with 1537371742973969344n nsec and kill status 0
+[ 1576.953768] VT-DEBUG: returning from unfreeze_time with 1537371743061509615n nsec and kill status 0
+[ 1576.959188] VT-GPIO_BENCHMARK: Resume ; 0 ; 18446744071806116974 VT-DEBUG: returning from freeze_time with 1537371744461153026n sec and kill status 0 
+[ 1578.439696] VT-DEBUG: returning from freeze_time with 1537371744547753383n sec and kill status 0 
+[ 1578.443963] VT-GPIO_BENCHMARK: Pause ; 0 ; 95317928 VT-DEBUG: returning from unfreeze_time with 1537371745630538476n nsec and kill status 0
+[ 1579.610364] VT-DEBUG: returning from unfreeze_time with 1537371745717884056n nsec and kill status 0
+[ 1579.614752] VT-GPIO_BENCHMARK: Resume ; 0 ; 96389414 VT-DEBUG: returning from freeze_time with 1537371747076038359n sec and kill status 0 
+[ 1581.054655] VT-DEBUG: returning from freeze_time with 1537371747162485511n sec and kill status 0 
+[ 1581.058923] VT-GPIO_BENCHMARK: Pause ; 0 ; 95139022 VT-DEBUG: returning from unfreeze_time with 1537371748247670916n nsec and kill status 0
+[ 1582.230387] VT-DEBUG: returning from unfreeze_time with 1537371748337666225n nsec and kill status 0
+[ 1582.234791] VT-GPIO_BENCHMARK: Resume ; 0 ; 99097598 VT-DEBUG: returning from freeze_time with 713171578868059474n sec and kill status 0 
+[ 1583.630922] VT-DEBUG: returning from freeze_time with 713171578957529998n sec and kill status 0 
+[ 1583.635212] VT-GPIO_BENCHMARK: Pause ; 0 ; 98119561 VT-DEBUG: returning from unfreeze_time with 1537371750716155453n nsec and kill status 0
+[ 1584.696359] VT-DEBUG: returning from unfreeze_time with 1537371750803417959n nsec and kill status 0
+[ 1584.700743] VT-GPIO_BENCHMARK: Resume ; 0 ; 96308800 VT-DEBUG: returning from freeze_time with 18335715483252994322n sec and kill status 0 
+[ 1586.153149] VT-DEBUG: returning from freeze_time with 18335715483340817314n sec and kill status 0 
+[ 1586.157428] VT-GPIO_BENCHMARK: Pause ; 0 ; 96637348 VT-DEBUG: returning from unfreeze_time with 1537371753240356071n nsec and kill status 0
+[ 1587.220761] VT-DEBUG: returning from unfreeze_time with 1537371753327606704n nsec and kill status 0
+[ 1587.225144] VT-GPIO_BENCHMARK: Resume ; 0 ; 96299009 VT-DEBUG: returning from freeze_time with 17954190031790061148n sec and kill status 0 
+[ 1588.678644] VT-DEBUG: returning from freeze_time with 17954190031878733192n sec and kill status 0 
+[ 1588.682931] VT-GPIO_BENCHMARK: Pause ; 0 ; 97485816 VT-DEBUG: returning from unfreeze_time with 1537371755860532299n nsec and kill status 0
+[ 1589.841047] VT-DEBUG: returning from unfreeze_time with 1537371755947683317n nsec and kill status 0
+[ 1589.845450] VT-GPIO_BENCHMARK: Resume ; 0 ; 96181688 VT-DEBUG: returning from freeze_time with 1772487458923402479n sec and kill status 0 
+[ 1591.302700] VT-DEBUG: returning from freeze_time with 1772487459013071110n sec and kill status 0 
+[ 1591.308030] VT-GPIO_BENCHMARK: Pause ; 0 ; 18446744071807951277 VT-DEBUG: returning from unfreeze_time with 1537371758386589775n nsec and kill status 0
+[ 1592.367404] VT-DEBUG: returning from unfreeze_time with 1537371758473799786n nsec and kill status 0
+[ 1592.371794] VT-GPIO_BENCHMARK: Resume ; 0 ; 96252055 VT-DEBUG: returning from freeze_time with 2007603161986179392n sec and kill status 0 
+[ 1593.826821] VT-DEBUG: returning from freeze_time with 2007603162073788579n sec and kill status 0 
+[ 1593.832135] VT-GPIO_BENCHMARK: Pause ; 0 ; 18446744071805886458 VT-DEBUG: returning from unfreeze_time with 1537371760912578495n nsec and kill status 0
+[ 1594.893721] VT-DEBUG: returning from unfreeze_time with 1537371760999898666n nsec and kill status 0
+[ 1594.899149] VT-GPIO_BENCHMARK: Resume ; 0 ; 18446744071805906874 VT-DEBUG: returning from freeze_time with 16629611343281418938n sec and kill status 0 
+[ 1596.341709] VT-DEBUG: returning from freeze_time with 16629611343371521826n sec and kill status 0 
+[ 1596.346015] VT-GPIO_BENCHMARK: Pause ; 0 ; 98923326 VT-DEBUG: returning from unfreeze_time with 1537371763425315233n nsec and kill status 0
+[ 1597.406687] VT-DEBUG: returning from unfreeze_time with 1537371763512638192n nsec and kill status 0
+[ 1597.411073] VT-GPIO_BENCHMARK: Resume ; 0 ; 96368961 VT-DEBUG: returning from freeze_time with 17570074147953609321n sec and kill status 0 
+[ 1598.867545] VT-DEBUG: returning from freeze_time with 17570074148043688964n sec and kill status 0 
+[ 1598.871843] VT-GPIO_BENCHMARK: Pause ; 0 ; 98917372 VT-DEBUG: returning from unfreeze_time with 1537371765950744183n nsec and kill status 0
+[ 1599.932436] VT-DEBUG: returning from unfreeze_time with 1537371766038175013n nsec and kill status 0
+[ 1599.937865] VT-GPIO_BENCHMARK: Resume ; 0 ; 18446744071806036324 VT-DEBUG: returning from freeze_time with 1537371767411542119n sec and kill status 0 
+[ 1601.391961] VT-DEBUG: returning from freeze_time with 1537371767498014030n sec and kill status 0 
+[ 1601.396229] VT-GPIO_BENCHMARK: Pause ; 0 ; 95174612 VT-DEBUG: returning from unfreeze_time with 1537371768585286895n nsec and kill status 0
+[ 1602.570414] VT-DEBUG: returning from unfreeze_time with 1537371768675913531n nsec and kill status 0
+[ 1602.574835] VT-GPIO_BENCHMARK: Resume ; 0 ; 99716927 VT-DEBUG: returning from freeze_time with 1537371769961682707n sec and kill status 0 
+[ 1603.942842] VT-DEBUG: returning from freeze_time with 1537371770048672327n sec and kill status 0 
+[ 1603.948152] VT-GPIO_BENCHMARK: Pause ; 0 ; 18446744071805256851 VT-DEBUG: returning from unfreeze_time with 1537371771136762923n nsec and kill status 0
+[ 1605.040302] VT-DEBUG: returning from unfreeze_time with 1537371771145644524n nsec and kill status 0
+[ 1605.044633] VT-GPIO_BENCHMARK: Resume ; 0 ; 17859109 VT-DEBUG: returning from freeze_time with 1537371772556492057n sec and kill status 0 
+[ 1606.537879] VT-DEBUG: returning from freeze_time with 1537371772643485345n sec and kill status 0 
+[ 1606.542149] VT-GPIO_BENCHMARK: Pause ; 0 ; 95714278 VT-DEBUG: returning from unfreeze_time with 1537371773728421977n nsec and kill status 0
+[ 1607.713848] VT-DEBUG: returning from unfreeze_time with 1537371773818906835n nsec and kill status 0
+[ 1607.718255] VT-GPIO_BENCHMARK: Resume ; 0 ; 99573441 VT-DEBUG: returning from freeze_time with 1537371775132054488n sec and kill status 0 
+[ 1609.035326] VT-DEBUG: returning from freeze_time with 1537371775140718857n sec and kill status 0 
+[ 1609.039548] VT-GPIO_BENCHMARK: Pause ; 0 ; 17305449 VT-DEBUG: returning from unfreeze_time with 1537371776224509059n nsec and kill status 0
+[ 1610.210622] VT-DEBUG: returning from unfreeze_time with 1537371776315510416n nsec and kill status 0
+[ 1610.215131] VT-GPIO_BENCHMARK: Resume ; 0 ; 100037152 VT-DEBUG: returning from freeze_time with 1004255686622069861n sec and kill status 0 
+[ 1611.564537] VT-DEBUG: returning from freeze_time with 1004255686710211926n sec and kill status 0 
+[ 1611.568815] VT-GPIO_BENCHMARK: Pause ; 0 ; 96877680 VT-DEBUG: returning from unfreeze_time with 1537371778648225563n nsec and kill status 0
+[ 1612.631241] VT-DEBUG: returning from unfreeze_time with 1537371778735893252n nsec and kill status 0
+[ 1612.635633] VT-GPIO_BENCHMARK: Resume ; 0 ; 96682152 VT-DEBUG: returning from freeze_time with 471139597114500445n sec and kill status 0 
+[ 1614.085186] VT-DEBUG: returning from freeze_time with 471139597204570930n sec and kill status 0 
+[ 1614.089483] VT-GPIO_BENCHMARK: Pause ; 0 ; 98723188 VT-DEBUG: returning from unfreeze_time with 1537371781167048382n nsec and kill status 0
+[ 1615.150403] VT-DEBUG: returning from unfreeze_time with 1537371781254821648n nsec and kill status 0
+[ 1615.154800] VT-GPIO_BENCHMARK: Resume ; 0 ; 96814686 VT-DEBUG: returning from freeze_time with 17851651489293946728n sec and kill status 0 
+[ 1616.606358] VT-DEBUG: returning from freeze_time with 17851651489382357900n sec and kill status 0 
+[ 1616.610642] VT-GPIO_BENCHMARK: Pause ; 0 ; 97219153 VT-DEBUG: returning from unfreeze_time with 1537371783689526619n nsec and kill status 0
+[ 1617.673185] VT-DEBUG: returning from unfreeze_time with 1537371783777378295n nsec and kill status 0
+[ 1617.677571] VT-GPIO_BENCHMARK: Resume ; 0 ; 96883264 VT-DEBUG: returning from freeze_time with 1537371785152318408n sec and kill status 0 
+[ 1619.056466] VT-DEBUG: returning from freeze_time with 1537371785160983611n sec and kill status 0 
+[ 1619.060690] VT-GPIO_BENCHMARK: Pause ; 0 ; 17307783 VT-DEBUG: returning from unfreeze_time with 1537371786244319149n nsec and kill status 0
+[ 1620.230770] VT-DEBUG: returning from unfreeze_time with 1537371786334794389n nsec and kill status 0
+[ 1620.235188] VT-GPIO_BENCHMARK: Resume ; 0 ; 99517577 VT-DEBUG: returning from freeze_time with 1567410347406104378n sec and kill status 0 
+[ 1621.625253] VT-DEBUG: returning from freeze_time with 1567410347494214372n sec and kill status 0 
+[ 1621.629531] VT-GPIO_BENCHMARK: Pause ; 0 ; 96832359 VT-DEBUG: returning from unfreeze_time with 1537371788708603426n nsec and kill status 0
+[ 1622.692569] VT-DEBUG: returning from unfreeze_time with 1537371788796322073n nsec and kill status 0
+[ 1622.696957] VT-GPIO_BENCHMARK: Resume ; 0 ; 96750569 VT-DEBUG: returning from freeze_time with 1597448908635114515n sec and kill status 0 
+[ 1624.159066] VT-DEBUG: returning from freeze_time with 1597448908725307203n sec and kill status 0 
+[ 1624.163362] VT-GPIO_BENCHMARK: Pause ; 0 ; 98930137 VT-DEBUG: returning from unfreeze_time with 1537371791240679780n nsec and kill status 0
+[ 1625.224780] VT-DEBUG: returning from unfreeze_time with 1537371791328309978n nsec and kill status 0
+[ 1625.229166] VT-GPIO_BENCHMARK: Resume ; 0 ; 96683201 VT-DEBUG: returning from freeze_time with 1657526028528291732n sec and kill status 0 
+[ 1626.655781] VT-DEBUG: returning from freeze_time with 1657526028616243903n sec and kill status 0 
+[ 1626.660053] VT-GPIO_BENCHMARK: Pause ; 0 ; 96669204 VT-DEBUG: returning from unfreeze_time with 1537371793738285663n nsec and kill status 0
+[ 1627.722454] VT-DEBUG: returning from unfreeze_time with 1537371793825771083n nsec and kill status 0
+[ 1627.726840] VT-GPIO_BENCHMARK: Resume ; 0 ; 96533547 VT-DEBUG: returning from freeze_time with 1537371795202713038n sec and kill status 0 
+[ 1629.185860] VT-DEBUG: returning from freeze_time with 1537371795289489013n sec and kill status 0 
+[ 1629.190126] VT-GPIO_BENCHMARK: Pause ; 0 ; 95473512 VT-DEBUG: returning from unfreeze_time with 1537371796374146820n nsec and kill status 0
+[ 1630.361395] VT-DEBUG: returning from unfreeze_time with 1537371796464505782n nsec and kill status 0
+[ 1630.365799] VT-GPIO_BENCHMARK: Resume ; 0 ; 99473293 VT-DEBUG: returning from freeze_time with 1777680267246621690n sec and kill status 0 
+[ 1631.755900] VT-DEBUG: returning from freeze_time with 1777680267334489621n sec and kill status 0 
+[ 1631.760171] VT-GPIO_BENCHMARK: Pause ; 0 ; 96575255 VT-DEBUG: returning from unfreeze_time with 1537371798837399579n nsec and kill status 0
+[ 1632.822018] VT-DEBUG: returning from unfreeze_time with 1537371798924894000n nsec and kill status 0
+[ 1632.826405] VT-GPIO_BENCHMARK: Resume ; 0 ; 96527550 VT-DEBUG: returning from freeze_time with 1537371800302040506n sec and kill status 0 
+[ 1634.285603] VT-DEBUG: returning from freeze_time with 1537371800388791453n sec and kill status 0 
+[ 1634.289870] VT-GPIO_BENCHMARK: Pause ; 0 ; 95464646 VT-DEBUG: returning from unfreeze_time with 1537371801472363033n nsec and kill status 0
+[ 1635.457218] VT-DEBUG: returning from unfreeze_time with 1537371801559862788n nsec and kill status 0
+[ 1635.461602] VT-GPIO_BENCHMARK: Resume ; 0 ; 96528635 VT-DEBUG: returning from freeze_time with 2017988739651844544n sec and kill status 0 
+[ 1636.924783] VT-DEBUG: returning from freeze_time with 2017988739741821295n sec and kill status 0 
+[ 1636.929074] VT-GPIO_BENCHMARK: Pause ; 0 ; 98705326 VT-DEBUG: returning from unfreeze_time with 1537371804004158208n nsec and kill status 0
+[ 1637.989030] VT-DEBUG: returning from unfreeze_time with 1537371804091446856n nsec and kill status 0
+[ 1637.993414] VT-GPIO_BENCHMARK: Resume ; 0 ; 96335819 VT-DEBUG: returning from freeze_time with 16650382455535962111n sec and kill status 0 
+[ 1639.451945] VT-DEBUG: returning from freeze_time with 16650382455625913698n sec and kill status 0 
+[ 1639.456247] VT-GPIO_BENCHMARK: Pause ; 0 ; 98782527 VT-DEBUG: returning from unfreeze_time with 1537371806536719966n nsec and kill status 0
+[ 1640.521726] VT-DEBUG: returning from unfreeze_time with 1537371806623924575n nsec and kill status 0
+[ 1640.526117] VT-GPIO_BENCHMARK: Resume ; 0 ; 96236655 VT-DEBUG: returning from freeze_time with 17611616329350940878n sec and kill status 0 
+[ 1641.977364] VT-DEBUG: returning from freeze_time with 17611616329440801930n sec and kill status 0 
+[ 1641.981665] VT-GPIO_BENCHMARK: Pause ; 0 ; 98686783 VT-DEBUG: returning from unfreeze_time with 1537371809056128016n nsec and kill status 0
+[ 1643.041317] VT-DEBUG: returning from unfreeze_time with 1537371809143298338n nsec and kill status 0
+[ 1643.045702] VT-GPIO_BENCHMARK: Resume ; 0 ; 96206994 VT-DEBUG: returning from freeze_time with 1087340000749219341n sec and kill status 0 
+[ 1644.497790] VT-DEBUG: returning from freeze_time with 1087340000836805339n sec and kill status 0 
+[ 1644.502069] VT-GPIO_BENCHMARK: Pause ; 0 ; 96304906 VT-DEBUG: returning from unfreeze_time with 1537371811578802141n nsec and kill status 0
+[ 1645.564107] VT-DEBUG: returning from unfreeze_time with 1537371811665879436n nsec and kill status 0
+[ 1645.568498] VT-GPIO_BENCHMARK: Resume ; 0 ; 96120591 VT-DEBUG: returning from freeze_time with 637308192427384603n sec and kill status 0 
+[ 1647.007512] VT-DEBUG: returning from freeze_time with 637308192516823107n sec and kill status 0 
+[ 1647.011805] VT-GPIO_BENCHMARK: Pause ; 0 ; 98084876 VT-DEBUG: returning from unfreeze_time with 1537371814089551286n nsec and kill status 0
+[ 1648.075089] VT-DEBUG: returning from unfreeze_time with 1537371814176632332n nsec and kill status 0
+[ 1648.079469] VT-GPIO_BENCHMARK: Resume ; 0 ; 96110425 VT-DEBUG: returning from freeze_time with 18183988646996935076n sec and kill status 0 
+[ 1649.528264] VT-DEBUG: returning from freeze_time with 18183988647084558735n sec and kill status 0 
+[ 1649.532542] VT-GPIO_BENCHMARK: Pause ; 0 ; 96428851 VT-DEBUG: returning from unfreeze_time with 1537371816608824504n nsec and kill status 0
+[ 1650.594549] VT-DEBUG: returning from unfreeze_time with 1537371816695871053n nsec and kill status 0
+[ 1650.598936] VT-GPIO_BENCHMARK: Resume ; 0 ; 96081805 VT-DEBUG: returning from freeze_time with 17650736295895690171n sec and kill status 0 
+[ 1652.041127] VT-DEBUG: returning from freeze_time with 17650736295985312453n sec and kill status 0 
+[ 1652.045424] VT-GPIO_BENCHMARK: Pause ; 0 ; 98448637 VT-DEBUG: returning from unfreeze_time with 1537371819119756138n nsec and kill status 0
+[ 1653.105598] VT-DEBUG: returning from unfreeze_time with 1537371819206703279n nsec and kill status 0
+[ 1653.109981] VT-GPIO_BENCHMARK: Resume ; 0 ; 95992437 VT-DEBUG: returning from freeze_time with 1165579923761872508n sec and kill status 0 
+[ 1654.548362] VT-DEBUG: returning from freeze_time with 1165579923849247982n sec and kill status 0 
+[ 1654.552636] VT-GPIO_BENCHMARK: Pause ; 0 ; 96086757 VT-DEBUG: returning from unfreeze_time with 1537371821629318456n nsec and kill status 0
+[ 1655.615366] VT-DEBUG: returning from unfreeze_time with 1537371821716250725n nsec and kill status 0
+[ 1655.619753] VT-GPIO_BENCHMARK: Resume ; 0 ; 95969525 VT-DEBUG: returning from freeze_time with 1537371823084144696n sec and kill status 0 
+[ 1657.069072] VT-DEBUG: returning from freeze_time with 1537371823170277404n sec and kill status 0 
+[ 1657.073347] VT-GPIO_BENCHMARK: Pause ; 0 ; 94864078 VT-DEBUG: returning from unfreeze_time with 1537371824261107452n nsec and kill status 0
+[ 1658.247315] VT-DEBUG: returning from unfreeze_time with 1537371824347974519n nsec and kill status 0
+[ 1658.251701] VT-GPIO_BENCHMARK: Resume ; 0 ; 95899948 VT-DEBUG: returning from freeze_time with 793788029865914361n sec and kill status 0 
+[ 1659.696891] VT-DEBUG: returning from freeze_time with 793788029953007077n sec and kill status 0 
+[ 1659.701166] VT-GPIO_BENCHMARK: Pause ; 0 ; 95727382 VT-DEBUG: returning from unfreeze_time with 1537371826777386732n nsec and kill status 0
+[ 1660.763857] VT-DEBUG: returning from unfreeze_time with 1537371826864301876n nsec and kill status 0
+[ 1660.768245] VT-GPIO_BENCHMARK: Resume ; 0 ; 95948108 VT-DEBUG: returning from freeze_time with 50204235479827783n sec and kill status 0 
+[ 1662.222135] VT-DEBUG: returning from freeze_time with 50204235566644480n sec and kill status 0 
+[ 1662.226410] VT-GPIO_BENCHMARK: Pause ; 0 ; 95372203 VT-DEBUG: returning from unfreeze_time with 1537371829302399441n nsec and kill status 0
+[ 1663.289069] VT-DEBUG: returning from unfreeze_time with 1537371829389289424n nsec and kill status 0
+[ 1663.293455] VT-GPIO_BENCHMARK: Resume ; 0 ; 95921698 VT-DEBUG: returning from freeze_time with 1537371830762338693n sec and kill status 0 
+[ 1664.747965] VT-DEBUG: returning from freeze_time with 1537371830848500817n sec and kill status 0 
+[ 1664.752233] VT-GPIO_BENCHMARK: Pause ; 0 ; 94863453 VT-DEBUG: returning from unfreeze_time with 1537371831933262298n nsec and kill status 0
+[ 1665.923433] VT-DEBUG: returning from unfreeze_time with 1537371832023462744n nsec and kill status 0
+[ 1665.928899] VT-GPIO_BENCHMARK: Resume ; 0 ; 18446744071808788359 VT-DEBUG: returning from freeze_time with 1537371833314168687n sec and kill status 0 
+[ 1667.302047] VT-DEBUG: returning from freeze_time with 1537371833402360557n sec and kill status 0 
+[ 1667.306344] VT-GPIO_BENCHMARK: Pause ; 0 ; 96918986 VT-DEBUG: returning from unfreeze_time with 1537371834479893423n nsec and kill status 0
+[ 1668.388904] VT-DEBUG: returning from unfreeze_time with 1537371834488714781n nsec and kill status 0
+[ 1668.393235] VT-GPIO_BENCHMARK: Resume ; 0 ; 17753040 VT-DEBUG: returning from freeze_time with 17009780720667864264n sec and kill status 0 
+[ 1669.863629] VT-DEBUG: returning from freeze_time with 17009780720757546261n sec and kill status 0 
+[ 1669.868969] VT-GPIO_BENCHMARK: Pause ; 0 ; 18446744071808056220 VT-DEBUG: returning from unfreeze_time with 1537371836941174034n nsec and kill status 0
+[ 1670.928489] VT-DEBUG: returning from unfreeze_time with 1537371837028048228n nsec and kill status 0
+[ 1670.933918] VT-GPIO_BENCHMARK: Resume ; 0 ; 18446744071805472564 VT-DEBUG: returning from freeze_time with 18330412829193887111n sec and kill status 0 
+[ 1672.370686] VT-DEBUG: returning from freeze_time with 18330412829281525449n sec and kill status 0 
+[ 1672.374968] VT-GPIO_BENCHMARK: Pause ; 0 ; 96460945 VT-DEBUG: returning from unfreeze_time with 1537371839450608310n nsec and kill status 0
+[ 1673.438420] VT-DEBUG: returning from unfreeze_time with 1537371839537757524n nsec and kill status 0
+[ 1673.442804] VT-GPIO_BENCHMARK: Resume ; 0 ; 96183720 VT-DEBUG: returning from freeze_time with 16676709747734182710n sec and kill status 0 
+[ 1674.879576] VT-DEBUG: returning from freeze_time with 16676709747823921866n sec and kill status 0 
+[ 1674.883876] VT-GPIO_BENCHMARK: Pause ; 0 ; 98564596 VT-DEBUG: returning from unfreeze_time with 1537371841956738271n nsec and kill status 0
+[ 1675.944661] VT-DEBUG: returning from unfreeze_time with 1537371842043779161n nsec and kill status 0
+[ 1675.950092] VT-GPIO_BENCHMARK: Resume ; 0 ; 18446744071805638137 VT-DEBUG: returning from freeze_time with 1537371843403572017n sec and kill status 0 
+[ 1677.390244] VT-DEBUG: returning from freeze_time with 1537371843489682280n sec and kill status 0 
+[ 1677.394513] VT-GPIO_BENCHMARK: Pause ; 0 ; 94811506 VT-DEBUG: returning from unfreeze_time with 1537371844580241299n nsec and kill status 0
+[ 1678.568276] VT-DEBUG: returning from unfreeze_time with 1537371844667180073n nsec and kill status 0
+[ 1678.572657] VT-GPIO_BENCHMARK: Resume ; 0 ; 95953283 VT-DEBUG: returning from freeze_time with 17664270879767558300n sec and kill status 0 
+[ 1680.019828] VT-DEBUG: returning from freeze_time with 17664270879854953201n sec and kill status 0 
+[ 1680.024107] VT-GPIO_BENCHMARK: Pause ; 0 ; 96199552 VT-DEBUG: returning from unfreeze_time with 1537371847099922373n nsec and kill status 0
+[ 1681.088105] VT-DEBUG: returning from unfreeze_time with 1537371847186780239n nsec and kill status 0
+[ 1681.092486] VT-GPIO_BENCHMARK: Resume ; 0 ; 95881290 VT-DEBUG: returning from freeze_time with 1192649063526826652n sec and kill status 0 
+[ 1682.530499] VT-DEBUG: returning from freeze_time with 1192649063614026356n sec and kill status 0 
+[ 1682.534775] VT-GPIO_BENCHMARK: Pause ; 0 ; 95908696 VT-DEBUG: returning from unfreeze_time with 1537371849609290700n nsec and kill status 0
+[ 1683.597619] VT-DEBUG: returning from unfreeze_time with 1537371849696069865n nsec and kill status 0
+[ 1683.602008] VT-GPIO_BENCHMARK: Resume ; 0 ; 95822087 VT-DEBUG: returning from freeze_time with 847926279965920548n sec and kill status 0 
+[ 1685.053982] VT-DEBUG: returning from freeze_time with 847926280054907765n sec and kill status 0 
+[ 1685.059311] VT-GPIO_BENCHMARK: Pause ; 0 ; 18446744071807178415 VT-DEBUG: returning from unfreeze_time with 1537371852131425394n nsec and kill status 0
+[ 1686.119863] VT-DEBUG: returning from unfreeze_time with 1537371852218093446n nsec and kill status 0
+[ 1686.124246] VT-GPIO_BENCHMARK: Resume ; 0 ; 95703724 VT-DEBUG: returning from freeze_time with 1537371853581317756n sec and kill status 0 
+[ 1687.568663] VT-DEBUG: returning from freeze_time with 1537371853667213750n sec and kill status 0 
+[ 1687.572927] VT-GPIO_BENCHMARK: Pause ; 0 ; 94591698 VT-DEBUG: returning from unfreeze_time with 1537371854752484678n nsec and kill status 0
+[ 1688.743721] VT-DEBUG: returning from unfreeze_time with 1537371854841715132n nsec and kill status 0
+[ 1688.748047] VT-GPIO_BENCHMARK: Resume ; 0 ; 98250461 VT-DEBUG: returning from freeze_time with 1537371856169456120n sec and kill status 0 
+[ 1690.156759] VT-DEBUG: returning from freeze_time with 1537371856255085846n sec and kill status 0 
+[ 1690.161029] VT-GPIO_BENCHMARK: Pause ; 0 ; 94345843 VT-DEBUG: returning from unfreeze_time with 1537371857342125215n nsec and kill status 0
+[ 1691.333477] VT-DEBUG: returning from unfreeze_time with 1537371857431254553n nsec and kill status 0
+[ 1691.337875] VT-GPIO_BENCHMARK: Resume ; 0 ; 98231880 VT-DEBUG: returning from freeze_time with 158480713145460472n sec and kill status 0 
+[ 1692.740114] VT-DEBUG: returning from freeze_time with 158480713231030074n sec and kill status 0 
+[ 1692.744381] VT-GPIO_BENCHMARK: Pause ; 0 ; 94201061 VT-DEBUG: returning from unfreeze_time with 1537371859916026098n nsec and kill status 0
+[ 1693.904836] VT-DEBUG: returning from unfreeze_time with 1537371860002413548n nsec and kill status 0
+[ 1693.910286] VT-GPIO_BENCHMARK: Resume ; 0 ; 18446744071804978114 VT-DEBUG: returning from freeze_time with 1537371861390794458n sec and kill status 0 
+[ 1695.378491] VT-DEBUG: returning from freeze_time with 1537371861476365522n sec and kill status 0 
+[ 1695.382759] VT-GPIO_BENCHMARK: Pause ; 0 ; 94274268 VT-DEBUG: returning from unfreeze_time with 1537371862560479706n nsec and kill status 0
+[ 1696.549582] VT-DEBUG: returning from unfreeze_time with 1537371862646922738n nsec and kill status 0
+[ 1696.553968] VT-GPIO_BENCHMARK: Resume ; 0 ; 95462915 VT-DEBUG: returning from freeze_time with 1537371864016578575n sec and kill status 0 
+[ 1698.004727] VT-DEBUG: returning from freeze_time with 1537371864102370746n sec and kill status 0 
+[ 1698.008997] VT-GPIO_BENCHMARK: Pause ; 0 ; 94504457 VT-DEBUG: returning from unfreeze_time with 1537371865188794861n nsec and kill status 0
+[ 1699.180931] VT-DEBUG: returning from unfreeze_time with 1537371865278055442n nsec and kill status 0
+[ 1699.185341] VT-GPIO_BENCHMARK: Resume ; 0 ; 98339792 VT-DEBUG: returning from freeze_time with 46464461563503968n sec and kill status 0 
+[ 1700.564672] VT-DEBUG: returning from freeze_time with 46464461652081856n sec and kill status 0 
+[ 1700.568959] VT-GPIO_BENCHMARK: Pause ; 0 ; 97151644 VT-DEBUG: returning from unfreeze_time with 1537371867640757191n nsec and kill status 0
+[ 1701.630339] VT-DEBUG: returning from unfreeze_time with 1537371867727226305n nsec and kill status 0
+[ 1701.634724] VT-GPIO_BENCHMARK: Resume ; 0 ; 95503080 VT-DEBUG: returning from freeze_time with 1537371869093720148n sec and kill status 0 
+[ 1703.082225] VT-DEBUG: returning from freeze_time with 1537371869179430037n sec and kill status 0 
+[ 1703.086498] VT-GPIO_BENCHMARK: Pause ; 0 ; 94407384 VT-DEBUG: returning from unfreeze_time with 1537371870265839462n nsec and kill status 0
+[ 1704.258985] VT-DEBUG: returning from unfreeze_time with 1537371870355635407n nsec and kill status 0
+[ 1704.263419] VT-GPIO_BENCHMARK: Resume ; 0 ; 98908653 VT-DEBUG: returning from freeze_time with 1537371871633395845n sec and kill status 0 
+[ 1705.622127] VT-DEBUG: returning from freeze_time with 1537371871719110816n sec and kill status 0 
+[ 1705.626393] VT-GPIO_BENCHMARK: Pause ; 0 ; 94414674 VT-DEBUG: returning from unfreeze_time with 1537371872803514967n nsec and kill status 0
+[ 1706.793662] VT-DEBUG: returning from unfreeze_time with 1537371872890097364n nsec and kill status 0
+[ 1706.798050] VT-GPIO_BENCHMARK: Resume ; 0 ; 95625861 VT-DEBUG: returning from freeze_time with 1537371874255966739n sec and kill status 0 
+[ 1708.244947] VT-DEBUG: returning from freeze_time with 1537371874341703749n sec and kill status 0 
+[ 1708.249217] VT-GPIO_BENCHMARK: Pause ; 0 ; 94440755 VT-DEBUG: returning from unfreeze_time with 1537371875425872930n nsec and kill status 0
+[ 1709.418746] VT-DEBUG: returning from unfreeze_time with 1537371875514968859n nsec and kill status 0
+[ 1709.423168] VT-GPIO_BENCHMARK: Resume ; 0 ; 98174889 VT-DEBUG: returning from freeze_time with 17002301135937514969n sec and kill status 0 
+[ 1710.820229] VT-DEBUG: returning from freeze_time with 17002301136026641729n sec and kill status 0 
+[ 1710.824526] VT-GPIO_BENCHMARK: Pause ; 0 ; 97946162 VT-DEBUG: returning from unfreeze_time with 1537371877898694522n nsec and kill status 0
+[ 1711.889194] VT-DEBUG: returning from unfreeze_time with 1537371877985214299n nsec and kill status 0
+[ 1711.893576] VT-GPIO_BENCHMARK: Resume ; 0 ; 95524954 VT-DEBUG: returning from freeze_time with 18315453618790557521n sec and kill status 0 
+[ 1713.342344] VT-DEBUG: returning from freeze_time with 18315453618877807152n sec and kill status 0 
+[ 1713.346626] VT-GPIO_BENCHMARK: Pause ; 0 ; 96058325 VT-DEBUG: returning from unfreeze_time with 1537371880417378692n nsec and kill status 0
+[ 1714.408245] VT-DEBUG: returning from unfreeze_time with 1537371880504028459n nsec and kill status 0
+[ 1714.412630] VT-GPIO_BENCHMARK: Resume ; 0 ; 95696564 VT-DEBUG: returning from freeze_time with 16646791285975992976n sec and kill status 0 
+[ 1715.866447] VT-DEBUG: returning from freeze_time with 16646791286065319642n sec and kill status 0 
+[ 1715.870738] VT-GPIO_BENCHMARK: Pause ; 0 ; 98147402 VT-DEBUG: returning from unfreeze_time with 1537371882939596281n nsec and kill status 0
+[ 1716.930730] VT-DEBUG: returning from unfreeze_time with 1537371883026315920n nsec and kill status 0
+[ 1716.936156] VT-GPIO_BENCHMARK: Resume ; 0 ; 18446744071805276473 VT-DEBUG: returning from freeze_time with 1537371884391589803n sec and kill status 0 
+[ 1718.383684] VT-DEBUG: returning from freeze_time with 1537371884479561868n sec and kill status 0 
+[ 1718.387981] VT-GPIO_BENCHMARK: Pause ; 0 ; 96701227 VT-DEBUG: returning from unfreeze_time with 1537371885558152067n nsec and kill status 0
+[ 1719.549546] VT-DEBUG: returning from unfreeze_time with 1537371885644875205n nsec and kill status 0
+[ 1719.553935] VT-GPIO_BENCHMARK: Resume ; 0 ; 95758728 VT-DEBUG: returning from freeze_time with 17604433915272572575n sec and kill status 0 
+[ 1720.922655] VT-DEBUG: returning from freeze_time with 17604433915281359979n sec and kill status 0 
+[ 1720.926898] VT-GPIO_BENCHMARK: Pause ; 0 ; 17559434 VT-DEBUG: returning from unfreeze_time with 1537371888092429063n nsec and kill status 0
+[ 1722.087265] VT-DEBUG: returning from unfreeze_time with 1537371888182406585n nsec and kill status 0
+[ 1722.091686] VT-GPIO_BENCHMARK: Resume ; 0 ; 99038695 VT-DEBUG: returning from freeze_time with 1537371889464302768n sec and kill status 0 
+[ 1723.454992] VT-DEBUG: returning from freeze_time with 1537371889550426789n sec and kill status 0 
+[ 1723.459263] VT-GPIO_BENCHMARK: Pause ; 0 ; 94831141 VT-DEBUG: returning from unfreeze_time with 1537371890636157048n nsec and kill status 0
+[ 1724.631442] VT-DEBUG: returning from unfreeze_time with 1537371890726334305n nsec and kill status 0
+[ 1724.635865] VT-GPIO_BENCHMARK: Resume ; 0 ; 99255510 VT-DEBUG: returning from freeze_time with 1537371892014336132n sec and kill status 0 
+[ 1726.005280] VT-DEBUG: returning from freeze_time with 1537371892100494318n sec and kill status 0 
+[ 1726.009553] VT-GPIO_BENCHMARK: Pause ; 0 ; 94857350 VT-DEBUG: returning from unfreeze_time with 1537371893184146556n nsec and kill status 0
+[ 1727.179089] VT-DEBUG: returning from unfreeze_time with 1537371893273743988n nsec and kill status 0
+[ 1727.183494] VT-GPIO_BENCHMARK: Resume ; 0 ; 98703476 VT-DEBUG: returning from freeze_time with 1537371894585417838n sec and kill status 0 
+[ 1728.576548] VT-DEBUG: returning from freeze_time with 1537371894671539609n sec and kill status 0 
+[ 1728.580816] VT-GPIO_BENCHMARK: Pause ; 0 ; 94843306 VT-DEBUG: returning from unfreeze_time with 1537371895759667629n nsec and kill status 0
+[ 1729.755463] VT-DEBUG: returning from unfreeze_time with 1537371895849905631n nsec and kill status 0
+[ 1729.759883] VT-GPIO_BENCHMARK: Resume ; 0 ; 99317007 VT-DEBUG: returning from freeze_time with 1537371897129204289n sec and kill status 0 
+[ 1731.120620] VT-DEBUG: returning from freeze_time with 1537371897215390187n sec and kill status 0 
+[ 1731.124887] VT-GPIO_BENCHMARK: Pause ; 0 ; 94907807 VT-DEBUG: returning from unfreeze_time with 1537371898302186259n nsec and kill status 0
+[ 1732.297649] VT-DEBUG: returning from unfreeze_time with 1537371898391874435n nsec and kill status 0
+[ 1732.302055] VT-GPIO_BENCHMARK: Resume ; 0 ; 98747349 VT-DEBUG: returning from freeze_time with 1537371899681922375n sec and kill status 0 
+[ 1733.673711] VT-DEBUG: returning from freeze_time with 1537371899768261964n sec and kill status 0 
+[ 1733.677982] VT-GPIO_BENCHMARK: Pause ; 0 ; 95054710 VT-DEBUG: returning from unfreeze_time with 1537371900856924010n nsec and kill status 0
+[ 1734.850163] VT-DEBUG: returning from unfreeze_time with 1537371900944163479n nsec and kill status 0
+[ 1734.854550] VT-GPIO_BENCHMARK: Resume ; 0 ; 96292517 VT-DEBUG: returning from freeze_time with 1072975100451751934n sec and kill status 0 
+[ 1736.284771] VT-DEBUG: returning from freeze_time with 1072975100539383415n sec and kill status 0 
+[ 1736.289045] VT-GPIO_BENCHMARK: Pause ; 0 ; 96340767 VT-DEBUG: returning from unfreeze_time with 1537371903357763788n nsec and kill status 0
+[ 1737.351232] VT-DEBUG: returning from unfreeze_time with 1537371903445020968n nsec and kill status 0
+[ 1737.355623] VT-GPIO_BENCHMARK: Resume ; 0 ; 96300229 VT-DEBUG: returning from freeze_time with 608578300087417281n sec and kill status 0 
+[ 1738.828599] VT-DEBUG: returning from freeze_time with 608578300177061922n sec and kill status 0 
+[ 1738.832887] VT-GPIO_BENCHMARK: Pause ; 0 ; 98285809 VT-DEBUG: returning from unfreeze_time with 1537371905899891708n nsec and kill status 0
+[ 1739.893580] VT-DEBUG: returning from unfreeze_time with 1537371905987146180n nsec and kill status 0
+[ 1739.897963] VT-GPIO_BENCHMARK: Resume ; 0 ; 96288939 VT-DEBUG: returning from freeze_time with 18126528770510748402n sec and kill status 0 
+[ 1741.354803] VT-DEBUG: returning from freeze_time with 18126528770599951585n sec and kill status 0 
+[ 1741.359104] VT-GPIO_BENCHMARK: Pause ; 0 ; 98052623 VT-DEBUG: returning from unfreeze_time with 1537371908426110815n nsec and kill status 0
+[ 1742.420005] VT-DEBUG: returning from unfreeze_time with 1537371908513346909n nsec and kill status 0
+[ 1742.424397] VT-GPIO_BENCHMARK: Resume ; 0 ; 96300307 VT-DEBUG: returning from freeze_time with 1537371909882093685n sec and kill status 0 
+[ 1743.874967] VT-DEBUG: returning from freeze_time with 1537371909968632219n sec and kill status 0 
+[ 1743.879237] VT-GPIO_BENCHMARK: Pause ; 0 ; 95243239 VT-DEBUG: returning from unfreeze_time with 1537371911051825806n nsec and kill status 0
+[ 1745.048591] VT-DEBUG: returning from unfreeze_time with 1537371911141709259n nsec and kill status 0
+[ 1745.052999] VT-GPIO_BENCHMARK: Resume ; 0 ; 98950209 VT-DEBUG: returning from freeze_time with 1537371912475568773n sec and kill status 0 
+[ 1746.468610] VT-DEBUG: returning from freeze_time with 1537371912562049605n sec and kill status 0 
+[ 1746.472878] VT-GPIO_BENCHMARK: Pause ; 0 ; 95200160 VT-DEBUG: returning from unfreeze_time with 1537371913647338268n nsec and kill status 0
+[ 1747.644984] VT-DEBUG: returning from unfreeze_time with 1537371913737897913n nsec and kill status 0
+[ 1747.649407] VT-GPIO_BENCHMARK: Resume ; 0 ; 99623900 VT-DEBUG: returning from freeze_time with 1537371915012563693n sec and kill status 0 
+[ 1748.928014] VT-DEBUG: returning from freeze_time with 1537371915021244233n sec and kill status 0 
+[ 1748.932233] VT-GPIO_BENCHMARK: Pause ; 0 ; 17319040 VT-DEBUG: returning from unfreeze_time with 1537371916106325793n nsec and kill status 0
+[ 1750.104218] VT-DEBUG: returning from unfreeze_time with 1537371916196950683n nsec and kill status 0
+[ 1750.108640] VT-GPIO_BENCHMARK: Resume ; 0 ; 99650648 VT-DEBUG: returning from freeze_time with 2117164787854424647n sec and kill status 0 
+[ 1751.467508] VT-DEBUG: returning from freeze_time with 2117164787942138331n sec and kill status 0 
+[ 1751.471783] VT-GPIO_BENCHMARK: Pause ; 0 ; 96427344 VT-DEBUG: returning from unfreeze_time with 1537371918540571062n nsec and kill status 0
+[ 1752.535407] VT-DEBUG: returning from unfreeze_time with 1537371918627873784n nsec and kill status 0
+[ 1752.539793] VT-GPIO_BENCHMARK: Resume ; 0 ; 96335855 VT-DEBUG: returning from freeze_time with 1537371920005495526n sec and kill status 0 
+[ 1753.999282] VT-DEBUG: returning from freeze_time with 1537371920092068138n sec and kill status 0 
+[ 1754.003552] VT-GPIO_BENCHMARK: Pause ; 0 ; 95280401 VT-DEBUG: returning from unfreeze_time with 1537371921176594473n nsec and kill status 0
+[ 1755.174318] VT-DEBUG: returning from unfreeze_time with 1537371921266555464n nsec and kill status 0
+[ 1755.178746] VT-GPIO_BENCHMARK: Resume ; 0 ; 99062035 VT-DEBUG: returning from freeze_time with 1537371922588305559n sec and kill status 0 
+[ 1756.582115] VT-DEBUG: returning from freeze_time with 1537371922674677360n sec and kill status 0 
+[ 1756.586383] VT-GPIO_BENCHMARK: Pause ; 0 ; 95069505 VT-DEBUG: returning from unfreeze_time with 1537371923759487506n nsec and kill status 0
+[ 1757.754583] VT-DEBUG: returning from unfreeze_time with 1537371923846604870n nsec and kill status 0
+[ 1757.758962] VT-GPIO_BENCHMARK: Resume ; 0 ; 96136373 VT-DEBUG: returning from freeze_time with 1537371925221569275n sec and kill status 0 
+[ 1759.215505] VT-DEBUG: returning from freeze_time with 1537371925307838126n sec and kill status 0 
+[ 1759.219776] VT-GPIO_BENCHMARK: Pause ; 0 ; 94980514 VT-DEBUG: returning from unfreeze_time with 1537371926393366176n nsec and kill status 0
+[ 1760.391323] VT-DEBUG: returning from unfreeze_time with 1537371926483109770n nsec and kill status 0
+[ 1760.395726] VT-GPIO_BENCHMARK: Resume ; 0 ; 98843222 VT-DEBUG: returning from freeze_time with 16848734441661257102n sec and kill status 0 
+[ 1761.716012] VT-DEBUG: returning from freeze_time with 16848734441699021284n sec and kill status 0 
+[ 1761.719838] VT-GPIO_BENCHMARK: Pause ; 0 ; 45648998 VT-DEBUG: returning from unfreeze_time with 1537371928783305385n nsec and kill status 0
+[ 1762.699401] VT-DEBUG: returning from unfreeze_time with 1537371928791234322n nsec and kill status 0
+[ 1762.703307] VT-GPIO_BENCHMARK: Resume ; 0 ; 15879873 
