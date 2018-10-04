@@ -346,42 +346,6 @@ static void do_virtual_time_keeping(struct timespec* ts)
 
 int __getnstimeofday(struct timespec *ts)
 {
-  struct timekeeper *tk = &timekeeper;
-  unsigned long seq;
-  s64 nsecs = 0;
-
-  do {
-    seq = read_seqcount_begin(&timekeeper_seq);
-
-    ts->tv_sec = tk->xtime_sec;
-    nsecs = timekeeping_get_ns(tk);
-
-  } while (read_seqcount_retry(&timekeeper_seq, seq));
-
-  ts->tv_nsec = 0;
-  timespec_add_ns(ts, nsecs);
-
-  /*
-   * Do not bail out early, in case there were callers still using
-   * the value, even in the face of the WARN_ON.
-   */
-
-if (unlikely(timekeeping_suspended))
-    return -EAGAIN;
-
-  return 0;
-}
-EXPORT_SYMBOL(__getnstimeofday);
-
-
-/**
- * getnstimeofday - Returns the time of day in a timespec
- * @ts:		pointer to the timespec to be set
- *
- * Returns the time of day in a timespec.
- */
-void getnstimeofday(struct timespec *ts)
-{
 	unsigned long seq;
 	s64 nsecs;
 
@@ -399,7 +363,21 @@ void getnstimeofday(struct timespec *ts)
 	} while (read_seqretry(&timekeeper.lock, seq));
 
 	timespec_add_ns(ts, nsecs);
-        do_virtual_time_keeping(ts);
+
+}
+EXPORT_SYMBOL(__getnstimeofday);
+
+
+/**
+ * getnstimeofday - Returns the time of day in a timespec
+ * @ts:		pointer to the timespec to be set
+ *
+ * Returns the time of day in a timespec.
+ */
+void getnstimeofday(struct timespec *ts)
+{
+  WARN_ON(__getnstimeofday(ts));
+  do_virtual_time_keeping(ts);
 }
 
 EXPORT_SYMBOL(getnstimeofday);
