@@ -364,6 +364,7 @@ int __getnstimeofday(struct timespec *ts)
 
 	timespec_add_ns(ts, nsecs);
 
+	return 0;
 }
 EXPORT_SYMBOL(__getnstimeofday);
 
