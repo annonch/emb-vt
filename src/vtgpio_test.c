@@ -365,7 +365,7 @@ static int sequential_io_round_robin(enum IO io) {
   int i;
   switch(io){
   case DILATE:
-    for(i=round_robin;i<MAX_NUM_PIDS;i++){
+    for(i=0;i<MAX_NUM_PIDS;i++){
       if(all_pids[i])
 	dilate_proc(all_pids[i]);
       else
@@ -392,7 +392,7 @@ static int sequential_io_round_robin(enum IO io) {
 	break;
     }
     for(i=0;i<round_robin;i++) {
-        freeze_proc(all_pids[i]);
+        resume_proc(all_pids[i]);
     }
     round_robin += 1;
     if (round_robin == MAX_NUM_PIDS) {
