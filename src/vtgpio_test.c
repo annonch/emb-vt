@@ -346,11 +346,11 @@ static int sequential_io(enum IO io) {
     }
     break;
   case RESUME:
-    for(i=0;i<MAX_NUM_PIDS;i++){
+    for(i=MAX_NUM_PIDS-1 ; i>=0 ; i--){
       if(all_pids[i])
 	resume_proc(all_pids[i]);
       else
-	break;
+	continue;
     }
     break;
   }
