@@ -18,6 +18,7 @@
 #include <linux/slab.h>
 #include <linux/string.h>
 #include <linux/sysfs.h>
+#include <linux/sched.h>
 
 #include "vtgpio.h"
 
@@ -47,19 +48,13 @@ static unsigned int num_ints = 0;
 static unsigned int irqNumber;
 static unsigned int irqNumber2;
 
-/* irq handler functions */
-static irq_handler_t vtgpio_irq_handler(unsigned int irq, void *dev_id,
-                                        struct pt_regs *regs);
-static irq_handler_t vtgpio_irq_handler_fall(unsigned int irq, void *dev_id,
-                                             struct pt_regs *regs);
-
 static enum modes mode = DISABLED;
 static int all_pids[MAX_NUM_PIDS] = {0};
 
 static int sequential_io(enum IO io);
 static int sequential_io_round_robin(enum IO io);
 
-/* PID variables for tracking processes in VT */
+// /* PID variables for tracking processes in VT */
 static int pid_01 = 0;
 static int pid_02 = 0;
 static int pid_03 = 0;
@@ -83,7 +78,7 @@ unsigned int round_robin = 0;
 /* default time dilation factor for clocks (x1000) see various references for
  * more details */
 static int tdf = 1000;
-
+static s64 freeze_now = 0;
 /* name of filesystem accessable from user space */
 static char vtName[6] = "vtXXX";
 
@@ -93,7 +88,6 @@ void pause(void) {
 #ifdef BENCHMARK
   unsigned long long OHseconds;
   unsigned long long OHns;
-
   struct timespec seconds;
   struct timespec seconds_end;
 
@@ -105,17 +99,19 @@ void pause(void) {
             (unsigned long long)seconds.tv_sec,
             (unsigned long long)seconds.tv_nsec);
   VT_PRINTK("VT-GPIO_TEST: Rising Edge detected");
-#endif
-#endif
+#endif // QUIET
+#endif // BENCHMARK
+
   /* read list of pids */
   /* kickoff kthreads to resume processes */
   num_ints++;
-#ifndef ROUND_ROBIN
-  sequential_io(FREEZE);
-#endif
+
 #ifdef ROUND_ROBIN
   sequential_io_round_robin(FREEZE);
-#endif
+#else
+  sequential_io(FREEZE);
+#endif // ROUND_ROBIN
+
 #ifdef BENCHMARK
   getnstimeofday(&seconds_end);
 
@@ -137,9 +133,8 @@ void pause(void) {
              (unsigned long long)seconds.tv_sec),
             ((unsigned long long)seconds_end.tv_nsec -
              (unsigned long long)seconds.tv_nsec));
-#endif
-#endif
-  // tracing_off();
+#endif // QUIET
+#endif // BENCHMARK
 }
 
 /** @brief Function to resume pids in VT */
@@ -158,16 +153,17 @@ void resume(void) {
             (unsigned long long)seconds.tv_sec,
             (unsigned long long)seconds.tv_nsec);
   VT_PRINTK("VT-GPIO_TEST: Falling Edge detected");
-#endif
-#endif
+#endif // QUIET
+#endif // BENCHMARK
 
   num_ints++;
-#ifndef ROUND_ROBIN
-  sequential_io(RESUME);
-#endif
+
 #ifdef ROUND_ROBIN
   sequential_io_round_robin(RESUME);
-#endif
+#else
+  sequential_io(RESUME);
+#endif // ROUND_ROBIN
+
 #ifdef BENCHMARK
   getnstimeofday(&seconds_end);
 
@@ -189,8 +185,8 @@ void resume(void) {
              (unsigned long long)seconds.tv_sec),
             ((unsigned long long)seconds_end.tv_nsec -
              (unsigned long long)seconds.tv_nsec));
-#endif
-#endif
+#endif // QUIET
+#endif // BENCHMARK
 }
 
 /** @brief Function to add pids to VT */
@@ -205,34 +201,18 @@ static int dilate_proc(int pid) {
   return ret;
 }
 
-/** @brief Function to add pids to VT */
-static int freeze_proc(int pid) {
-  int ret = 0;
-#ifndef QUIET
-  VT_PRINTK("VT-GPIO_TEST: Freezing %d\n", pid);
-#endif
-  write_proc_field((pid_t)pid, "freeze", "1");
-  return ret;
-}
-/** @brief Function to add pids to VT */
-static int resume_proc(int pid) {
-  int ret = 0;
-#ifndef QUIET
-  VT_PRINTK("VT-GPIO_TEST: Unfreezing %d\n", pid);
-#endif
-  write_proc_field((pid_t)pid, "freeze", "0");
-  return ret;
-}
-
 static int sequential_io(enum IO io) {
   /**
    * Because of the break in the for loop,
    * pids should be added to the next available
    */
   int i;
+  struct timespec ts;
+  s64 freeze_duration;
+
   switch (io) {
   case DILATE:
-    for (i = 0; i < MAX_NUM_PIDS; i++) {
+    for (i = 0; i < MAX_NUM_PIDS; ++i) {
       if (all_pids[i])
         dilate_proc(all_pids[i]);
       else
@@ -240,19 +220,29 @@ static int sequential_io(enum IO io) {
     }
     break;
   case FREEZE:
-    for (i = 0; i < MAX_NUM_PIDS; i++) {
-      if (all_pids[i])
-        freeze_proc(all_pids[i]);
-      else
-        break;
+    for (i = 0; i < MAX_NUM_PIDS; ++i) {
+      if (all_pids[i]) {
+          struct task_struct *tsk = find_task_by_vpid(all_pids[i]);
+          kill_pgrp(task_pgrp(tsk), SIGSTOP, 1);
+      }
     }
+    __getnstimeofday(&ts);
+    freeze_now = timespec_to_ns(&ts);
     break;
   case RESUME:
-    for (i = MAX_NUM_PIDS - 1; i >= 0; i--) {
-      if (all_pids[i])
-        resume_proc(all_pids[i]);
-      else
-        continue;
+    __getnstimeofday(&ts);
+    freeze_duration = timespec_to_ns(&ts) - freeze_now;
+    for (i = 0; i < MAX_NUM_PIDS; ++i) {
+      if (all_pids[i]) {
+        struct task_struct *tsk = find_task_by_vpid(all_pids[i]);
+        tsk->freeze_past_nsec += freeze_duration;
+      }
+    }
+    for (i = 0; i < MAX_NUM_PIDS; ++i) {
+      if (all_pids[i]) {
+        struct task_struct *tsk = find_task_by_vpid(all_pids[i]);
+        kill_pgrp(task_pgrp(tsk), SIGCONT, 1);
+      }
     }
     break;
   }
@@ -264,7 +254,10 @@ static int sequential_io_round_robin(enum IO io) {
    * Because of the break in the for loop,
    * pids should be added to the next available
    */
-  int i;
+  int i, c = 0;
+  struct timespec ts;
+  s64 freeze_duration;
+
   switch (io) {
   case DILATE:
     for (i = 0; i < MAX_NUM_PIDS; i++) {
@@ -275,34 +268,31 @@ static int sequential_io_round_robin(enum IO io) {
     }
     break;
   case FREEZE:
-    for (i = round_robin; i < MAX_NUM_PIDS; i++) {
-      if (all_pids[i])
-        freeze_proc(all_pids[i]);
-      else
-        break;
+    for (i = round_robin; c < MAX_NUM_PIDS; i = (i + 1) % MAX_NUM_PIDS, ++c) {
+      if (all_pids[i]) {
+        struct task_struct *tsk = find_task_by_vpid(all_pids[i]);
+        kill_pgrp(task_pgrp(tsk), SIGSTOP, 1);
+      }
     }
-    for (i = 0; i < round_robin; i++) {
-      freeze_proc(all_pids[i]);
-    }
-
+    __getnstimeofday(&ts);
+    freeze_now = timespec_to_ns(&ts);
     break;
   case RESUME:
-    for (i = round_robin; i < MAX_NUM_PIDS; i++) {
-      if (all_pids[i])
-        resume_proc(all_pids[i]);
-      else
-        break;
+    __getnstimeofday(&ts);
+    freeze_duration = timespec_to_ns(&ts) - freeze_now;
+    for (i = round_robin; c < MAX_NUM_PIDS; i = (i + 1) % MAX_NUM_PIDS, ++c) {
+      if (all_pids[i]) {
+        struct task_struct *tsk = find_task_by_vpid(all_pids[i]);
+        tsk->freeze_past_nsec += freeze_duration;
+      }
     }
-    for (i = 0; i < round_robin; i++) {
-      resume_proc(all_pids[i]);
+    for (i = round_robin; c < MAX_NUM_PIDS; i = (i + 1) % MAX_NUM_PIDS, ++c) {
+      if (all_pids[i]) {
+        struct task_struct *tsk = find_task_by_vpid(all_pids[i]);
+        kill_pgrp(task_pgrp(tsk), SIGCONT, 1);
+      }
     }
-    round_robin += 1;
-    if (round_robin == MAX_NUM_PIDS) {
-      round_robin = 0;
-    }
-    if (!all_pids[i]) {
-      round_robin = 0;
-    }
+    round_robin = (round_robin + 1) % MAX_NUM_PIDS;
     break;
   }
   return 0;
@@ -424,58 +414,32 @@ static ssize_t mode_store(struct kobject *kobj, struct kobj_attribute *attr,
 static struct kobj_attribute mode_attr =
     __ATTR(mode, 0660, mode_show, mode_store);
 static struct kobj_attribute tdf_attr = __ATTR(tdf, 0660, tdf_show, tdf_store);
-static struct kobj_attribute pid_01_attr =
-    __ATTR(pid_01, 0660, pid_01_show, pid_01_store);
-static struct kobj_attribute pid_02_attr =
-    __ATTR(pid_02, 0660, pid_02_show, pid_02_store);
-static struct kobj_attribute pid_03_attr =
-    __ATTR(pid_03, 0660, pid_03_show, pid_03_store);
-static struct kobj_attribute pid_04_attr =
-    __ATTR(pid_04, 0660, pid_04_show, pid_04_store);
-static struct kobj_attribute pid_05_attr =
-    __ATTR(pid_05, 0660, pid_05_show, pid_05_store);
-static struct kobj_attribute pid_06_attr =
-    __ATTR(pid_06, 0660, pid_06_show, pid_06_store);
-static struct kobj_attribute pid_07_attr =
-    __ATTR(pid_07, 0660, pid_07_show, pid_07_store);
-static struct kobj_attribute pid_08_attr =
-    __ATTR(pid_08, 0660, pid_08_show, pid_08_store);
-static struct kobj_attribute pid_09_attr =
-    __ATTR(pid_09, 0660, pid_09_show, pid_09_store);
-static struct kobj_attribute pid_10_attr =
-    __ATTR(pid_10, 0660, pid_10_show, pid_10_store);
-static struct kobj_attribute pid_11_attr =
-    __ATTR(pid_11, 0660, pid_11_show, pid_11_store);
-static struct kobj_attribute pid_12_attr =
-    __ATTR(pid_12, 0660, pid_12_show, pid_12_store);
-static struct kobj_attribute pid_13_attr =
-    __ATTR(pid_13, 0660, pid_13_show, pid_13_store);
-static struct kobj_attribute pid_14_attr =
-    __ATTR(pid_14, 0660, pid_14_show, pid_14_store);
-static struct kobj_attribute pid_15_attr =
-    __ATTR(pid_15, 0660, pid_15_show, pid_15_store);
-static struct kobj_attribute pid_16_attr =
-    __ATTR(pid_16, 0660, pid_16_show, pid_16_store);
+
+DECLARE_PID_ATTR(01);
+DECLARE_PID_ATTR(02);
+DECLARE_PID_ATTR(03);
+DECLARE_PID_ATTR(04);
+DECLARE_PID_ATTR(05);
+DECLARE_PID_ATTR(06);
+DECLARE_PID_ATTR(07);
+DECLARE_PID_ATTR(08);
+DECLARE_PID_ATTR(09);
+DECLARE_PID_ATTR(10);
+DECLARE_PID_ATTR(11);
+DECLARE_PID_ATTR(12);
+DECLARE_PID_ATTR(13);
+DECLARE_PID_ATTR(14);
+DECLARE_PID_ATTR(15);
+DECLARE_PID_ATTR(16);
 
 /* Attribute struct */
 static struct attribute *vt_attrs[] = {
-    &mode_attr.attr,
-    &tdf_attr.attr,
-    &pid_01_attr.attr,
-    &pid_02_attr.attr,
-    &pid_03_attr.attr,
-    &pid_04_attr.attr,
-    &pid_05_attr.attr,
-    &pid_06_attr.attr,
-    &pid_07_attr.attr,
-    &pid_08_attr.attr,
-    &pid_09_attr.attr,
-    &pid_10_attr.attr,
-    &pid_11_attr.attr,
-    &pid_12_attr.attr,
-    &pid_13_attr.attr,
-    &pid_14_attr.attr,
-    &pid_15_attr.attr,
+    &mode_attr.attr, &tdf_attr.attr,
+    &pid_01_attr.attr, &pid_02_attr.attr, &pid_03_attr.attr,
+    &pid_04_attr.attr, &pid_05_attr.attr, &pid_06_attr.attr,
+    &pid_07_attr.attr, &pid_08_attr.attr, &pid_09_attr.attr,
+    &pid_10_attr.attr, &pid_11_attr.attr, &pid_12_attr.attr,
+    &pid_13_attr.attr, &pid_14_attr.attr, &pid_15_attr.attr,
     &pid_16_attr.attr,
     NULL,
 };
@@ -487,7 +451,22 @@ static struct attribute_group attr_group = {
 };
 
 static struct kobject *vt_kobj;
-// static struct task_struct * task
+
+/** @brief handler for rising signal */
+static irq_handler_t vtgpio_irq_handler(unsigned int irq, void *dev_id,
+                                        struct pt_regs *regs) {
+  trace_printk(KERN_INFO "rise\n");
+  pause();
+  return (irq_handler_t)IRQ_HANDLED; // return that we all good
+}
+
+/** @brief handler for falling signal */
+static irq_handler_t vtgpio_irq_handler_fall(unsigned int irq, void *dev_id,
+                                             struct pt_regs *regs) {
+  trace_printk(KERN_INFO "fall\n");
+  resume();
+  return (irq_handler_t)IRQ_HANDLED; // return that we all good
+}
 
 /** @brief Function to initize kernel module */
 static int __init vtgpio_init(void) {
@@ -570,22 +549,6 @@ static void __exit vtgpio_exit(void) {
   free_irq(irqNumber2, NULL);
   gpio_free(gpioSIG2);
   printk(KERN_INFO "VT-GPIO_TEST: Successfully leaving LKM\n");
-}
-
-/** @brief handler for rising signal */
-static irq_handler_t vtgpio_irq_handler(unsigned int irq, void *dev_id,
-                                        struct pt_regs *regs) {
-  trace_printk(KERN_INFO "rise\n");
-  pause();
-  return (irq_handler_t)IRQ_HANDLED; // return that we all good
-}
-
-/** @brief handler for falling signal */
-static irq_handler_t vtgpio_irq_handler_fall(unsigned int irq, void *dev_id,
-                                             struct pt_regs *regs) {
-  trace_printk(KERN_INFO "fall\n");
-  resume();
-  return (irq_handler_t)IRQ_HANDLED; // return that we all good
 }
 
 int write_proc_field(pid_t pid, char *field, char *val) {

@@ -12,7 +12,7 @@
 #endif // #ifndef BENCHMARK
 
 /* pause/resume scheduling algo */
-//#define ROUND_ROBIN
+#define ROUND_ROBIN
 
 /* value to denote time logging feature */
 
@@ -28,7 +28,7 @@
 /* functions for pausing resuming processes and clocks */
 void pause(void);
 void resume(void);
-static int dilate_proc(int pid);
+
 int write_proc_field(pid_t pid, char *field, char *val); // from Jiaqi's code
 
 /*support functions for writing to fields */
@@ -78,5 +78,9 @@ enum IO { RESUME, FREEZE, DILATE };
     }                                                                          \
     return count;                                                              \
   }
+
+#define DECLARE_PID_ATTR(IDX)                                                  \
+  static struct kobj_attribute pid_##IDX##_attr =                              \
+      __ATTR(pid_##IDX, 0660, pid_##IDX##_show, pid_##IDX##_store)
 
 #endif // __VTGPIO_H
