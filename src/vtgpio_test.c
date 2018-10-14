@@ -19,29 +19,7 @@
 #include <linux/string.h>
 #include <linux/sysfs.h>
 
-#define TDF_STR_LEN 8
-#define DEBOUNCE_TIME 0.02
-#define MAX_NUM_PIDS 16
-
-#define SEC_NSEC 1000000000 /*10^9 nsec in sec */
-
-#ifndef BENCHMARK
-#define BENCHMARK
-#endif
-
-/* pause/resume scheduling algo */
-//#define ROUND_ROBIN
-
-/* value to denote time logging feature */
-
-/**
- * prints pause / resume times for evauluation purposes
- */
-#define FTRACE 0 /* value to toggle ftrace vs regular prints  */
-/* useless if Quiet is enabled */
-
-#define QUIET 1 /* value to surpress real-time pause/resume */
-/* comment out to enable  printk */
+#include "vtgpio.h"
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Christopher Hannon");
@@ -75,28 +53,8 @@ static irq_handler_t vtgpio_irq_handler(unsigned int irq, void *dev_id,
 static irq_handler_t vtgpio_irq_handler_fall(unsigned int irq, void *dev_id,
                                              struct pt_regs *regs);
 
-/* functions for pausing resuming processes and clocks */
-void pause(void);
-void resume(void);
-static int dilate_proc(int pid);
-int write_proc_field(pid_t pid, char *field, char *val); // from Jiaqi's code
-
-/*support functions for writing to fields */
-struct file *file_open(const char *path, int flags, int rights);
-void file_close(struct file *file);
-int file_read(struct file *file, unsigned long long offset, unsigned char *data,
-              unsigned int size);
-int file_write(struct file *file, unsigned long long offset,
-               unsigned char *data, unsigned int size);
-int file_sync(struct file *file);
-
-/* varibles for filesystem and */
-enum modes { DISABLED, ENABLED };
 static enum modes mode = DISABLED;
 static int all_pids[MAX_NUM_PIDS] = {0};
-
-/* function for pausing (currently sequential) */
-enum IO { RESUME, FREEZE, DILATE };
 
 static int sequential_io(enum IO io);
 static int sequential_io_round_robin(enum IO io);
@@ -128,15 +86,6 @@ static int tdf = 1000;
 
 /* name of filesystem accessable from user space */
 static char vtName[6] = "vtXXX";
-
-#define VT_PRINTK(fmt, ...)                                                    \
-  do {                                                                         \
-    if (FTRACE) {                                                              \
-      trace_printk(KERN_INFO fmt, __VA_ARGS__);                                \
-    } else {                                                                   \
-      printk(KERN_INFO fmt, __VA_ARGS__);                                      \
-    }                                                                          \
-  } while (0)
 
 /* core function for pausing */
 void pause(void) {
@@ -383,30 +332,6 @@ static ssize_t tdf_store(struct kobject *kobj, struct kobj_attribute *attr,
   sequential_io(DILATE);
   return count;
 }
-
-#define SHOW_HANDLER(IDX)                                                      \
-  ssize_t pid_##IDX##_show(struct kobject *kobj, struct kobj_attribute *attr,  \
-                           char *buf) {                                        \
-    return sprintf(buf, "%d\n", pid_##IDX);                                    \
-  }
-
-#define STORE_HANDLER(IDX)                                                     \
-  ssize_t pid_##IDX##_store(struct kobject *kobj, struct kobj_attribute *attr, \
-                            const char *buf, size_t count) {                   \
-    int ret;                                                                   \
-    ret = kstrtoint(buf, 10, &pid_##IDX);                                      \
-    if (ret < 0) {                                                             \
-      return ret;                                                              \
-    }                                                                          \
-    if (pid_##IDX) {                                                           \
-      all_pids[0] = pid_##IDX;                                                 \
-      ret = dilate_proc(pid_##IDX);                                            \
-    }                                                                          \
-    if (ret < 0) {                                                             \
-      return ret;                                                              \
-    }                                                                          \
-    return count;                                                              \
-  }
 
 static SHOW_HANDLER(01)
 static SHOW_HANDLER(02)

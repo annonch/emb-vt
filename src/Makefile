@@ -1,3 +1,4 @@
+ccflags-y := -I$(src)
 obj-m = vtgpio_test.o
 KVERSION = $(shell uname -r)
 all:
