@@ -15,10 +15,11 @@
 #include <linux/kobject.h>
 #include <linux/kthread.h>
 #include <linux/module.h>
+#include <linux/sched.h>
+#include <linux/pid.h>
 #include <linux/slab.h>
 #include <linux/string.h>
 #include <linux/sysfs.h>
-#include <linux/sched.h>
 
 #include "vtgpio.h"
 
@@ -49,7 +50,7 @@ static unsigned int irqNumber;
 static unsigned int irqNumber2;
 
 static enum modes mode = DISABLED;
-static int all_pids[MAX_NUM_PIDS] = {0};
+static int all_pid_nrs[MAX_NUM_PIDS] = {0};
 
 static int sequential_io(enum IO io);
 static int sequential_io_round_robin(enum IO io);
@@ -201,30 +202,49 @@ static int dilate_proc(int pid) {
   return ret;
 }
 
+/**
+ * Hold a read lock, and get pid structs from process numbers.
+ * Caller must allocate results with MAX_NUM_PIDS NULLs.
+ */
+static size_t all_procs_from_nrs(struct task_struct *results[]) {
+  size_t cnt = 0, i = 0;
+  struct pid *pid;
+  rcu_read_lock();
+  for (i = 0; i < MAX_NUM_PIDS; ++i) {
+    if (all_pid_nrs[i] == 0)
+      break;
+    pid = find_vpid(all_pid_nrs[i]);
+    if (pid != NULL) {
+      results[cnt] = pid_task(pid, PIDTYPE_PID);
+      cnt += (results[cnt] != NULL);
+    }
+  }
+  rcu_read_unlock();
+  return cnt;
+}
+
 static int sequential_io(enum IO io) {
   /**
    * Because of the break in the for loop,
    * pids should be added to the next available
    */
-  int i;
+  size_t num_procs, i;
   struct timespec ts;
   s64 freeze_duration;
+  struct task_struct *procs[MAX_NUM_PIDS] = {NULL};
 
   switch (io) {
   case DILATE:
     for (i = 0; i < MAX_NUM_PIDS; ++i) {
-      if (all_pids[i])
-        dilate_proc(all_pids[i]);
-      else
-        break;
+      if (all_pid_nrs[i] == 0)
+	break;
+      dilate_proc(all_pid_nrs[i]);
     }
     break;
   case FREEZE:
-    for (i = 0; i < MAX_NUM_PIDS; ++i) {
-      if (all_pids[i]) {
-          struct task_struct *tsk = find_task_by_vpid(all_pids[i]);
-          kill_pgrp(task_pgrp(tsk), SIGSTOP, 1);
-      }
+    num_procs = all_procs_from_nrs(procs);
+    for (i = 0; i < num_procs; ++i) {
+      kill_pgrp(task_pgrp(procs[i]), SIGSTOP, 1);
     }
     __getnstimeofday(&ts);
     freeze_now = timespec_to_ns(&ts);
@@ -232,17 +252,12 @@ static int sequential_io(enum IO io) {
   case RESUME:
     __getnstimeofday(&ts);
     freeze_duration = timespec_to_ns(&ts) - freeze_now;
-    for (i = 0; i < MAX_NUM_PIDS; ++i) {
-      if (all_pids[i]) {
-        struct task_struct *tsk = find_task_by_vpid(all_pids[i]);
-        tsk->freeze_past_nsec += freeze_duration;
-      }
+    num_procs = all_procs_from_nrs(procs);
+    for (i = 0; i < num_procs; ++i) {
+      procs[i]->freeze_past_nsec += freeze_duration;
     }
-    for (i = 0; i < MAX_NUM_PIDS; ++i) {
-      if (all_pids[i]) {
-        struct task_struct *tsk = find_task_by_vpid(all_pids[i]);
-        kill_pgrp(task_pgrp(tsk), SIGCONT, 1);
-      }
+    for (i = 0; i < num_procs; ++i) {
+      kill_pgrp(task_pgrp(procs[i]), SIGCONT, 1);
     }
     break;
   }
@@ -254,25 +269,24 @@ static int sequential_io_round_robin(enum IO io) {
    * Because of the break in the for loop,
    * pids should be added to the next available
    */
-  int i, c = 0;
+  size_t num_procs, i, c;
   struct timespec ts;
   s64 freeze_duration;
+  struct task_struct *procs[MAX_NUM_PIDS] = {NULL};
 
   switch (io) {
   case DILATE:
     for (i = 0; i < MAX_NUM_PIDS; i++) {
-      if (all_pids[i])
-        dilate_proc(all_pids[i]);
+      if (all_pid_nrs[i])
+	dilate_proc(all_pid_nrs[i]);
       else
-        break;
+	break;
     }
     break;
   case FREEZE:
-    for (i = round_robin; c < MAX_NUM_PIDS; i = (i + 1) % MAX_NUM_PIDS, ++c) {
-      if (all_pids[i]) {
-        struct task_struct *tsk = find_task_by_vpid(all_pids[i]);
-        kill_pgrp(task_pgrp(tsk), SIGSTOP, 1);
-      }
+    num_procs = all_procs_from_nrs(procs);
+    for (i = round_robin, c = 0; c < num_procs; i = (i + 1) % num_procs, ++c) {
+      kill_pgrp(task_pgrp(procs[i]), SIGSTOP, 1);
     }
     __getnstimeofday(&ts);
     freeze_now = timespec_to_ns(&ts);
@@ -280,19 +294,14 @@ static int sequential_io_round_robin(enum IO io) {
   case RESUME:
     __getnstimeofday(&ts);
     freeze_duration = timespec_to_ns(&ts) - freeze_now;
-    for (i = round_robin; c < MAX_NUM_PIDS; i = (i + 1) % MAX_NUM_PIDS, ++c) {
-      if (all_pids[i]) {
-        struct task_struct *tsk = find_task_by_vpid(all_pids[i]);
-        tsk->freeze_past_nsec += freeze_duration;
-      }
+    num_procs = all_procs_from_nrs(procs);
+    for (i = round_robin, c = 0; c < num_procs; i = (i + 1) % num_procs, ++c) {
+      procs[i]->freeze_past_nsec += freeze_duration;
     }
-    for (i = round_robin; c < MAX_NUM_PIDS; i = (i + 1) % MAX_NUM_PIDS, ++c) {
-      if (all_pids[i]) {
-        struct task_struct *tsk = find_task_by_vpid(all_pids[i]);
-        kill_pgrp(task_pgrp(tsk), SIGCONT, 1);
-      }
+    for (i = round_robin, c = 0; c < num_procs; i = (i + 1) % num_procs, ++c) {
+      kill_pgrp(task_pgrp(procs[i]), SIGCONT, 1);
     }
-    round_robin = (round_robin + 1) % MAX_NUM_PIDS;
+    round_robin = (round_robin + 1) % num_procs;
     break;
   }
   return 0;
@@ -323,6 +332,7 @@ static ssize_t tdf_store(struct kobject *kobj, struct kobj_attribute *attr,
   return count;
 }
 
+// clang-format off
 static SHOW_HANDLER(01)
 static SHOW_HANDLER(02)
 static SHOW_HANDLER(03)
@@ -339,7 +349,6 @@ static SHOW_HANDLER(13)
 static SHOW_HANDLER(14)
 static SHOW_HANDLER(15)
 static SHOW_HANDLER(16)
-
 static STORE_HANDLER(01)
 static STORE_HANDLER(02)
 static STORE_HANDLER(03)
@@ -357,9 +366,9 @@ static STORE_HANDLER(14)
 static STORE_HANDLER(15)
 static STORE_HANDLER(16)
 
-/** @brief A callback function to display the vt mode */
-static ssize_t mode_show(struct kobject *kobj, struct kobj_attribute *attr,
-                         char *buf) {
+/* @brief A callback function to display the vt mode */
+static ssize_t mode_show(struct kobject *kobj,
+                         struct kobj_attribute *attr, char *buf) {
   switch (mode) {
   case ENABLED:
     return sprintf(buf, "freeze\n");
@@ -369,8 +378,9 @@ static ssize_t mode_show(struct kobject *kobj, struct kobj_attribute *attr,
     return sprintf(buf, "LKM ERROR\n"); // whoops
   }
 }
+// clang-format on
 
-/** @brief A callback function to store the vt mode using enum*/
+/* @brief A callback function to store the vt mode using enum*/
 static ssize_t mode_store(struct kobject *kobj, struct kobj_attribute *attr,
                           const char *buf, size_t count) {
   if (strncmp(buf, "freeze", count - 1) == 0) {
@@ -433,16 +443,16 @@ DECLARE_PID_ATTR(15);
 DECLARE_PID_ATTR(16);
 
 /* Attribute struct */
+// clang-format off
 static struct attribute *vt_attrs[] = {
     &mode_attr.attr, &tdf_attr.attr,
-    &pid_01_attr.attr, &pid_02_attr.attr, &pid_03_attr.attr,
-    &pid_04_attr.attr, &pid_05_attr.attr, &pid_06_attr.attr,
-    &pid_07_attr.attr, &pid_08_attr.attr, &pid_09_attr.attr,
-    &pid_10_attr.attr, &pid_11_attr.attr, &pid_12_attr.attr,
-    &pid_13_attr.attr, &pid_14_attr.attr, &pid_15_attr.attr,
-    &pid_16_attr.attr,
+    &pid_01_attr.attr, &pid_02_attr.attr, &pid_03_attr.attr, &pid_04_attr.attr,
+    &pid_05_attr.attr, &pid_06_attr.attr, &pid_07_attr.attr, &pid_08_attr.attr,
+    &pid_09_attr.attr, &pid_10_attr.attr, &pid_11_attr.attr, &pid_12_attr.attr,
+    &pid_13_attr.attr, &pid_14_attr.attr, &pid_15_attr.attr, &pid_16_attr.attr,
     NULL,
 };
+// clang-format on
 
 /* Attribute group */
 static struct attribute_group attr_group = {

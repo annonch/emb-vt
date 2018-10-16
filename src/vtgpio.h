@@ -12,10 +12,9 @@
 #endif // #ifndef BENCHMARK
 
 /* pause/resume scheduling algo */
-#define ROUND_ROBIN
+// #define ROUND_ROBIN
 
 /* value to denote time logging feature */
-
 /**
  * prints pause / resume times for evauluation purposes
  */
@@ -70,7 +69,7 @@ enum IO { RESUME, FREEZE, DILATE };
       return ret;                                                              \
     }                                                                          \
     if (pid_##IDX) {                                                           \
-      all_pids[0] = pid_##IDX;                                                 \
+      all_pid_nrs[0] = pid_##IDX;                                              \
       ret = dilate_proc(pid_##IDX);                                            \
     }                                                                          \
     if (ret < 0) {                                                             \
