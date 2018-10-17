@@ -8,10 +8,10 @@
 #include <asm/uaccess.h>
 #include <linux/buffer_head.h>
 #include <linux/fs.h>
-#include <linux/gpio.h> // gpio stuff
+#include <linux/gpio.h>                 // gpio stuff
 #include <linux/init.h>
-#include <linux/interrupt.h> // irq  code
-#include <linux/kernel.h>    // :)
+#include <linux/interrupt.h>            // irq  code
+#include <linux/kernel.h>               // :)
 #include <linux/kobject.h>
 #include <linux/kthread.h>
 #include <linux/module.h>
@@ -55,7 +55,7 @@ static int all_pid_nrs[MAX_NUM_PIDS] = {0};
 static int sequential_io(enum IO io);
 static int sequential_io_round_robin(enum IO io);
 
-// /* PID variables for tracking processes in VT */
+/* PID variables for tracking processes in VT */
 static int pid_01 = 0;
 static int pid_02 = 0;
 static int pid_03 = 0;
@@ -85,7 +85,6 @@ static char vtName[6] = "vtXXX";
 
 /* core function for pausing */
 void pause(void) {
-  // tracing_on();
 #ifdef BENCHMARK
   unsigned long long OHseconds;
   unsigned long long OHns;
@@ -206,18 +205,13 @@ static int dilate_proc(int pid) {
  * Hold a read lock, and get pid structs from process numbers.
  * Caller must allocate results with MAX_NUM_PIDS NULLs.
  */
-static size_t all_procs_from_nrs(struct task_struct *results[]) {
+static size_t all_pids_from_nrs(struct pid *results[]) {
   size_t cnt = 0, i = 0;
-  struct pid *pid;
   rcu_read_lock();
   for (i = 0; i < MAX_NUM_PIDS; ++i) {
-    if (all_pid_nrs[i] == 0)
-      break;
-    pid = find_vpid(all_pid_nrs[i]);
-    if (pid != NULL) {
-      results[cnt] = pid_task(pid, PIDTYPE_PID);
-      cnt += (results[cnt] != NULL);
-    }
+    if (all_pid_nrs[i] == 0) break;
+    results[cnt] = find_vpid(all_pid_nrs[i]);
+    cnt += (results[cnt] != NULL);
   }
   rcu_read_unlock();
   return cnt;
@@ -228,23 +222,27 @@ static int sequential_io(enum IO io) {
    * Because of the break in the for loop,
    * pids should be added to the next available
    */
+  int rc = 0;
   size_t num_procs, i;
   struct timespec ts;
+  struct task_struct *tsk = NULL;
   s64 freeze_duration;
-  struct task_struct *procs[MAX_NUM_PIDS] = {NULL};
+  struct pid *pids[MAX_NUM_PIDS] = {NULL};
 
   switch (io) {
   case DILATE:
     for (i = 0; i < MAX_NUM_PIDS; ++i) {
-      if (all_pid_nrs[i] == 0)
-	break;
+      if (all_pid_nrs[i] == 0) break;
       dilate_proc(all_pid_nrs[i]);
     }
     break;
   case FREEZE:
-    num_procs = all_procs_from_nrs(procs);
+    num_procs = all_pids_from_nrs(pids);
     for (i = 0; i < num_procs; ++i) {
-      kill_pgrp(task_pgrp(procs[i]), SIGSTOP, 1);
+      rc = kill_pid(pids[i], SIGSTOP, 1);
+      if (rc != 0) {
+        VT_PRINTK("VT-GPIO_TEST: Fail to SIGSTOP %d\n", all_pid_nrs[i]);
+      }
     }
     __getnstimeofday(&ts);
     freeze_now = timespec_to_ns(&ts);
@@ -252,12 +250,18 @@ static int sequential_io(enum IO io) {
   case RESUME:
     __getnstimeofday(&ts);
     freeze_duration = timespec_to_ns(&ts) - freeze_now;
-    num_procs = all_procs_from_nrs(procs);
+    num_procs = all_pids_from_nrs(pids);
     for (i = 0; i < num_procs; ++i) {
-      procs[i]->freeze_past_nsec += freeze_duration;
+      rcu_read_lock();
+      tsk = pid_task(pids[i], PIDTYPE_PID);
+      rcu_read_unlock();
+      if (tsk) tsk->freeze_past_nsec += freeze_duration;
     }
     for (i = 0; i < num_procs; ++i) {
-      kill_pgrp(task_pgrp(procs[i]), SIGCONT, 1);
+      rc = kill_pid(pids[i], SIGCONT, 1);
+      if (rc != 0) {
+        VT_PRINTK("VT-GPIO_TEST: Fail to SIGCONT %d\n", all_pid_nrs[i]);
+      }
     }
     break;
   }
@@ -269,24 +273,27 @@ static int sequential_io_round_robin(enum IO io) {
    * Because of the break in the for loop,
    * pids should be added to the next available
    */
+  int rc = 0;
   size_t num_procs, i, c;
   struct timespec ts;
+  struct task_struct *tsk = NULL;
   s64 freeze_duration;
-  struct task_struct *procs[MAX_NUM_PIDS] = {NULL};
+  struct pid *pids[MAX_NUM_PIDS] = {NULL};
 
   switch (io) {
   case DILATE:
     for (i = 0; i < MAX_NUM_PIDS; i++) {
-      if (all_pid_nrs[i])
-	dilate_proc(all_pid_nrs[i]);
-      else
-	break;
+      if (all_pid_nrs[i]) dilate_proc(all_pid_nrs[i]);
+      else break;
     }
     break;
   case FREEZE:
-    num_procs = all_procs_from_nrs(procs);
+    num_procs = all_pids_from_nrs(pids);
     for (i = round_robin, c = 0; c < num_procs; i = (i + 1) % num_procs, ++c) {
-      kill_pgrp(task_pgrp(procs[i]), SIGSTOP, 1);
+      rc = kill_pid(pids[i], SIGSTOP, 1);
+      if (rc != 0) {
+        VT_PRINTK("VT-GPIO_TEST: Fail to SIGSTOP %d\n", all_pid_nrs[i]);
+      }
     }
     __getnstimeofday(&ts);
     freeze_now = timespec_to_ns(&ts);
@@ -294,12 +301,18 @@ static int sequential_io_round_robin(enum IO io) {
   case RESUME:
     __getnstimeofday(&ts);
     freeze_duration = timespec_to_ns(&ts) - freeze_now;
-    num_procs = all_procs_from_nrs(procs);
+    num_procs = all_pids_from_nrs(pids);
     for (i = round_robin, c = 0; c < num_procs; i = (i + 1) % num_procs, ++c) {
-      procs[i]->freeze_past_nsec += freeze_duration;
+      rcu_read_lock();
+      tsk = pid_task(pids[i], PIDTYPE_PID);
+      rcu_read_unlock();
+      if (tsk) tsk->freeze_past_nsec += freeze_duration;
     }
     for (i = round_robin, c = 0; c < num_procs; i = (i + 1) % num_procs, ++c) {
-      kill_pgrp(task_pgrp(procs[i]), SIGCONT, 1);
+      rc = kill_pid(pids[i], SIGCONT, 1);
+      if (rc != 0) {
+        VT_PRINTK("VT-GPIO_TEST: Fail to SIGCONT %d\n", all_pid_nrs[i]);
+      }
     }
     round_robin = (round_robin + 1) % num_procs;
     break;
