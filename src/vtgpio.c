@@ -39,8 +39,8 @@ static unsigned int gpioSIG3 = 24; // Listen to falling edge (resume)
  *     try 25 to see if pin broken 7; // pin for talking // gpio21 on model b+
  *     I think 7 and 8 for banana pi 21 and 20 for raspberry pi
  *
- * To install use insmod gpio_test.ko and lsmod to see the module
- * To uninstall use rmmod vtgpio_test and lsmod to confirm
+ * To install use insmod vtgpio.ko and lsmod to see the module
+ * To uninstall use rmmod vtgpio and lsmod to confirm
  * to pause write freeze/unfreeze to ....
  * /sys/vt/VT7/mode i.e. echo 'freeze' > /sys/vt/VT7/mode
  */
@@ -94,11 +94,11 @@ void pause(void) {
   getnstimeofday(&seconds);
 
 #ifndef QUIET
-  VT_PRINTK("VT_TEST_PAUSE\n");
+  VT_PRINTK("VT_PAUSE\n");
   VT_PRINTK("VT-GPIO_TIME: TIME-RISE: %llu %llu nanoseconds",
             (unsigned long long)seconds.tv_sec,
             (unsigned long long)seconds.tv_nsec);
-  VT_PRINTK("VT-GPIO_TEST: Rising Edge detected");
+  VT_PRINTK("VT-GPIO: Rising Edge detected");
 #endif // QUIET
 #endif // BENCHMARK
 
@@ -148,11 +148,11 @@ void resume(void) {
   getnstimeofday(&seconds);
 
 #ifndef QUIET
-  VT_PRINTK("VT_TEST_RESUME\n");
+  VT_PRINTK("VT_RESUME\n");
   VT_PRINTK("VT-GPIO_TIME: TIME-FALL: %llu %llu nanoseconds",
             (unsigned long long)seconds.tv_sec,
             (unsigned long long)seconds.tv_nsec);
-  VT_PRINTK("VT-GPIO_TEST: Falling Edge detected");
+  VT_PRINTK("VT-GPIO: Falling Edge detected");
 #endif // QUIET
 #endif // BENCHMARK
 
@@ -196,8 +196,7 @@ static int dilate_proc(int pid) {
 
   ret = sprintf(tdf_str, "%d", tdf);
   write_proc_field((pid_t)pid, "dilation", tdf_str);
-
-  VT_PRINTK("VT-GPIO_TEST: Dilating %d\n", pid);
+  VT_PRINTK("VT-GPIO: Dilating %d\n", pid);
   return ret;
 }
 
@@ -241,7 +240,7 @@ static int sequential_io(enum IO io) {
     for (i = 0; i < num_procs; ++i) {
       rc = kill_pid(pids[i], SIGSTOP, 1);
       if (rc != 0) {
-        VT_PRINTK("VT-GPIO_TEST: Fail to SIGSTOP %d\n", all_pid_nrs[i]);
+        VT_PRINTK("VT-GPIO: Fail to SIGSTOP %d\n", all_pid_nrs[i]);
       }
     }
     __getnstimeofday(&ts);
@@ -260,7 +259,7 @@ static int sequential_io(enum IO io) {
     for (i = 0; i < num_procs; ++i) {
       rc = kill_pid(pids[i], SIGCONT, 1);
       if (rc != 0) {
-        VT_PRINTK("VT-GPIO_TEST: Fail to SIGCONT %d\n", all_pid_nrs[i]);
+        VT_PRINTK("VT-GPIO: Fail to SIGCONT %d\n", all_pid_nrs[i]);
       }
     }
     break;
@@ -292,7 +291,7 @@ static int sequential_io_round_robin(enum IO io) {
     for (i = round_robin, c = 0; c < num_procs; i = (i + 1) % num_procs, ++c) {
       rc = kill_pid(pids[i], SIGSTOP, 1);
       if (rc != 0) {
-        VT_PRINTK("VT-GPIO_TEST: Fail to SIGSTOP %d\n", all_pid_nrs[i]);
+        VT_PRINTK("VT-GPIO: Fail to SIGSTOP %d\n", all_pid_nrs[i]);
       }
     }
     __getnstimeofday(&ts);
@@ -311,7 +310,7 @@ static int sequential_io_round_robin(enum IO io) {
     for (i = round_robin, c = 0; c < num_procs; i = (i + 1) % num_procs, ++c) {
       rc = kill_pid(pids[i], SIGCONT, 1);
       if (rc != 0) {
-        VT_PRINTK("VT-GPIO_TEST: Fail to SIGCONT %d\n", all_pid_nrs[i]);
+        VT_PRINTK("VT-GPIO: Fail to SIGCONT %d\n", all_pid_nrs[i]);
       }
     }
     round_robin = (round_robin + 1) % num_procs;
@@ -338,8 +337,7 @@ static ssize_t tdf_store(struct kobject *kobj, struct kobj_attribute *attr,
   int ret;
 
   ret = kstrtoint(buf, 10, &tdf);
-  if (ret < 0)
-    return ret;
+  if (ret < 0) return ret;
   /* we should overwrite any existing tdf */
   sequential_io(DILATE);
   return count;
@@ -362,22 +360,22 @@ static SHOW_HANDLER(13)
 static SHOW_HANDLER(14)
 static SHOW_HANDLER(15)
 static SHOW_HANDLER(16)
-static STORE_HANDLER(01,0)
-static STORE_HANDLER(02,1)
-static STORE_HANDLER(03,2)
-static STORE_HANDLER(04,3)
-static STORE_HANDLER(05,4)
-static STORE_HANDLER(06,5)
-static STORE_HANDLER(07,6)
-static STORE_HANDLER(08,7)
-static STORE_HANDLER(09,8)
-static STORE_HANDLER(10,9)
-static STORE_HANDLER(11,10)
-static STORE_HANDLER(12,11)
-static STORE_HANDLER(13,12)
-static STORE_HANDLER(14,13)
-static STORE_HANDLER(15,14)
-static STORE_HANDLER(16,15)
+static STORE_HANDLER(01, 0)
+static STORE_HANDLER(02, 1)
+static STORE_HANDLER(03, 2)
+static STORE_HANDLER(04, 3)
+static STORE_HANDLER(05, 4)
+static STORE_HANDLER(06, 5)
+static STORE_HANDLER(07, 6)
+static STORE_HANDLER(08, 7)
+static STORE_HANDLER(09, 8)
+static STORE_HANDLER(10, 9)
+static STORE_HANDLER(11, 10)
+static STORE_HANDLER(12, 11)
+static STORE_HANDLER(13, 12)
+static STORE_HANDLER(14, 13)
+static STORE_HANDLER(15, 14)
+static STORE_HANDLER(16, 15)
 
 /* @brief A callback function to display the vt mode */
 static ssize_t mode_show(struct kobject *kobj,
@@ -399,7 +397,7 @@ static ssize_t mode_store(struct kobject *kobj, struct kobj_attribute *attr,
   if (strncmp(buf, "freeze", count - 1) == 0) {
     mode = ENABLED;
 #ifndef QUIET
-    VT_PRINTK("VT-GPIO_TEST: pause\n");
+    VT_PRINTK("VT-GPIO: pause\n");
 #endif
     /**
      * vt has been triggered locally
@@ -412,21 +410,21 @@ static ssize_t mode_store(struct kobject *kobj, struct kobj_attribute *attr,
      * so we need to pause manually for the caller
      */
     // pause(); // Brian: let the pause be called by irq
-    // printk(KERN_INFO "VT-GPIO_TEST: value of pin: %d\n",
+    // printk(KERN_INFO "VT-GPIO: value of pin: %d\n",
     // gpio_get_value(gpioSIG));
   } else if (strncmp(buf, "unfreeze", count - 1) == 0) {
     mode = DISABLED;
 #ifndef QUIET
-    VT_PRINTK("VT-GPIO_TEST: resume\n");
+    VT_PRINTK("VT-GPIO: resume\n");
 #endif
     /**
      * chgn cfg, go low
      */
     gpio_direction_output(gpioSIG, 0);
-    // printk(KERN_INFO "VT-GPIO_TEST: value of pin: %d\n",
+    // printk(KERN_INFO "VT-GPIO: value of pin: %d\n",
     // gpio_get_value(gpioSIG));
     gpio_direction_input(gpioSIG);
-    // printk(KERN_INFO "VT-GPIO_TEST: value of pin: %d\n",
+    // printk(KERN_INFO "VT-GPIO: value of pin: %d\n",
     // gpio_get_value(gpioSIG)); resume(); // this should get called throuigh
     // the interrupt
   }
@@ -497,30 +495,30 @@ static int __init vtgpio_init(void) {
   int res = 0;
 
   printk(KERN_INFO
-         "VT-GPIO_TEST: Initializing the Virtual Time GPIO_TEST LKM\n");
+         "VT-GPIO: Initializing the Virtual Time GPIO LKM\n");
   if (!gpio_is_valid(gpioSIG)) {
-    printk(KERN_INFO "VT-GPIO_TEST: pin %d not valid\n", gpioSIG);
+    printk(KERN_INFO "VT-GPIO: pin %d not valid\n", gpioSIG);
     return -ENODEV;
   }
   if (!gpio_is_valid(gpioSIG2)) {
-    printk(KERN_INFO "VT-GPIO_TEST: pin %d not valid\n", gpioSIG2);
+    printk(KERN_INFO "VT-GPIO: pin %d not valid\n", gpioSIG2);
     return -ENODEV;
   }
   if (!gpio_is_valid(gpioSIG3)) {
-    printk(KERN_INFO "VT-GPIO_TEST: pin %d not valid\n", gpioSIG3);
+    printk(KERN_INFO "VT-GPIO: pin %d not valid\n", gpioSIG3);
     return -ENODEV;
   }
   sprintf(vtName, "VT%d", gpioSIG);
   vt_kobj = kobject_create_and_add("vt", kernel_kobj->parent);
 
   if (!vt_kobj) {
-    printk(KERN_ALERT "VT-GPIO_TEST: failed to create kobject\n");
+    printk(KERN_ALERT "VT-GPIO: failed to create kobject\n");
     return -ENOMEM;
   }
 
   res = sysfs_create_group(vt_kobj, &attr_group);
   if (res) {
-    printk(KERN_ALERT "VT-GPIO_TEST: failed to create sysfs group\n");
+    printk(KERN_ALERT "VT-GPIO: failed to create sysfs group\n");
     kobject_put(vt_kobj);
     return res;
   }
@@ -539,20 +537,20 @@ static int __init vtgpio_init(void) {
   gpio_export(gpioSIG3, true); // true = we should be able to change direction
 
   irqNumber = gpio_to_irq(gpioSIG3);
-  printk(KERN_INFO "VT-GPIO_TEST: Input signal is mapped to IRQ: %d\n",
+  printk(KERN_INFO "VT-GPIO: Input signal is mapped to IRQ: %d\n",
          irqNumber);
   irqNumber2 = gpio_to_irq(gpioSIG2);
-  printk(KERN_INFO "VT-GPIO_TEST: Input signal is mapped to IRQ: %d\n",
+  printk(KERN_INFO "VT-GPIO: Input signal is mapped to IRQ: %d\n",
          irqNumber2);
 
   result = request_irq(irqNumber, (irq_handler_t)vtgpio_irq_handler,
                        IRQF_TRIGGER_RISING, "vt_gpio_handler", NULL);
-  printk(KERN_INFO "VT-GPIO_TEST: The interrupt rising request result is %d\n",
+  printk(KERN_INFO "VT-GPIO: The interrupt rising request result is %d\n",
          result);
 
   result = request_irq(irqNumber2, (irq_handler_t)vtgpio_irq_handler_fall,
                        IRQF_TRIGGER_FALLING, "vt_gpio_handler_fall", NULL);
-  printk(KERN_INFO "VT-GPIO_TEST: The interrupt rising request result is %d\n",
+  printk(KERN_INFO "VT-GPIO: The interrupt rising request result is %d\n",
          result);
 
   return result;
@@ -560,7 +558,7 @@ static int __init vtgpio_init(void) {
 
 /** @brief exit function to clean up */
 static void __exit vtgpio_exit(void) {
-  printk(KERN_INFO "VT-GPIO_TEST: Exiting LKM\n");
+  printk(KERN_INFO "VT-GPIO: Exiting LKM\n");
   kobject_put(vt_kobj);
   gpio_unexport(gpioSIG);
   gpio_unexport(gpioSIG2);
@@ -571,7 +569,7 @@ static void __exit vtgpio_exit(void) {
   gpio_free(gpioSIG3);
   free_irq(irqNumber2, NULL);
   gpio_free(gpioSIG2);
-  printk(KERN_INFO "VT-GPIO_TEST: Successfully leaving LKM\n");
+  printk(KERN_INFO "VT-GPIO: Successfully leaving LKM\n");
 }
 
 int write_proc_field(pid_t pid, char *field, char *val) {
