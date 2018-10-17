@@ -20,7 +20,7 @@ IPs[0]="216.47.152.20"
 #
 
 
-if [ "$#" -ne 4 ]; then
+if [ "$#" -ne 3 ]; then
     echo "Usage: ./local [numProcs] [saveDir] [numBoards]"
     exit
 fi
@@ -44,29 +44,29 @@ do
     #############
     #  Logging  #
     #############
-    if [ -d "../overhead/${p2d}" ]; then
+    if [ -d "./overhead/${p2d}" ]; then
 	# Control will enter here if $DIRECTORY exists.
 	echo "overhead directory exists already, exiting..."
 	rm "./${0}.pid"
 	exit
     fi
-    if [ -d "../skew/${p2d}" ]; then
+    if [ -d "./skew/${p2d}" ]; then
 	# Control will enter here if $DIRECTORY exists.
 	echo "skew directory exists already, exiting..."
 	rm "./${0}.pid"
 	exit
     fi
-    mkdir "/overhead/${p2d}"
-    mkdir "/skew/${p2d}"
+    mkdir "./overhead/${p2d}"
+    mkdir "./skew/${p2d}"
     sleep 2
     #
     ######################
     # rebuilding kmodule #
     ######################
-    rmmod vtgpio_test
+    rmmod vtgpio
     cd /home/emb-vt/src
     make
-    insmod vtgpio_test.ko
+    insmod vtgpio.ko
     cd /home/emb-vt/eval/distributed
     # clear dmesg
     sleep 5
