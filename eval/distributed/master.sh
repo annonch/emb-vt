@@ -126,10 +126,9 @@ do
 	#ssh to remote  sig 10
 	for i in "${arrayName[@]}"
 	do
-	    ssh -i /home/keys??? "root@${i}" kill -10 (</home/emb-vt/eval/distributed/local.sh.pid)
+	    ssh -i /home/.ssh/id_ecdsa "root@${i}" "kill -10 `(ssh -i /home/.ssh/id_ecdsa /home cat /home/emb-vt/eval/distributed/local.sh.pid)`"
 	    # do whatever on $i
-	    done 
-
+	done 
 	
 	sleep 1
     done
@@ -145,8 +144,12 @@ do
     kill -9 ${pids[@]}
     #
 
-    #TODO SSH sig 12
-    
+    for i in "${arrayName[@]}"
+    do
+	ssh -i /home/.ssh/id_ecdsa "root@${i}" "kill -12 `(ssh -i /home/.ssh/id_ecdsa /home cat /home/emb-vt/eval/distributed/local.sh.pid)`"
+	# do whatever on $i
+    done 
+	
     # save dmesg
     dmesg > /home/emb-vt/eval/distributed/overhead/${p2d}/overhead_${i}.log
 
