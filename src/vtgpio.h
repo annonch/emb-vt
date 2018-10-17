@@ -60,7 +60,7 @@ enum IO { RESUME, FREEZE, DILATE };
     return sprintf(buf, "%d\n", pid_##IDX);                                    \
   }
 
-#define STORE_HANDLER(IDX)                                                     \
+#define STORE_HANDLER(IDX, IDXI)						\
   ssize_t pid_##IDX##_store(struct kobject *kobj, struct kobj_attribute *attr, \
                             const char *buf, size_t count) {                   \
     int ret;                                                                   \
@@ -69,7 +69,7 @@ enum IO { RESUME, FREEZE, DILATE };
       return ret;                                                              \
     }                                                                          \
     if (pid_##IDX) {                                                           \
-      all_pid_nrs[0] = pid_##IDX;                                              \
+      all_pid_nrs[IDXI] = pid_##IDX;                                              \
       ret = dilate_proc(pid_##IDX);                                            \
     }                                                                          \
     if (ret < 0) {                                                             \
