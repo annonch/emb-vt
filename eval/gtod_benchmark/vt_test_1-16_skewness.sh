@@ -17,10 +17,10 @@ for i in 2 4 8 16
 do
     sleep 2
     # rebuild kmodule just in case
-    rmmod vtgpio_test
+    rmmod vtgpio
     cd /home/emb-vt/src
     make
-    insmod vtgpio_test.ko
+    insmod vtgpio.ko
     cd /home/emb-vt/eval/gtod_benchmark
     # clear dmesg
     sleep 5
