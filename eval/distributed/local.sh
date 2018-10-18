@@ -28,6 +28,7 @@ cleanup()
 {
     echo "catching exit ..."
     rm -f "./${0}.pid"
+    kill -9 "${pids[@]}"
     exit 1
 }
 

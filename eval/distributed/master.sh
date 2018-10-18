@@ -36,6 +36,7 @@ cleanup()
 {
     echo "catching exit ..."
     rm -f "./${0}.pid"
+    kill -9 ${pids[@]}
     exit 1
 }
 
@@ -126,12 +127,13 @@ do
 	echo ' ' >> /home/emb-vt/eval/distributed/skew/${p2d}/skew_${i}.log
 
 	#ssh to remote  sig 10
-	for i in "${arrayName[@]}"
+	for j in "${IPs[@]}"
 	do
-	    ssh -i /home/.ssh/id_ecdsa "root@${i}" "kill -10 `(ssh -i /home/.ssh/id_ecdsa /home cat /home/emb-vt/eval/distributed/local.sh.pid)`"
+	    #echo ssh -i /home/.ssh/id_ecdsa "root@${i}" "kill -10 `(ssh -i /home/.ssh/id_ecdsa cat /home/emb-vt/eval/distributed/local.sh.pid)`"
+	    ssh -i /home/.ssh/id_ecdsa "root@${j}" "kill -10 `(ssh -i /home/.ssh/id_ecdsa root@${j} cat /home/emb-vt/eval/distributed/local.sh.pid)`"
 	    # do whatever on $i
 	done 
-	
+
 	sleep 1
     done
 
@@ -146,15 +148,32 @@ do
     kill -9 ${pids[@]}
     #
 
-    for i in "${arrayName[@]}"
+    for j in "${IPs[@]}"
     do
-	ssh -i /home/.ssh/id_ecdsa "root@${i}" "kill -12 `(ssh -i /home/.ssh/id_ecdsa /home cat /home/emb-vt/eval/distributed/local.sh.pid)`"
+	ssh -i /home/.ssh/id_ecdsa "root@${j}" "kill -12 `(ssh -i /home/.ssh/id_ecdsa root@${j} cat /home/emb-vt/eval/distributed/local.sh.pid)`"
 	# do whatever on $i
-    done 
 	
+    done
+
+    echo "collecting remote data ..."
+    sleep 5
+
+    for j in "${IPs[@]}"
+    do
+	#scp files from remote to local
+	scp -i /home/.ssh/id_ecdsa "root@${j}:/home/emb-vt/eval/distributed/overhead/${p2d}/skew_${i}.log ./home/emb-vt/eval/distributed/overhead/${p2d}/skew_${i}_${j}.log"
+    done
+    
     # save dmesg
     dmesg > /home/emb-vt/eval/distributed/overhead/${p2d}/overhead_${i}.log
 
+    for j in "${IPs[@]}"
+    do
+	#scp files from remote to local
+	scp -i /home/.ssh/id_ecdsa "root@${j}:/home/emb-vt/eval/distributed/overhead/${p2d}/overhead_${i}.log ./home/emb-vt/eval/distributed/overhead/${p2d}/overhead_${i}_${j}.log"
+    done
+    
+    
     #
     # Cleanup
     # clear pids
