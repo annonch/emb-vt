@@ -87,18 +87,20 @@ do
     #############
     if [ -d "./overhead/${p2d}" ]; then
 	# Control will enter here if $DIRECTORY exists.
-	echo "overhead directory exists already, exiting..."
-	rm "./${0}.pid"
-	exit
+	echo "overhead directory already exists possibly overwriting ..."
     fi
     if [ -d "./skew/${p2d}" ]; then
 	# Control will enter here if $DIRECTORY exists.
-	echo "skew directory exists already, exiting..."
-	rm "./${0}.pid"
-	exit
+	echo "overhead directory already exists possibly overwriting ..."
     fi
-    mkdir "./overhead/${p2d}"
+    if [ ! -d "./overhead/${p2d}" ]; then
+	# Control will enter here if $DIRECTORY exists.
+	mkdir "./overhead/${p2d}"
+    fi
+    if [ ! -d "./skew/${p2d}" ]; then
+	# Control will enter here if $DIRECTORY exists.
     mkdir "./skew/${p2d}"
+    fi
     sleep 2
     #
     ######################

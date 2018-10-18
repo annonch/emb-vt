@@ -35,7 +35,7 @@ trap 'cleanup' 1 2 3 6
 cleanup()
 {
     echo "catching exit ..."
-    rm -f "./${0}.pid"
+    #rm -f "./${0}.pid"
     kill -9 ${pids[@]}
     exit 1
 }
@@ -49,18 +49,21 @@ do
     #############
     if [ -d "./overhead/${p2d}" ]; then
 	# Control will enter here if $DIRECTORY exists.
-	echo "overhead directory exists already, exiting..."
-	rm "./${0}.pid"
-	exit
+	echo "overhead directory exists possibly overwriting ..."
     fi
     if [ -d "./skew/${p2d}" ]; then
 	# Control will enter here if $DIRECTORY exists.
-	echo "skew directory exists already, exiting..."
-	rm "./${0}.pid"
-	exit
+	echo "overhead directory exists possibly overwriting ..."
     fi
-    mkdir "./overhead/${p2d}"
-    mkdir "./skew/${p2d}"
+    if [ ! -d "./overhead/${p2d}" ]; then
+	# Control will enter here if $DIRECTORY exists.
+	mkdir "./overhead/${p2d}"
+    fi
+    if [ ! -d "./skew/${p2d}" ]; then
+	# Control will enter here if $DIRECTORY exists.
+	mkdir "./skew/${p2d}"
+    
+    fi
     sleep 2
     #
     ######################
@@ -161,7 +164,7 @@ do
     for j in "${IPs[@]}"
     do
 	#scp files from remote to local
-	scp -i /home/.ssh/id_ecdsa "root@${j}:/home/emb-vt/eval/distributed/overhead/${p2d}/skew_${i}.log" "/home/emb-vt/eval/distributed/overhead/${p2d}/skew_${i}_${j}.log"
+	scp -i /home/.ssh/id_ecdsa "root@${j}:/home/emb-vt/eval/distributed/skew/${p2d}/skew_${i}.log" "/home/emb-vt/eval/distributed/skew/${p2d}/skew_${i}_${j}.log"
     done
     
     # save dmesg
