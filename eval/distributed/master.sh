@@ -26,7 +26,7 @@ if [ "$#" -ne 3 ]; then
     echo "Usage: ./local [numProcs] [saveDir] [numBoards]"
     exit
 fi
-echo $$ > "./${0}.pid"
+#echo $$ > "./${0}.pid"
 numPids=$1
 p2d=$2
 
@@ -161,7 +161,7 @@ do
     for j in "${IPs[@]}"
     do
 	#scp files from remote to local
-	scp -i /home/.ssh/id_ecdsa "root@${j}:/home/emb-vt/eval/distributed/overhead/${p2d}/skew_${i}.log ./home/emb-vt/eval/distributed/overhead/${p2d}/skew_${i}_${j}.log"
+	scp -i /home/.ssh/id_ecdsa "root@${j}:/home/emb-vt/eval/distributed/overhead/${p2d}/skew_${i}.log" "/home/emb-vt/eval/distributed/overhead/${p2d}/skew_${i}_${j}.log"
     done
     
     # save dmesg
@@ -170,11 +170,9 @@ do
     for j in "${IPs[@]}"
     do
 	#scp files from remote to local
-	scp -i /home/.ssh/id_ecdsa "root@${j}:/home/emb-vt/eval/distributed/overhead/${p2d}/overhead_${i}.log ./home/emb-vt/eval/distributed/overhead/${p2d}/overhead_${i}_${j}.log"
+	scp -i /home/.ssh/id_ecdsa "root@${j}:/home/emb-vt/eval/distributed/overhead/${p2d}/overhead_${i}.log" "/home/emb-vt/eval/distributed/overhead/${p2d}/overhead_${i}_${j}.log"
     done
     
-    
-    #
     # Cleanup
     # clear pids
     for x in `seq 1 16`;
