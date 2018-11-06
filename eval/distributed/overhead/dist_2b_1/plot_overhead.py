@@ -36,7 +36,7 @@ def start():
     pause = []
     resume = []
     #files = ['1Host.csv','2Host.csv','4Host.csv','8Host.csv','16Host.csv']
-    files = ['overhead_2.log','overhead_4.log','overhead_8.log','overhead_16.log']
+    files = ['overhead_2_216.47.152.92.log','overhead_4_216.47.152.92.log','overhead_8_216.47.152.92.log']
     for file in files:
         rawF = np.genfromtxt(file, delimiter=';', usecols=2 )
         #rawF = np.genfromtxt(file, delimiter=',', usecols=2 )
@@ -57,15 +57,15 @@ def start():
     
     #pause
     #  2H | 4H | 8H | 16H 
-    x_axis_vals = [2,4,8,16]
-    y_axis_vals_pause = [avg(pause[0]), avg(pause[1]), avg(pause[2]), avg(pause[3])]
+    x_axis_vals = [4,8,16]
+    y_axis_vals_pause = [avg(pause[0]), avg(pause[1]), avg(pause[2])]#, avg(pause[3])]
 
-    std_pause = [stdev(pause[0]),stdev(pause[1]),stdev(pause[2]),stdev(pause[3])]
+    std_pause = [stdev(pause[0]),stdev(pause[1]),stdev(pause[2])]#,stdev(pause[3])]
     for x in std_pause:
         x = x* 1.96
 
-    y_axis_vals_resume = [avg(resume[0]), avg(resume[1]), avg(resume[2]), avg(resume[3])]
-    std_resume = [stdev(resume[0]),stdev(resume[1]),stdev(resume[2]),stdev(resume[3])]
+    y_axis_vals_resume = [avg(resume[0]), avg(resume[1]), avg(resume[2])]#, avg(resume[3])]
+    std_resume = [stdev(resume[0]),stdev(resume[1]),stdev(resume[2])]#,stdev(resume[3])]
 
     for x in std_resume:
         x = x* 1.96
@@ -162,7 +162,7 @@ linestyles = ['solid','dotted']
 
 def plot_compare_cdf(pd, pr):
     """draw cdf to compare without/with freeze elapsed time"""
-    label1 = ['2Proc','4Proc','8Proc','16Proc']
+    label1 = ['4Proc','8Proc','16Proc']
     labell = -1
     nums_plt = 2
     for data1,data2 in zip(pd,pr):
