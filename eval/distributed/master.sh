@@ -112,6 +112,7 @@ do
     # start all procs
     sleep 1
     kill -CONT ${pids[*]}
+    sleep 1
     #
     #while kill -0 ${pids[0]} >/dev/null 2>&1
     LOPP=0
