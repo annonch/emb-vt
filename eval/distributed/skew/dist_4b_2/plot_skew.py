@@ -12,16 +12,16 @@ import argparse
 def start(case1 = True):
     runs = [4,4]
     nums = -1
-    files = ['merge_2.log','merge_4.log']
+    files = ['merge_2.log']#,'merge_4.log']
     #files = ['merge_4.log','merge_2.log']
 
-    for file in files:
+    for filef in files:
         nums+=1
         print nums
         if nums == 0:
-            rawF = np.genfromtxt(file, delimiter=',', usecols={0,2,4,6} )
+            rawF = np.genfromtxt(filef, delimiter=',', usecols={0,2,4,6} )
         else:
-            rawF = np.genfromtxt(file, delimiter=',', usecols={0,4,8,12} )
+            rawF = np.genfromtxt(filef, delimiter=',', usecols={0,4,8,12} )
             
         #print(rawF)
         #p==rint len(rawF)
@@ -38,15 +38,15 @@ def start(case1 = True):
         colors=['b','r','g','c','m','y','k','coral','steelblue','tan','olive','orchid',
                 'darksalmon', 'lightslategrey','steelblue']
 
-        plt.subplot(1,2,nums+1)
+        plt.subplot(1,1,1)#,nums+1)
         pi_s = ["Pi 1 (master)", "189", "80", "92"]
         
         for x in range(0,4):
             l = pi_s[x]
             if case1:
-                plt.plot(range(len(rawF[:,0])),rawF[:,x],c=colors[x-1],label=l)
+                plt.plot(range(len(rawF[:,0])),rawF[:,x],c=colors[x],label=l)
             else:
-                plt.plot(range(len(rawF[:,0])),rawF[:,x]/range(len(rawF[:,0])),c=colors[x-1],label=l)
+                plt.plot(range(len(rawF[:,0])),rawF[:,x]/range(len(rawF[:,0])),c=colors[x],label=l)
             
         #plt.axis([-1,100,-20,20])
         #plt.axis([-1,100,-20,20])
