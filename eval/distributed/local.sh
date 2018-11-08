@@ -152,7 +152,6 @@ do
     #
     while kill -0 ${pids[0]} >/dev/null 2>&1
     do
-	
 	sleep 1
     done
     wait ${pids[0]}

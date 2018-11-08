@@ -17,32 +17,29 @@ def start(case1 = True):
 
     for file in files:
         nums+=1
-        #print nums
+        print nums
         if nums == 0:
             rawF = np.genfromtxt(file, delimiter=',', usecols={0,2,4,6} )
         else:
-            rawF = np.genfromtxt(file, delimiter=',', usecols={12,8,4,0,})#4,8,12} )
+            rawF = np.genfromtxt(file, delimiter=',', usecols={0,4,8,12} )
             
         #print(rawF)
         #p==rint len(rawF)
         
         for y in reversed(range(4)):
-            print y
-            print rawF[:,y]
+            #print rawF[:,y]
             if case1:
                 rawF[:,y] = (rawF[:,y] - rawF[:,0])/1000000
             else:
                 rawF[:,y] = (rawF[:,y] - rawF[:,0])/1000
 
-            #print rawF[:,y]
+            print rawF[:,y]
             
         colors=['b','r','g','c','m','y','k','coral','steelblue','tan','olive','orchid',
                 'darksalmon', 'lightslategrey','steelblue']
 
         plt.subplot(1,2,nums+1)
         pi_s = ["Pi 1 (master)", "189", "80", "92"]
-
-        #print rawF
         
         for x in range(0,4):
             l = pi_s[x]
