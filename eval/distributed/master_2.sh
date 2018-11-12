@@ -123,11 +123,11 @@ do
 	sleep 1
 	echo "unfreeze" > /sys/vt/VT7/mode
 	#echo "getting FPTs ..."
-	for q in "${pids[@]}"
-	do
+	#for q in "${pids[@]}"
+	#do
       	    # removes ns\n and replaces with , save to file
-	    cat /proc/${q}/fpt | tr 'ns\n' ' , ' >> /home/emb-vt/eval/distributed/skew/${p2d}/skew_${i}.log
-	done
+	cat /proc/${pids[1]}/fpt | tr 'ns\n' ' , ' >> /home/emb-vt/eval/distributed/skew/${p2d}/skew_${i}.log
+	#done
 	echo ' ' >> /home/emb-vt/eval/distributed/skew/${p2d}/skew_${i}.log
 
 	#ssh to remote  sig 10
