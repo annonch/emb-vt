@@ -116,7 +116,7 @@ do
     #
     #while kill -0 ${pids[0]} >/dev/null 2>&1
     LOPP=0
-    while [ $LOPP -lt 100 ];
+    while [ $LOPP -lt 16 ];
     do
 	let LOPP=LOPP+1
 	echo "freeze" > /sys/vt/VT7/mode
