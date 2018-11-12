@@ -2,7 +2,7 @@
  * Virtual Time Kernel Module
  * For Heterogeneous Distributed
  * Embedded Linux Environment
- * Author: Christopher Hannon, Brian Liu
+ * Author: Christopher Hannon, Jiaqi Yan, Brian Liu
  **/
 #include <asm/segment.h>
 #include <asm/uaccess.h>
@@ -24,9 +24,9 @@
 #include "vtgpio.h"
 
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Christopher Hannon");
+MODULE_AUTHOR("Jin Lab");
 MODULE_DESCRIPTION("Distributed Virtual time synchronization module");
-MODULE_VERSION("0.4");
+MODULE_VERSION("0.5");
 
 static unsigned int gpioSIG = 7;   // Using CE1 to output high or low
 static unsigned int gpioSIG2 = 8;  // Listen to rising edge (pause)
@@ -82,6 +82,10 @@ static int tdf = 1000;
 static s64 freeze_now = 0;
 /* name of filesystem accessable from user space */
 static char vtName[6] = "vtXXX";
+
+/* This variable skips the first pause/resume */
+static int firstPause = 0;
+
 
 /* core function for pausing */
 void pause(void) {
@@ -249,6 +253,10 @@ static int sequential_io(enum IO io) {
   case RESUME:
     __getnstimeofday(&ts);
     freeze_duration = timespec_to_ns(&ts) - freeze_now;
+    if (firstPause) {
+      firstPause = -1;
+      freeze_duration=0;
+    }
     num_procs = all_pids_from_nrs(pids);
     for (i = 0; i < num_procs; ++i) {
       rcu_read_lock();
