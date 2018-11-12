@@ -84,7 +84,7 @@ static s64 freeze_now = 0;
 static char vtName[6] = "vtXXX";
 
 /* This variable skips the first pause/resume */
-static int firstPause = 0;
+static int firstPause = 1;
 
 
 /* core function for pausing */
