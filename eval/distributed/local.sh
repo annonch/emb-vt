@@ -12,6 +12,8 @@
 #  Number of procs is $1
 #  Log folder is $2
 
+leaderPID="216.47.152.71"
+
 if [ "$#" -ne 2 ]; then
     echo "Usage: ./local [numProcs] [saveDir] "
     exit
@@ -21,15 +23,18 @@ numPids=$1
 p2d=$2
 
 trap 'getFPT' 10
-trap 'finish' 12
+trap 'make_pause' 12
 trap 'cleanup' 1 2 3 6
 
-cleanup()
+make_pause()
 {
-    echo "catching exit ..."
-    rm -f "./${0}.pid"
-    kill -9 "${pids[@]}"
-    exit 1
+    echo "pausing locally..."
+    sleep 2
+    echo "freeze" > /sys/vt/VT7/mode
+    sleep 1
+    echo "unfreeze" > /sys/vt/VT7/mode
+    sleep 0.1
+    ssh -i /home/.ssh/id_ecdsa "root@${leaderPID}" "kill -10 `(ssh -i /home/.ssh/id_ecdsa root@${leaderPID} cat /home/emb-vt/eval/distributed/local.sh.pid)`"
 }
 
 getFPT()
@@ -43,7 +48,7 @@ getFPT()
     echo ' ' >> /home/emb-vt/eval/distributed/skew/${p2d}/skew_${i}.log
 }
 
-finish()
+cleanup()
 {
     #######################
     ### exit experiment ###
