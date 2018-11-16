@@ -1,3 +1,4 @@
+
 #!/bin/bash
 # 
 # Author: Christopher Hannon
@@ -11,6 +12,9 @@ IPs[0]="216.47.152.92"
 IPs[1]="216.47.152.189"
 IPs[2]="216.47.152.80"
 
+# declare array
+declare -a pids
+    
 ## round robin
 declare -a pause_order
 pause_order[0]="0"
@@ -94,11 +98,9 @@ setup()
     ### setup experiment ###
     ########################
     echo "setting up experiment with ${i} processes"
-    # declare array
-    declare -a pids
     #
     # z = upperbound
-    z=$(($i-1))
+    z=$(($numPids-1))
     #
     # start sleeping procs
     for j in `seq 0 $z`; do
@@ -124,8 +126,9 @@ setup()
 
 response()
 {
+    echo " " 
     echo "recieved response (sigusr1) "
-    shouldWait=0
+    should_wait=0
 }
 
 response2()
@@ -151,6 +154,7 @@ collectLogs()
     echo "stopping remote procs..."
     for j in "${IPs[@]}"
     do
+	echo $j
 	ssh -i /home/.ssh/id_ecdsa "root@${j}" "kill -3 `(ssh -i /home/.ssh/id_ecdsa root@${j} cat /home/emb-vt/eval/distributed/local.sh.pid)`"
     done
 
@@ -159,6 +163,7 @@ collectLogs()
 
     for j in "${IPs[@]}"
     do
+	echo $j
 	#scp files from remote to local
 	scp -i /home/.ssh/id_ecdsa "root@${j}:/home/emb-vt/eval/distributed/skew/${p2d}/skew_${i}.log" "/home/emb-vt/eval/distributed/skew/${p2d}/skew_${i}_${j}.log"
     done
@@ -168,6 +173,7 @@ collectLogs()
 
     for j in "${IPs[@]}"
     do
+	echo $j
 	#scp files from remote to local
 	scp -i /home/.ssh/id_ecdsa "root@${j}:/home/emb-vt/eval/distributed/overhead/${p2d}/overhead_${i}.log" "/home/emb-vt/eval/distributed/overhead/${p2d}/overhead_${i}_${j}.log"
     done
@@ -187,6 +193,7 @@ collectLogs()
     # remove remote files (easier to use git)
     for j in "${IPs[@]}"
     do
+	echo $j
 	ssh -i /home/.ssh/id_ecdsa "root@${j}" "rm -r /home/emb-vt/eval/distributed/*/${p2d}"
     done
     rm ./local.sh.pid
@@ -198,19 +205,21 @@ collectLogs()
 
 main_loop()
 {
+    LOPP=0
     echo ""
     while [ $LOPP -lt 16 ];
     do
 	let LOPP=LOPP+1
 	# determine who should pause next
-	if [ ${pause_order[$LOPP]} -eq 3 ]; then
+	if [ ${pause_order[$LOPP-1]} -eq 3 ]; then
 	   # local
 	   echo "freeze" > /sys/vt/VT7/mode
 	   sleep 1
 	   echo "unfreeze" > /sys/vt/VT7/mode
 	else
 	    should_wait=1
-	    j=${pids[${pause_order[$LOPP]}}
+	    j=${IPs[${pause_order[${LOPP}-1]}]}
+	    echo $j
 	    ssh -i /home/.ssh/id_ecdsa "root@${j}" "kill -12 `(ssh -i /home/.ssh/id_ecdsa root@${j} cat /home/emb-vt/eval/distributed/local.sh.pid)`"
 	fi
 		
@@ -219,7 +228,7 @@ main_loop()
 	do
 	    sleep .1
 	done
-	
+	echo $pids
 	cat /proc/${pids[1]}/fpt | tr 'ns\n' ' , ' >> /home/emb-vt/eval/distributed/skew/${p2d}/skew_${i}.log
 	#done
 	echo ' ' >> /home/emb-vt/eval/distributed/skew/${p2d}/skew_${i}.log
@@ -227,6 +236,7 @@ main_loop()
 	#ssh to remote  sig 10
 	for j in "${IPs[@]}"
 	do
+	    echo $j
 	    #echo ssh -i /home/.ssh/id_ecdsa "root@${i}" "kill -10 `(ssh -i /home/.ssh/id_ecdsa cat /home/emb-vt/eval/distributed/local.sh.pid)`"       
             ssh -i /home/.ssh/id_ecdsa "root@${j}" "kill -10 `(ssh -i /home/.ssh/id_ecdsa root@${j} cat /home/emb-vt/eval/distributed/local.sh.pid)`"
         done
@@ -239,5 +249,5 @@ main_loop()
 
 }
 
-setup()
-main_loop()
+setup
+main_loop
