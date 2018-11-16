@@ -138,7 +138,7 @@ response2()
 }
 
 
-collectLogs()
+collect_logs()
 {
     #######################
     ### exit experiment ###
@@ -252,3 +252,4 @@ main_loop()
 
 setup
 main_loop
+collect_logs
