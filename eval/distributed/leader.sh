@@ -155,12 +155,12 @@ collectLogs()
     for j in "${IPs[@]}"
     do
 	echo $j
-	ssh -i /home/.ssh/id_ecdsa "root@${j}" "kill -9 `(ssh -i /home/.ssh/id_ecdsa root@${j} cat /home/emb-vt/eval/distributed/local.sh.pid)`"
+	ssh -i /home/.ssh/id_ecdsa "root@${j}" "kill -6 `(ssh -i /home/.ssh/id_ecdsa root@${j} cat /home/emb-vt/eval/distributed/local.sh.pid)`"
     done
 
     echo "collecting remote data ..."
     sleep 2
-
+    i=$numPids
     for j in "${IPs[@]}"
     do
 	echo $j
