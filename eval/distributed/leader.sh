@@ -54,6 +54,7 @@ cleanup()
     rm ./local.sh.pid
     kill -9 ${pids[@]}
     rmmod vtgpio
+    rm local.sh.pid
     echo "exiting ..."
     exit 1   
 }
