@@ -253,7 +253,11 @@ static int sequential_io(enum IO io) {
   case RESUME:
     __getnstimeofday(&ts);
     freeze_duration = timespec_to_ns(&ts) - freeze_now;
-    
+
+    if (firstPause) {
+      firstPause = 0;
+      freeze_duration=0.0;
+    }
     num_procs = all_pids_from_nrs(pids);
     for (i = 0; i < num_procs; ++i) {
       rcu_read_lock();
