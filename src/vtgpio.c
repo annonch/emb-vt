@@ -264,7 +264,6 @@ static int sequential_io(enum IO io) {
       rcu_read_lock();
       tsk = pid_task(pids[i], PIDTYPE_PID);
       rcu_read_unlock();
-      if (tsk && tsk->freeze_past_nsec == 0) tsk->freeze_past_nsec = 0.0000001  
       if (tsk) tsk->freeze_past_nsec += freeze_duration;
     }
     for (i = 0; i < num_procs; ++i) {

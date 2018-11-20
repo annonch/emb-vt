@@ -97,6 +97,7 @@ setup()
     ########################
     ### setup experiment ###
     ########################
+    sleep 60
     echo "setting up experiment with ${i} processes"
     #
     # z = upperbound
