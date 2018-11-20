@@ -207,6 +207,10 @@ main_loop()
 {
     LOPP=0
     echo ""
+    cat /proc/${pids[1]}/fpt | tr 'ns\n' ' , ' >> /home/emb-vt/eval/distributed/skew/${p2d}/skew_${i}.log
+    #done
+    echo ' ' >> /home/emb-vt/eval/distributed/skew/${p2d}/skew_${i}.log
+
     for j in "${IPs[@]}"
     do  # this is initial 0 FTP
 	echo $j
@@ -234,7 +238,7 @@ main_loop()
 	do
 	    sleep .1
 	done
-	echo $pids
+	#echo $pids
 	cat /proc/${pids[1]}/fpt | tr 'ns\n' ' , ' >> /home/emb-vt/eval/distributed/skew/${p2d}/skew_${i}.log
 	#done
 	echo ' ' >> /home/emb-vt/eval/distributed/skew/${p2d}/skew_${i}.log
