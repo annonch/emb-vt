@@ -83,8 +83,8 @@ static s64 freeze_now = 0;
 /* name of filesystem accessable from user space */
 static char vtName[6] = "vtXXX";
 
-/* This variable skips the first pause/resume */
-static int firstPause = 1;
+///* This variable skips the first pause/resume */
+//static int firstPause = 1;
 
 
 /* core function for pausing */
@@ -254,10 +254,10 @@ static int sequential_io(enum IO io) {
     __getnstimeofday(&ts);
     freeze_duration = timespec_to_ns(&ts) - freeze_now;
 
-    if (firstPause) {
-      firstPause = 0;
-      freeze_duration=0.0;
-    }
+    //if (firstPause) {
+    //  firstPause = 0;
+    //  freeze_duration=0.0;
+    //}
     num_procs = all_pids_from_nrs(pids);
     for (i = 0; i < num_procs; ++i) {
       rcu_read_lock();
@@ -309,6 +309,11 @@ static int sequential_io_round_robin(enum IO io) {
   case RESUME:
     __getnstimeofday(&ts);
     freeze_duration = timespec_to_ns(&ts) - freeze_now;
+
+    //if (firstPause) {
+    //  firstPause = 0;
+    //  freeze_duration=0.0;
+    //}
     num_procs = all_pids_from_nrs(pids);
     for (i = round_robin, c = 0; c < num_procs; i = (i + 1) % num_procs, ++c) {
       rcu_read_lock();
