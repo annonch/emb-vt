@@ -1,4 +1,3 @@
-
 #!/bin/bash
 # 
 # Author: Christopher Hannon
@@ -208,6 +207,12 @@ main_loop()
 {
     LOPP=0
     echo ""
+    for j in "${IPs[@]}"
+    do  # this is initial 0 FTP
+	echo $j
+	ssh -i /home/.ssh/id_ecdsa "root@${j}" "kill -10 `(ssh -i /home/.ssh/id_ecdsa root@${j} cat /home/emb-vt/eval/distributed/local.sh.pid)`"
+    done
+
     while [ $LOPP -lt 16 ];
     do
 	let LOPP=LOPP+1
