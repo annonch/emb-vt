@@ -1,0 +1,73 @@
+[ 8081.942168] VT-GPIO: Dilating 10519
+[ 8082.044189] VT-GPIO: Dilating 10520
+[ 8092.048526] VT-GPIO_BENCHMARK: Pause ; 0 ; 451962 
+[ 8092.058392] VT-GPIO_BENCHMARK: Resume ; 0 ; 360928 
+[ 8103.487226] VT-GPIO_BENCHMARK: Pause ; 0 ; 765727 
+[ 8104.611879] VT-GPIO_BENCHMARK: Resume ; 0 ; 713399 
+[ 8122.890693] VT-GPIO_BENCHMARK: Pause ; 0 ; 747854 
+[ 8123.996742] VT-GPIO_BENCHMARK: Resume ; 0 ; 673986 
+[ 8142.089254] VT-GPIO_BENCHMARK: Pause ; 0 ; 583785 
+[ 8143.209706] VT-GPIO_BENCHMARK: Resume ; 0 ; 663402 
+[ 8156.430665] VT-GPIO_BENCHMARK: Pause ; 0 ; 451629 
+[ 8157.531069] VT-GPIO_BENCHMARK: Resume ; 0 ; 421923 
+[ 8171.718049] VT-GPIO_BENCHMARK: Pause ; 0 ; 494292 
+[ 8172.786433] VT-GPIO_BENCHMARK: Resume ; 0 ; 483418 
+[ 8190.304956] VT-GPIO_BENCHMARK: Pause ; 0 ; 473294 
+[ 8191.409225] VT-GPIO_BENCHMARK: Resume ; 0 ; 422714 
+[ 8209.172109] VT-GPIO_BENCHMARK: Pause ; 0 ; 699608 
+[ 8210.298995] VT-GPIO_BENCHMARK: Resume ; 0 ; 665486 
+[ 8222.955030] VT-GPIO_BENCHMARK: Pause ; 0 ; 450170 
+[ 8224.050958] VT-GPIO_BENCHMARK: Resume ; 0 ; 427756 
+[ 8238.461187] VT-GPIO_BENCHMARK: Pause ; 0 ; 501999 
+[ 8239.563506] VT-GPIO_BENCHMARK: Resume ; 0 ; 477835 
+[ 8257.297058] VT-GPIO_BENCHMARK: Pause ; 0 ; 465627 
+[ 8258.367058] VT-GPIO_BENCHMARK: Resume ; 0 ; 430214 
+[ 8276.347016] VT-GPIO_BENCHMARK: Pause ; 0 ; 474294 
+[ 8277.474786] VT-GPIO_BENCHMARK: Resume ; 0 ; 426589 
+[ 8290.064773] VT-GPIO_BENCHMARK: Pause ; 0 ; 458753 
+[ 8291.162493] VT-GPIO_BENCHMARK: Resume ; 0 ; 431881 
+[ 8306.954282] VT-GPIO_BENCHMARK: Pause ; 0 ; 474460 
+[ 8308.059907] VT-GPIO_BENCHMARK: Resume ; 0 ; 475627 
+[ 8326.210618] VT-GPIO_BENCHMARK: Pause ; 0 ; 459669 
+[ 8327.285835] VT-GPIO_BENCHMARK: Resume ; 0 ; 428422 
+[ 8344.530160] VT-GPIO_BENCHMARK: Pause ; 0 ; 692317 
+[ 8345.662353] VT-GPIO_BENCHMARK: Resume ; 0 ; 655237 
+[ 8358.718383] VT-GPIO_BENCHMARK: Pause ; 0 ; 475002 
+[ 8359.817939] VT-GPIO_BENCHMARK: Resume ; 0 ; 418215 
+[ 9960.489976] ParseEDID
+[ 9960.626354] EDID version: 1.3
+[ 9960.687296] PCLK=148500000 X 1920 2008 2052 2200 Y 1080 1084 1089 1125 fr 60 PP
+[ 9960.752520] Using above mode as preferred EDID mode
+[ 9960.848469] Unimplemented SVD code 31
+[ 9960.852097] Unimplemented SVD code 16
+[ 9960.860254] disp_clk: Could not find a matching pll-freq for 53900000 pclk
+[ 9960.867427] disp_clk: Could not find a matching pll-freq for 53900000 pclk
+[ 9960.875895] disp_clk: Could not find a matching pll-freq for 108100000 pclk
+[ 9960.882382] disp_clk: Could not find a matching pll-freq for 72650000 pclk
+[ 9960.889377] disp_clk: Could not find a matching pll-freq for 74200000 pclk
+[ 9960.897374] disp_clk: Could not find a matching pll-freq for 25150000 pclk
+[ 9960.904795] disp_clk: Could not find a matching pll-freq for 122350000 pclk
+[ 9960.916623] disp_clk: Could not find a matching pll-freq for 74600000 pclk
+[ 9960.922918] disp_clk: Could not find a matching pll-freq for 83650000 pclk
+[ 9960.930012] disp_clk: Could not find a matching pll-freq for 118650000 pclk
+[ 9960.937086] disp_clk: Could not find a matching pll-freq for 146850000 pclk
+[ 9960.943435] disp_clk: Could not find a matching pll-freq for 78800000 pclk
+[ 9960.950628] disp_clk: Could not find a matching pll-freq for 26150000 pclk
+[ 9961.846037] Parse_VideoData_Block: VIC 16 (native) support
+[ 9961.849945] Parse_VideoData_Block: VIC 4 support
+[ 9961.861923] Parse_VideoData_Block: VIC 3 support
+[ 9961.865791] Parse_VideoData_Block: VIC 1 support
+[ 9961.869742] Parse_VideoData_Block: VIC 20 support
+[ 9961.892008] Parse_VideoData_Block: VIC 18 support
+[ 9961.901342] Parse_VideoData_Block: VIC 5 support
+[ 9961.922029] Parse_VideoData_Block: VIC 31 support
+[ 9961.925995] Parse_VideoData_Block: VIC 16 support
+[ 9961.962128] Parse_VideoData_Block: VIC 19 support
+[ 9961.989778] Parse_AudioData_Block: max channel=2
+[ 9961.994448] Parse_AudioData_Block: SampleRate code=7
+[ 9961.998421] Parse_AudioData_Block: WordLen code=7
+[ 9962.013615] Find HDMI Vendor Specific DataBlock
+[ 9962.020642] PCLK=148500000 X 1920 2008 2052 2200 Y 1080 1084 1089 1125 fr 60 PP
+[ 9962.027306] PCLK=74250000 X 1920 2008 2052 2200 Y 540 542 547 562 fr 60 PP
+[ 9962.033551] PCLK=74250000 X 1280 1390 1430 1650 Y 720 725 730 750 fr 60 PP
+[ 9962.039861] PCLK=27000000 X 720 736 798 858 Y 480 489 495 525 fr 59 NN

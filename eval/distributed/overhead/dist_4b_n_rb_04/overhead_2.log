@@ -1,0 +1,75 @@
+[ 4633.802273] VT-GPIO: Dilating 6283
+[ 4633.906550] VT-GPIO: Dilating 6284
+[ 4638.901763] VT-GPIO_BENCHMARK: Pause ; 0 ; 461253 
+[ 4638.911612] VT-GPIO_BENCHMARK: Resume ; 0 ; 355970 
+[ 4650.567460] VT-GPIO_BENCHMARK: Pause ; 0 ; 444672 
+[ 4651.635613] VT-GPIO_BENCHMARK: Resume ; 0 ; 416966 
+[ 4668.818074] VT-GPIO_BENCHMARK: Pause ; 0 ; 707066 
+[ 4669.945255] VT-GPIO_BENCHMARK: Resume ; 0 ; 656821 
+[ 4682.624476] VT-GPIO_BENCHMARK: Pause ; 0 ; 446505 
+[ 4683.727838] VT-GPIO_BENCHMARK: Resume ; 0 ; 426173 
+[ 4697.773050] VT-GPIO_BENCHMARK: Pause ; 0 ; 501708 
+[ 4698.842649] VT-GPIO_BENCHMARK: Resume ; 0 ; 473252 
+[ 4716.484306] VT-GPIO_BENCHMARK: Pause ; 0 ; 452296 
+[ 4717.585829] VT-GPIO_BENCHMARK: Resume ; 0 ; 413340 
+[ 4734.712481] VT-GPIO_BENCHMARK: Pause ; 0 ; 465503 
+[ 4735.846275] VT-GPIO_BENCHMARK: Resume ; 0 ; 424590 
+[ 4748.182132] VT-GPIO_BENCHMARK: Pause ; 0 ; 456171 
+[ 4749.254248] VT-GPIO_BENCHMARK: Resume ; 0 ; 412841 
+[ 4763.956172] VT-GPIO_BENCHMARK: Pause ; 0 ; 503458 
+[ 4765.057099] VT-GPIO_BENCHMARK: Resume ; 0 ; 474961 
+[ 4783.166720] VT-GPIO_BENCHMARK: Pause ; 0 ; 717482 
+[ 4784.234018] VT-GPIO_BENCHMARK: Resume ; 0 ; 659570 
+[ 4802.677982] VT-GPIO_BENCHMARK: Pause ; 0 ; 705566 
+[ 4803.746719] VT-GPIO_BENCHMARK: Resume ; 0 ; 654278 
+[ 4816.645840] VT-GPIO_BENCHMARK: Pause ; 0 ; 454421 
+[ 4817.718715] VT-GPIO_BENCHMARK: Resume ; 0 ; 417049 
+[ 4831.733409] VT-GPIO_BENCHMARK: Pause ; 0 ; 499125 
+[ 4832.837457] VT-GPIO_BENCHMARK: Resume ; 0 ; 445796 
+[ 4851.115969] VT-GPIO_BENCHMARK: Pause ; 0 ; 464294 
+[ 4852.190218] VT-GPIO_BENCHMARK: Resume ; 0 ; 429131 
+[ 4869.601518] VT-GPIO_BENCHMARK: Pause ; 0 ; 689400 
+[ 4870.732055] VT-GPIO_BENCHMARK: Resume ; 0 ; 659486 
+[ 4884.187655] VT-GPIO_BENCHMARK: Pause ; 0 ; 456628 
+[ 4885.285740] VT-GPIO_BENCHMARK: Resume ; 0 ; 418256 
+[ 4899.677615] VT-GPIO_BENCHMARK: Pause ; 0 ; 510498 
+[ 4900.747957] VT-GPIO_BENCHMARK: Resume ; 0 ; 450504 
+[ 5099.770800] VT-GPIO_BENCHMARK: Pause ; 0 ; 724525 
+[ 5099.833840] VT-GPIO_BENCHMARK: Resume ; 0 ; 658072 
+[ 5169.361786] ParseEDID
+[ 5169.498615] EDID version: 1.3
+[ 5169.560382] PCLK=148500000 X 1920 2008 2052 2200 Y 1080 1084 1089 1125 fr 60 PP
+[ 5169.624392] Using above mode as preferred EDID mode
+[ 5169.719295] Unimplemented SVD code 31
+[ 5169.722786] Unimplemented SVD code 16
+[ 5169.730960] disp_clk: Could not find a matching pll-freq for 53900000 pclk
+[ 5169.737823] disp_clk: Could not find a matching pll-freq for 53900000 pclk
+[ 5169.744164] disp_clk: Could not find a matching pll-freq for 108100000 pclk
+[ 5169.750893] disp_clk: Could not find a matching pll-freq for 72650000 pclk
+[ 5169.757606] disp_clk: Could not find a matching pll-freq for 74200000 pclk
+[ 5169.763859] disp_clk: Could not find a matching pll-freq for 25150000 pclk
+[ 5169.770843] disp_clk: Could not find a matching pll-freq for 122350000 pclk
+[ 5169.777618] disp_clk: Could not find a matching pll-freq for 74600000 pclk
+[ 5169.783885] disp_clk: Could not find a matching pll-freq for 83650000 pclk
+[ 5169.790827] disp_clk: Could not find a matching pll-freq for 118650000 pclk
+[ 5169.797662] disp_clk: Could not find a matching pll-freq for 146850000 pclk
+[ 5169.804016] disp_clk: Could not find a matching pll-freq for 78800000 pclk
+[ 5169.810987] disp_clk: Could not find a matching pll-freq for 26150000 pclk
+[ 5170.717531] Parse_VideoData_Block: VIC 16 (native) support
+[ 5170.756733] Parse_VideoData_Block: VIC 4 support
+[ 5170.795261] Parse_VideoData_Block: VIC 3 support
+[ 5170.832932] Parse_VideoData_Block: VIC 1 support
+[ 5170.870645] Parse_VideoData_Block: VIC 20 support
+[ 5170.908201] Parse_VideoData_Block: VIC 18 support
+[ 5170.945611] Parse_VideoData_Block: VIC 5 support
+[ 5170.982677] Parse_VideoData_Block: VIC 31 support
+[ 5171.025054] Parse_VideoData_Block: VIC 16 support
+[ 5171.061971] Parse_VideoData_Block: VIC 19 support
+[ 5171.098458] Parse_AudioData_Block: max channel=2
+[ 5171.135044] Parse_AudioData_Block: SampleRate code=7
+[ 5171.171870] Parse_AudioData_Block: WordLen code=7
+[ 5171.207799] Find HDMI Vendor Specific DataBlock
+[ 5171.246239] PCLK=148500000 X 1920 2008 2052 2200 Y 1080 1084 1089 1125 fr 60 PP
+[ 5171.287541] PCLK=74250000 X 1920 2008 2052 2200 Y 540 542 547 562 fr 60 PP
+[ 5171.333067] PCLK=74250000 X 1280 1390 1430 1650 Y 720 725 730 750 fr 60 PP
+[ 5171.373654] PCLK=27000000 X 720 736 798 858 Y 480 489 495 525 fr 59 NN
