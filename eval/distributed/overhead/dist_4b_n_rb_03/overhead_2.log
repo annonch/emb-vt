@@ -1,0 +1,55 @@
+[ 4327.775418] VT-GPIO: Dilating 5880
+[ 4327.878762] VT-GPIO: Dilating 5881
+[ 4340.038287] VT-GPIO_BENCHMARK: Pause ; 0 ; 459753 
+[ 4341.106072] VT-GPIO_BENCHMARK: Resume ; 0 ; 586783 
+[ 4360.154471] VT-GPIO_BENCHMARK: Pause ; 0 ; 461628 
+[ 4361.280680] VT-GPIO_BENCHMARK: Resume ; 0 ; 661735 
+[ 4374.349432] VT-GPIO_BENCHMARK: Pause ; 0 ; 455211 
+[ 4375.449735] VT-GPIO_BENCHMARK: Resume ; 0 ; 425381 
+[ 4389.464391] VT-GPIO_BENCHMARK: Pause ; 0 ; 502832 
+[ 4390.530756] VT-GPIO_BENCHMARK: Resume ; 0 ; 476001 
+[ 4407.617618] VT-GPIO_BENCHMARK: Pause ; 0 ; 460961 
+[ 4408.721175] VT-GPIO_BENCHMARK: Resume ; 0 ; 435296 
+[ 4421.959611] ParseEDID
+[ 4422.075953] EDID version: 1.3
+[ 4422.124438] PCLK=148500000 X 1920 2008 2052 2200 Y 1080 1084 1089 1125 fr 60 PP
+[ 4422.184345] Using above mode as preferred EDID mode
+[ 4422.267095] Unimplemented SVD code 31
+[ 4422.269922] Unimplemented SVD code 16
+[ 4422.278186] disp_clk: Could not find a matching pll-freq for 53900000 pclk
+[ 4422.284868] disp_clk: Could not find a matching pll-freq for 53900000 pclk
+[ 4422.291125] disp_clk: Could not find a matching pll-freq for 108100000 pclk
+[ 4422.297709] disp_clk: Could not find a matching pll-freq for 72650000 pclk
+[ 4422.304389] disp_clk: Could not find a matching pll-freq for 74200000 pclk
+[ 4422.310572] disp_clk: Could not find a matching pll-freq for 25150000 pclk
+[ 4422.317246] disp_clk: Could not find a matching pll-freq for 122350000 pclk
+[ 4422.323915] disp_clk: Could not find a matching pll-freq for 74600000 pclk
+[ 4422.330097] disp_clk: Could not find a matching pll-freq for 83650000 pclk
+[ 4422.336850] disp_clk: Could not find a matching pll-freq for 118650000 pclk
+[ 4422.343121] disp_clk: Could not find a matching pll-freq for 146850000 pclk
+[ 4422.349737] disp_clk: Could not find a matching pll-freq for 78800000 pclk
+[ 4422.356489] disp_clk: Could not find a matching pll-freq for 26150000 pclk
+[ 4422.949079] Parse_VideoData_Block: VIC 16 (native) support
+[ 4422.988627] Parse_VideoData_Block: VIC 4 support
+[ 4423.025892] Parse_VideoData_Block: VIC 3 support
+[ 4423.063829] Parse_VideoData_Block: VIC 1 support
+[ 4423.100686] Parse_VideoData_Block: VIC 20 support
+[ 4423.137863] Parse_VideoData_Block: VIC 18 support
+[ 4423.174864] Parse_VideoData_Block: VIC 5 support
+[ 4423.211756] Parse_VideoData_Block: VIC 31 support
+[ 4423.253849] Parse_VideoData_Block: VIC 16 support
+[ 4423.290527] Parse_VideoData_Block: VIC 19 support
+[ 4423.327254] Parse_AudioData_Block: max channel=2
+[ 4423.363810] Parse_AudioData_Block: SampleRate code=7
+[ 4423.400663] Parse_AudioData_Block: WordLen code=7
+[ 4423.404776] Find HDMI Vendor Specific DataBlock
+[ 4423.411238] PCLK=148500000 X 1920 2008 2052 2200 Y 1080 1084 1089 1125 fr 60 PP
+[ 4423.417843] PCLK=74250000 X 1920 2008 2052 2200 Y 540 542 547 562 fr 60 PP
+[ 4423.424419] PCLK=74250000 X 1280 1390 1430 1650 Y 720 725 730 750 fr 60 PP
+[ 4423.434838] PCLK=27000000 X 720 736 798 858 Y 480 489 495 525 fr 59 NN
+[ 4426.934703] VT-GPIO_BENCHMARK: Pause ; 0 ; 452419 
+[ 4428.002496] VT-GPIO_BENCHMARK: Resume ; 0 ; 449837 
+[ 4440.487002] VT-GPIO_BENCHMARK: Pause ; 0 ; 480959 
+[ 4441.581583] VT-GPIO_BENCHMARK: Resume ; 0 ; 434546 
+[ 4456.225270] VT-GPIO_BENCHMARK: Pause ; 0 ; 474043 
+[ 4457.325304] VT-GPIO_BENCHMARK: Resume ; 0 ; 440795 

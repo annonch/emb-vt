@@ -1,0 +1,43 @@
+[ 2508.945544] VT-GPIO: Dilating 4035
+[ 2509.052454] VT-GPIO: Dilating 4036
+[ 2526.976393] VT-GPIO_BENCHMARK: Pause ; 0 ; 729651 
+[ 2528.052314] VT-GPIO_BENCHMARK: Resume ; 0 ; 654240 
+[ 2546.048926] VT-GPIO_BENCHMARK: Pause ; 0 ; 732941 
+[ 2547.115745] VT-GPIO_BENCHMARK: Resume ; 0 ; 669322 
+[ 4283.567815] ParseEDID
+[ 4283.704544] EDID version: 1.3
+[ 4283.760605] PCLK=148500000 X 1920 2008 2052 2200 Y 1080 1084 1089 1125 fr 60 PP
+[ 4283.820508] Using above mode as preferred EDID mode
+[ 4283.905432] Unimplemented SVD code 31
+[ 4283.908928] Unimplemented SVD code 16
+[ 4283.917065] disp_clk: Could not find a matching pll-freq for 53900000 pclk
+[ 4283.923924] disp_clk: Could not find a matching pll-freq for 53900000 pclk
+[ 4283.930262] disp_clk: Could not find a matching pll-freq for 108100000 pclk
+[ 4283.936993] disp_clk: Could not find a matching pll-freq for 72650000 pclk
+[ 4283.943848] disp_clk: Could not find a matching pll-freq for 74200000 pclk
+[ 4283.950101] disp_clk: Could not find a matching pll-freq for 25150000 pclk
+[ 4283.957131] disp_clk: Could not find a matching pll-freq for 122350000 pclk
+[ 4283.963972] disp_clk: Could not find a matching pll-freq for 74600000 pclk
+[ 4283.970229] disp_clk: Could not find a matching pll-freq for 83650000 pclk
+[ 4283.985949] disp_clk: Could not find a matching pll-freq for 118650000 pclk
+[ 4283.992895] disp_clk: Could not find a matching pll-freq for 146850000 pclk
+[ 4283.999237] disp_clk: Could not find a matching pll-freq for 78800000 pclk
+[ 4284.006190] disp_clk: Could not find a matching pll-freq for 26150000 pclk
+[ 4284.723894] Parse_VideoData_Block: VIC 16 (native) support
+[ 4284.761808] Parse_VideoData_Block: VIC 4 support
+[ 4284.798526] Parse_VideoData_Block: VIC 3 support
+[ 4284.834380] Parse_VideoData_Block: VIC 1 support
+[ 4284.870921] Parse_VideoData_Block: VIC 20 support
+[ 4284.906790] Parse_VideoData_Block: VIC 18 support
+[ 4284.943199] Parse_VideoData_Block: VIC 5 support
+[ 4284.978734] Parse_VideoData_Block: VIC 31 support
+[ 4285.014634] Parse_VideoData_Block: VIC 16 support
+[ 4285.050143] Parse_VideoData_Block: VIC 19 support
+[ 4285.085942] Parse_AudioData_Block: max channel=2
+[ 4285.122010] Parse_AudioData_Block: SampleRate code=7
+[ 4285.159559] Parse_AudioData_Block: WordLen code=7
+[ 4285.194915] Find HDMI Vendor Specific DataBlock
+[ 4285.233009] PCLK=148500000 X 1920 2008 2052 2200 Y 1080 1084 1089 1125 fr 60 PP
+[ 4285.273861] PCLK=74250000 X 1920 2008 2052 2200 Y 540 542 547 562 fr 60 PP
+[ 4285.314543] PCLK=74250000 X 1280 1390 1430 1650 Y 720 725 730 750 fr 60 PP
+[ 4285.356545] PCLK=27000000 X 720 736 798 858 Y 480 489 495 525 fr 59 NN

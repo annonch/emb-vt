@@ -1,0 +1,41 @@
+Connecting to host 192.168.0.2, port 5201
+[  4] local 192.168.0.1 port 56196 connected to 192.168.0.2 port 5201
+[ ID] Interval           Transfer     Bandwidth       Retr  Cwnd
+[  4]   0.00-1.01   sec  54.4 MBytes  452468 Kbits/sec    0    272 KBytes       
+[  4]   1.01-2.01   sec  55.6 MBytes  466578 Kbits/sec    0    321 KBytes       
+[  4]   2.01-3.02   sec  53.3 MBytes  442300 Kbits/sec   36    293 KBytes       
+[  4]   3.02-4.00   sec  49.9 MBytes  426784 Kbits/sec   45   35.4 KBytes       
+[  4]   4.00-5.01   sec  51.6 MBytes  430446 Kbits/sec    0    228 KBytes       
+[  4]   5.01-6.01   sec  52.9 MBytes  444463 Kbits/sec    0    247 KBytes       
+[  4]   6.01-7.02   sec  55.6 MBytes  460801 Kbits/sec    0    262 KBytes       
+[  4]   7.02-8.01   sec  53.4 MBytes  451286 Kbits/sec    0    266 KBytes       
+[  4]   8.01-9.01   sec  53.6 MBytes  449246 Kbits/sec    0    327 KBytes       
+[  4]   9.01-10.00  sec  56.3 MBytes  477644 Kbits/sec   92    387 KBytes       
+[  4]  10.00-11.01  sec  54.6 MBytes  454362 Kbits/sec    0    382 KBytes       
+[  4]  11.01-12.00  sec  54.3 MBytes  459572 Kbits/sec  119    235 KBytes       
+[  4]  12.00-13.00  sec  56.1 MBytes  468843 Kbits/sec    0    267 KBytes       
+[  4]  13.00-14.00  sec  55.4 MBytes  466794 Kbits/sec    0    274 KBytes       
+[  4]  14.00-15.02  sec  56.3 MBytes  465914 Kbits/sec    0    276 KBytes       
+[  4]  15.02-16.00  sec  56.4 MBytes  478521 Kbits/sec    0    307 KBytes       
+[  4]  16.00-17.00  sec  55.4 MBytes  465517 Kbits/sec    4    281 KBytes       
+[  4]  17.00-18.00  sec  52.9 MBytes  442892 Kbits/sec    0    337 KBytes       
+[  4]  18.00-19.00  sec  52.6 MBytes  441740 Kbits/sec   60    191 KBytes       
+[  4]  19.00-20.01  sec  51.3 MBytes  425139 Kbits/sec    0    221 KBytes       
+[  4]  20.01-21.01  sec  53.2 MBytes  448114 Kbits/sec    0    243 KBytes       
+[  4]  21.01-22.00  sec  55.4 MBytes  470009 Kbits/sec    0    259 KBytes       
+[  4]  22.00-23.00  sec  54.0 MBytes  452326 Kbits/sec    0    266 KBytes       
+[  4]  23.00-24.01  sec  54.3 MBytes  449510 Kbits/sec    0    314 KBytes       
+[  4]  24.01-25.00  sec  53.4 MBytes  452422 Kbits/sec   21    208 KBytes       
+[  4]  25.00-26.00  sec  51.0 MBytes  429320 Kbits/sec    0    226 KBytes       
+[  4]  26.00-27.00  sec  55.2 MBytes  462455 Kbits/sec    0    242 KBytes       
+[  4]  27.00-28.00  sec  53.7 MBytes  449957 Kbits/sec    0    256 KBytes       
+[  4]  28.00-29.01  sec  53.3 MBytes  445972 Kbits/sec    0    317 KBytes       
+[  4]  29.01-30.00  sec  55.7 MBytes  469788 Kbits/sec    1    281 KBytes       
+[  4]  30.00-31.00  sec  45.3 MBytes  380122 Kbits/sec   11    242 KBytes       
+[  4]  31.00-32.00  sec  52.5 MBytes  438927 Kbits/sec    1    380 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth       Retr
+[  4]   0.00-32.00  sec  1.68 GBytes  450615 Kbits/sec  390             sender
+[  4]   0.00-32.00  sec  1.68 GBytes  450056 Kbits/sec                  receiver
+
+iperf Done.
