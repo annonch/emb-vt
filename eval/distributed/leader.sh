@@ -10,9 +10,9 @@ declare -a IPs
 #IPs[0]="216.47.152.92"
 #IPs[1]="216.47.152.189"
 #IPs[2]="216.47.152.80"
-IPs[0]="192.168.1.158"#216.47.152.92"
-IPs[1]="192.168.1.156"#216.47.152.189"
-IPs[2]="192.168.1.153"#216.47.152.80"
+IPs[0]="192.168.1.158" #216.47.152.92"
+IPs[1]="192.168.1.156" #216.47.152.189"
+IPs[2]="192.168.1.153" #216.47.152.80"
 
 # declare array
 declare -a pids
@@ -178,8 +178,8 @@ setup()
 
 response()
 {
-    echo " " 
-    echo "recieved response (sigusr1) "
+    #echo " " 
+    echo "recieved response sigusr1 "
     should_wait=0
 }
 
