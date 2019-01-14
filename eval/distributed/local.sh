@@ -12,7 +12,7 @@
 #  Number of procs is $1
 #  Log folder is $2
 
-leaderPID="192.168.1.157"#216.47.152.71"
+leaderPID="192.168.1.157" #216.47.152.71"
 
 if [ "$#" -ne 2 ]; then
     echo "Usage: ./local [numProcs] [saveDir] "
