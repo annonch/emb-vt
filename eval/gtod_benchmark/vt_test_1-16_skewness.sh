@@ -13,7 +13,7 @@
 # main
 #
 #for i in $1 #2 4 8 16
-for i in 2 4 8 16
+for i in 1 2 4 8 16
 do
     sleep 2
     # rebuild kmodule just in case
@@ -33,7 +33,8 @@ do
     declare -a pids
     #
     # process 0
-    /home/emb-vt/eval/gtod_benchmark/start_paused.sh /home/emb-vt/eval/gtod_benchmark/gtod_loop &
+    sleep 25000 &
+    # /home/emb-vt/eval/gtod_benchmark/start_paused.sh /home/emb-vt/eval/gtod_benchmark/gtod_loop &
     pids[0]=$!
     echo $! > /sys/vt/VT7/pid_01
     echo $!
@@ -57,6 +58,7 @@ do
 	pid_path="/sys/vt/VT7/pid_${jj}"
 	echo $! > ${pid_path}
 	echo $!
+	echo ${pids[@]}
     done
     ######################
     ### run experiment ###
@@ -68,21 +70,25 @@ do
     kill -CONT ${pids[*]}
     #
     # start pause/resume loop
-    while kill -0 ${pids[0]} >/dev/null 2>&1
+    #while kill -0 ${pids[0]} >/dev/null 2>&1
+    HowLoop=0
+    while [ $HowLoop -lt 128 ];
     do
+	echo $HowLoop
+	let HowLoop=HowLoop+1
 	echo "freeze" > /sys/vt/VT7/mode
 	sleep 1
 	echo "unfreeze" > /sys/vt/VT7/mode
-	for q in "${pids[@]}"
-	do
-	    #
-	    # removes ns\n and replaces with , save to file
-	    cat /proc/${q}/fpt | tr 'ns\n' ' , ' >> /home/emb-vt/eval/skew/skew_${i}.log
-	done
-	echo ' ' >> /home/emb-vt/eval/skew/skew_${i}.log
+	#for q in "${pids[@]}"
+	#do
+	#    #
+	#    # removes ns\n and replaces with , save to file
+	#    cat /proc/${q}/fpt | tr 'ns\n' ' , ' >> /home/emb-vt/eval/skew/skew_${i}.log
+	#done
+	#echo ' ' >> /home/emb-vt/eval/skew/skew_${i}.log
 	sleep 1
     done
-    wait ${pids[0]}
+    kill -9 ${pids[0]}
     #
     #######################
     ### exit experiment ###
