@@ -83,6 +83,70 @@ pause_order[60]="0"
 pause_order[61]="1"
 pause_order[62]="2"
 pause_order[63]="3"
+pause_order[64]="0"
+pause_order[65]="1"
+pause_order[66]="2"
+pause_order[67]="3"
+pause_order[68]="0"
+pause_order[69]="1"
+pause_order[70]="2"
+pause_order[71]="3"
+pause_order[72]="0"
+pause_order[73]="1"
+pause_order[74]="2"
+pause_order[75]="3"
+pause_order[76]="0"
+pause_order[77]="1"
+pause_order[78]="2"
+pause_order[79]="3"
+pause_order[80]="0"
+pause_order[81]="1"
+pause_order[82]="2"
+pause_order[83]="3"
+pause_order[84]="0"
+pause_order[85]="1"
+pause_order[86]="2"
+pause_order[87]="3"
+pause_order[88]="0"
+pause_order[89]="1"
+pause_order[90]="2"
+pause_order[91]="3"
+pause_order[92]="0"
+pause_order[93]="1"
+pause_order[94]="2"
+pause_order[95]="3"
+pause_order[96]="0"
+pause_order[97]="1"
+pause_order[98]="2"
+pause_order[99]="3"
+pause_order[100]="0"
+pause_order[101]="1"
+pause_order[102]="2"
+pause_order[103]="3"
+pause_order[104]="0"
+pause_order[105]="1"
+pause_order[106]="2"
+pause_order[107]="3"
+pause_order[108]="0"
+pause_order[109]="1"
+pause_order[110]="2"
+pause_order[111]="3"
+pause_order[112]="0"
+pause_order[113]="1"
+pause_order[114]="2"
+pause_order[115]="3"
+pause_order[116]="0"
+pause_order[117]="1"
+pause_order[118]="2"
+pause_order[119]="3"
+pause_order[120]="0"
+pause_order[121]="1"
+pause_order[122]="2"
+pause_order[123]="3"
+pause_order[124]="0"
+pause_order[125]="1"
+pause_order[126]="2"
+pause_order[127]="3"
 
 if [ "$#" -ne 2 ]; then
     echo "Usage: ./leader [numProcs] [saveDir]"
@@ -153,10 +217,13 @@ setup()
     #
     # z = upperbound
     z=$(($numPids-1))
+    echo $z
+
     #
     # start sleeping procs
     for j in `seq 0 $z`; do
 	#
+	echo "hi"
 	# get pid variable to be double digits (+1)
 	jj=$(($j+1))
 	# make jj 2 digits for the pid_01-16 variable
@@ -166,10 +233,12 @@ setup()
 	#
 	# add sleeping procs to VT
 	sleep 25000 &
-	pids[j]=$!
+	pids[$j]=$!
 	pid_path="/sys/vt/VT7/pid_${jj}"
 	echo $! > ${pid_path}
 	echo $!
+	echo ${pids[@]}
+	echo ${pids[0]}
     done
 
     echo "SIGCONTing sleeping PIDs"
@@ -259,7 +328,7 @@ main_loop()
 {
     LOPP=0
     echo ""
-    cat /proc/${pids[1]}/fpt | tr 'ns\n' ' , ' >> /home/emb-vt/eval/distributed/skew/${p2d}/skew_${i}.log
+    cat /proc/${pids[0]}/fpt | tr 'ns\n' ' , ' >> /home/emb-vt/eval/distributed/skew/${p2d}/skew_${i}.log
     #done
     echo ' ' >> /home/emb-vt/eval/distributed/skew/${p2d}/skew_${i}.log
 
@@ -269,7 +338,7 @@ main_loop()
 	ssh -i /home/.ssh/id_ecdsa "root@${j}" "kill -10 `(ssh -i /home/.ssh/id_ecdsa root@${j} cat /home/emb-vt/eval/distributed/local.sh.pid)`"
     done
 
-    while [ $LOPP -lt 64 ];
+    while [ $LOPP -lt 128 ];
     do
 	let LOPP=LOPP+1
 	# determine who should pause next
@@ -291,7 +360,7 @@ main_loop()
 	    sleep .1
 	done
 	#echo $pids
-	cat /proc/${pids[1]}/fpt | tr 'ns\n' ' , ' >> /home/emb-vt/eval/distributed/skew/${p2d}/skew_${i}.log
+	cat /proc/${pids[0]}/fpt | tr 'ns\n' ' , ' >> /home/emb-vt/eval/distributed/skew/${p2d}/skew_${i}.log
 	#done
 	echo ' ' >> /home/emb-vt/eval/distributed/skew/${p2d}/skew_${i}.log
 
