@@ -44,14 +44,14 @@ def plot_all():
     font = {'size':'17'}
     matplotlib.rc('font', **font)
     plt.plot(x_data, bsl_avg, color='blue', marker='s', markersize=8,
-             linewidth=1.0, label='No Freeze')
+             linewidth=1.0, label='Baseline (no Pause/Resume)')
     plt.plot(x_data, vir_avg, color='red', marker='v', markersize=8,
-             linewidth=1.0, label='Freeze Duration=1 s, Interval=1 s')
+             linewidth=1.0, label='Pause Duration=1 s, Interval=1 s')
 
     plt.errorbar(x_data, bsl_avg, bsl_std, color='blue', ecolor='blue')
     plt.errorbar(x_data, vir_avg, vir_std, color='red', ecolor='red')
     plt.grid(True)
-    plt.legend(loc='lower right')
+    plt.legend(fontsize=14,loc='lower right')
     plt.xlim([time_start, time_end-1])
     plt.xticks(range(time_start+1, time_end+1, 2))
     plt.yticks(range(0, int(bw) + 1, 100))

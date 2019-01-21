@@ -5,9 +5,10 @@ import matplotlib.pyplot as plt
 import matplotlib
 import argparse
 import sys
-#matplotlib.rcParams['ps.useafm'] = True
-#matplotlib.rcParams['pdf.use14corefonts'] = True
-#matplotlib.rcParams['text.usetex'] = True
+
+matplotlib.rcParams['ps.useafm'] = True
+matplotlib.rcParams['pdf.use14corefonts'] = True
+matplotlib.rcParams['text.usetex'] = True
 
 def start():
     nums = 0
@@ -16,30 +17,30 @@ def start():
     #cols_t = int(sys.argv[2])
     rawF = np.genfromtxt(filef, delimiter=',')#, usecols={cols_t-1,cols_t*2 -1, cols_t*3-1,cols_t*4-1} )
 
-    print rawF
+    #print rawF
     
     for y in (1,2,3):
         #print rawF[:,y]
         rawF[:,y] = (rawF[:,y] - rawF[:,0])/1000000.0
     rawF[:,0] = (rawF[:,0] - rawF[:,0])/1000000.0
 
-    print rawF
+    #print rawF
     
     colors=['b','r','g','c']#,'m','y','k','coral','steelblue','tan','olive','orchid',
                 #'darksalmon', 'lightslategrey','steelblue']
 
     plt.subplot(1,1,1)
-    pi_s = ["master (92)", "189", "71", "80"]
+    pi_s = ["Pi 0 (Reference)", "Pi 1", "Pi 2", "Pi 3"]
         
     for x in range(0,4):
         l = pi_s[x]
         plt.plot(range(len(rawF[:,x])),rawF[:,x],c=colors[x],label=l)
         #plt.axis([-1,100,-20,20])
         
-    plt.legend(fontsize=8,loc='lower left')
-    plt.ylabel('Milliseconds', fontsize=14)
-    plt.title('Cumulative Clock Skewness')
-    plt.xlabel('run (index)', fontsize=14)
+    plt.legend(fontsize=12,loc='lower left')
+    plt.ylabel('Cumalatuve Clock Skewness (Milliseconds)', fontsize=14)
+    #plt.title('Cumulative Clock Skewness')
+    plt.xlabel('Sequence of Pause/Resume Operations Indexed in Time Order', fontsize=14)
         
     plt.grid(True)
         
